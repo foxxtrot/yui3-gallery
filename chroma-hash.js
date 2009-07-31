@@ -24,9 +24,9 @@ YUI.add('chroma-hash', function(Y) {
 		n.on('keyup', function(e) {
 			if(n.get('value') == "" ) {
 				Y.Array.each(animations, 
-					function(a) {
+					function(a, i) {
 						a.stop();
-						var y = anim.get('node');
+						var y = a.get('node');
 						animations[i] = a = new Y.Anim({ 'node': y, 'from': {backgroundColor: y.getStyle('backgroundColor')},
 						'to': { backgroundColor: '#fff' },
 						duration: 1 });

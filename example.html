@@ -7,10 +7,10 @@
   <meta name="author" content="Mattt Thompson">
   <meta name="description" content="Chroma-Hash is a sexy, non-reversable live visualization of password field input">
 	<title>Chroma-Hash Demo</title>
-  <script src="http://yui.yahooapis.com/3.0.0b1/build/yui/yui.js" type="text/javascript"></script>
+  <script src="http://yui.yahooapis.com/3.0.0b1/build/yui/yui-min.js" type="text/javascript"></script>
 	<script src="chroma-hash.js" type="text/javascript" charset="utf-8"></script>
 	<script type="text/javascript" charset="utf-8">
-    YUI({filter: "RAW"}).use('node','chroma-hash', function(Y) {
+    YUI().use('node','chroma-hash', function(Y) {
     	Y.on('domready', function() {
 	    	Y.ChromaHash.add('input[type=password]');
 	    	Y.get('#username').focus();
