@@ -51,13 +51,13 @@ YUI.add('chroma-hash', function(Y) {
 				function(anim, i) {
 					anim.stop();
 					var y = anim.get('node');
-					y.setXY([position[0] + width - 2, position[1]]);
-					y.setStyles( {
+					y.setXY([position[0] + width - 2 + (-8 * (i + 1)), position[1]]);
+					y.setStyles({
 							position: 'absolute',
 							height: height + "px",
 							width: "8px",
 							margin: "5px",
-							marginLeft: -8 * (i + 1) + "px"
+							marginLeft: "0px"
 						});
 				//anim.set('to', { backgroundColor: '#' + col[i] });
 				//anim.run();
