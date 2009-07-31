@@ -7,19 +7,6 @@
  */
 
 YUI.add('chroma-hash', function(Y) {
-	Y.Anim.behaviors.backgroundColor = {
-		get: function(anim) {
-			var c = anim._node.getStyle('backgroundColor');
-			return c.match(/#[\dABCDEF]{6}/gi) ? c : '#ffffff';
-		},
-		set: function(anim, att, from, to, elapsed, duration, fn) {
-			
-		}
-	};
-	
-	var dec2hex = function(dec) { return dec.toString(16); }
-	var hex2dec = function(hex) { return parseInt(dec, 16); }
-	
 	var ChromaHash = function() { };
 	
 	var configureNode = function(n, colors) {
@@ -28,38 +15,47 @@ YUI.add('chroma-hash', function(Y) {
 			n.insert('<label for="' + n.get('id') + '" class="' + colors[c] + ' chroma-hash"></label>', 'after');
 		}
 		Y.Array.each(chromaHashesForElement(n), 
-			function(el, i) { animations[i] = new Y.Anim({ node: el }); }
+			function(el, i) { 
+				var node = Y.get(el);
+				animations[i] = new Y.Anim({ node: node, duration:0.5, from: {backgroundColor:node.getStyle('backgroundColor')}}); }
 		);
 		
 		n.on('keyup', function(e) {
 			if(n.get('value') == "" ) {
 				Y.Array.each(animations, 
 					function(a) {
-						a.set('to', { backgroundColor: "#ffffff" });
+						a.stop();
+						var y = anim.get('node');
+						animations[i] = a = new Y.Anim({ 'node': y, 'from': {backgroundColor: y.getStyle('backgroundColor')},
+						'to': { backgroundColor: '#fff' },
+						duration: 1 });
 						a.run();
 					});
 				return;
 			}
 
-			var height = n.get('clientHeight'),
-					width = n.get('clientWidth'),
-					position = n.getXY(),
-					id = n.get('id'),
+			var id = n.get('id'),
 					md5 = hex_md5(n.get('value')),
 					col = md5.match(/([\dABCDEF]{6})/ig);
 			Y.Array.each(animations, 
 				function(anim, i) {
 					anim.stop();
-					var y = anim.get('node');
+					var y = anim.get('node'),
+					height = n.get('clientHeight'),
+						width = n.get('clientWidth'),
+						position = n.getXY();
 					y.setXY([position[0] + width - 2 + (-8 * (i + 1)), position[1]]);
-					y.setStyles({
-							position: 'absolute',
-							height: height + "px",
-							width: "8px",
-							margin: "5px",
-							marginLeft: "0px"
-						});
-				//anim.set('to', { backgroundColor: '#' + col[i] });
+				y.setStyles({
+						position: 'absolute',
+						height: height + "px",
+						width: "8px",
+						margin: "5px",
+						marginLeft: "0px"
+					});
+						
+					animations[i] = anim = new Y.Anim({ 'node': y, 'from': {backgroundColor: y.getStyle('backgroundColor')},
+						'to': { backgroundColor: '#' + col[i] },
+						duration: 1 });
 				//anim.run();
 				y.setStyle('backgroundColor', '#' + col[i]);
 			});
