@@ -4,6 +4,8 @@
  *
  * Copyright (c) 2009 Mattt Thompson
  * Licensed under the MIT licenses.
+ *
+ * YUI Revision Copyright (c) 2009 Jeff Craig
  */
 
 YUI.add('chroma-hash', function(Y) {
