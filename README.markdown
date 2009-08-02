@@ -9,6 +9,8 @@ Password entry can be frustrating, especially with long or difficult passwords. 
 
 Chroma-Hash displays a series of colored bars at the end of field inputs so you can instantly see if your password is right. Chroma-Hash takes an MD5 hash of your input and uses that to compute the colors in the visualization. The MD5 hash is non-reversible, so no one could know what your password just from the colors. Your password will display the same sequence each time, so you can learn to expect "blue, red, pink", for instance; if you instead see "green, purple, yellow", you'll know you typed it wrong.
 
+A YUI3 Version is available as well, at [http://github.com/foxxtrot/Chroma-Hash/tree/yui/](http://github.com/foxxtrot/Chroma-Hash/tree/yui/).
+
 ## Demo
 
 Actions speak louder than words.  
@@ -16,8 +18,16 @@ Try it out at: <tt>[http://mattt.github.com/Chroma-Hash/](http://mattt.github.co
 
 ## Usage
 
+jQuery:
 <code>
-  $("input:password").chromaHash({number: 3});
+ $("input:password").chromaHash({number: 3});
+</code>
+
+YUI3:
+<code>
+	YUI().use('node','chroma-hash', function(Y) {
+		Y.ChromaHash.add('input[type=password]', {number: 3});
+	}
 </code>
 
 - <tt>number</tt> parameter controls the number of bars displayed (1,2,3, or 4)
@@ -25,6 +35,10 @@ Try it out at: <tt>[http://mattt.github.com/Chroma-Hash/](http://mattt.github.co
 ## Requirements
 - jQuery 1.3+
 - jQuery UI 1.7+
+
+or,
+
+- YUI 3.0.0b1
 
 ## License
 

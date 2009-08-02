@@ -11,10 +11,10 @@
 	<script src="chroma-hash.js" type="text/javascript" charset="utf-8"></script>
 	<script type="text/javascript" charset="utf-8">
     YUI().use('node','chroma-hash', function(Y) {
-    	Y.on('domready', function() {
-	    	Y.ChromaHash.add('input[type=password]');
-	    	Y.get('#username').focus();
-	    });
+      Y.on('domready', function() {
+        Y.ChromaHash.add('input[type=password]', {number: 3});
+        Y.get('#username').focus();
+      });
     });
 	</script>
 	<style type="text/css" media="screen">
