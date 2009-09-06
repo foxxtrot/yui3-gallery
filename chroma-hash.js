@@ -12,6 +12,7 @@ YUI.add('chroma-hash', function(Y) {
 	var LBL_TMPL = '<label for="{id}" class="{color} chroma-hash"></label>',
 			_C = function(conf) { 
 				_C.superclass.constructor.apply(this, arguments);
+				this._animations = [];
 			};
 	_C.NAME = "ChromaHash";
 	_C.ATTRS = 
@@ -57,6 +58,7 @@ YUI.add('chroma-hash', function(Y) {
 				});
 				c.insert(lbl);
 				lbl.setXY([position[0] + width - 2 + (-8 * (i + 1)), position[1] + 3]);
+				this._animations.push(new Y.Anim({node: lbl}));
 			}
 		},
 		bindUI: function() {
@@ -68,12 +70,13 @@ YUI.add('chroma-hash', function(Y) {
 			// TODO: Store Animation Objects on this, so that I don't have to end ALL animations (breaks shit: BAD)
 			Y.Anim.stop();			
 			if(value == "" ) {
-				Y.all(labelSelector).each(
-					function(current, index, list) {
-						var a = new Y.Anim({ 'node': current, 
-							'from': {backgroundColor: current.getStyle('backgroundColor')},
-							'to': { backgroundColor: '#fff' },
-							duration: 1 });
+				Y.Array.each(this._animations,
+					function(a) {
+						var c = a.get('node');
+						a.stop();
+						a.set('from', {backgroundColor: c.getStyle('backgroundColor')});
+						a.set('to', {backgroundColor: '#fff' });
+						a.set('duration', 1);
 						a.run();
 					});
 				return;
@@ -82,22 +85,24 @@ YUI.add('chroma-hash', function(Y) {
 					col = md5.match(/([\dABCDEF]{6})/ig);
 			
 			if (value.length < this.get('minimum')) {
-				Y.all(labelSelector).each(
-					function(current, index, list) {
-						var g = (parseInt(col[index], 0x10) % 0xF).toString(0x10);
-							a = new Y.Anim({ 'node': current, 
-								'from': {backgroundColor: current.getStyle('backgroundColor')},
-								'to': { backgroundColor: '#' + g + g + g },
-								duration: 0.5 });
+				Y.Array.each(this._animations,
+					function(a, index) {
+						var c = a.get('node'),
+							  g = (parseInt(col[index], 0x10) % 0xF).toString(0x10);
+						a.stop();
+						a.set('from', {backgroundColor: c.getStyle('backgroundColor')});
+						a.set('to', {backgroundColor: '#' + g + g + g });
+						a.set('duration', 0.5);
 						a.run();
 					});
 			} else {
-				Y.all(labelSelector).each(
-					function(current, index, list) {
-							a = new Y.Anim({ 'node': current, 
-								'from': {backgroundColor: current.getStyle('backgroundColor')},
-								'to': { backgroundColor: '#' + col[index] },
-								duration: 0.5 });
+				Y.Array.each(this._animations,
+					function(a, index) {
+						var c = a.get('node');
+						a.stop();
+						a.set('from', {backgroundColor: c.getStyle('backgroundColor')});
+						a.set('to', {backgroundColor: '#' + col[index]});
+						a.set('duration', 0.5);
 						a.run();
 					});
 			}
