@@ -9,21 +9,13 @@
  */
 
 YUI.add('chroma-hash', function(Y) {
-	var LBL_TMPL = '<label for="{id}" class="{color} chroma-hash" ></label>';
-	
-	var _C = function(conf) { 
-		_C.superclass.constructor.apply(this, arguments);
-		this._animations = [];
-	};
-		
-	var chromaHashesForElement = function(e) {     
-			id = e.get('id');
-			return Y.NodeList.getDOMNodes(Y.all("label.chroma-hash").filter('[for=' + id + ']'));
-		};
-
-	Y.mix(_C, {
-		NAME: "ChromaHash",
-		ATTRS : {
+	var LBL_TMPL = '<label for="{id}" class="{color} chroma-hash" ></label>',
+			_C = function(conf) { 
+				_C.superclass.constructor.apply(this, arguments);
+			};
+	_C.NAME = "ChromaHash";
+	_C.ATTRS = 
+		{
 			bars: {
 				value: 3,
 				validator: function(b) {
@@ -37,7 +29,7 @@ YUI.add('chroma-hash', function(Y) {
 			},
 			minimum: {
 				value: 6
-			}
+			},
 			node: {
 				setter: function(node) {
 					var n = Y.get(node);
@@ -47,19 +39,20 @@ YUI.add('chroma-hash', function(Y) {
 					return n;
 				}
 			}
-	  },
+	  };
+	Y.extend(_C, Y.Widget, {
 		renderUI: function() {
 			var colors = ["primary", "secondary", "tertiary", "quaternary"].slice(0, this.get('bars')),
-				n = this.get('node'), i, lbl;
+				c = this.get('contentBox'), n = this.get('node'), i, lbl;
 			for (i = 0 ; i < colors.length ; i += 1) {
-				n.insert(LBL_TMPL.replace('{id}', n.get('id')).replace('{color}', colors[c]), 'after');
+				c.insert(LBL_TMPL.replace(/{id}/g, n.get('id')).replace(/{color}/g, colors[i]));
 			}
 		},
 		bindUI: function() {
 			this.get('node').on('keyup', this._handleKey);
 		},
 		_handleKey: function(e) {
-			var n = this.get('node'), value = n.get('value'),
+			var n = e.target, value = n.get('value'),
 				  labelSelector = 'label[for=' + n.get('id') + '].chroma-hash';
 			
 			Y.Anim.stop();			
@@ -82,7 +75,7 @@ YUI.add('chroma-hash', function(Y) {
 			
 			Y.all(labelSelector).each(
 					function(current, index, list) {
-						current.setXY([position[0] + width - 2 + (-8 * (i + 1)), position[1]]);
+						current.setXY([position[0] + width - 2 + (-8 * (index + 1)), position[1]]);
 						current.setStyles({
 							position: 'absolute',
 							height: height + "px",
@@ -112,10 +105,9 @@ YUI.add('chroma-hash', function(Y) {
 						a.run();
 					});
 			}
-		},
-		init: function() { }
+		}
 	});
-	Y.ChromaHash = ChromaHash;
+	Y.ChromaHash = _C;
 	/*
    * A JavaScript implementation of the RSA Data Security, Inc. MD5 Message
    * Digest Algorithm, as defined in RFC 1321.

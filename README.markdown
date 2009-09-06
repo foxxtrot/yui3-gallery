@@ -25,10 +25,9 @@ jQuery:
 
 YUI3:
 <code>
-	YUI().use('node','chroma-hash', function(Y) {
-		Y.ChromaHash.add('input[type=password]', {number: 3});
+	YUI().use('chroma-hash', function(Y) {
+		(new Y.ChromaHash({node: '#password', bars: 3, salt:"7be82b35cb0199120eea35a4507c9acf", minimum:6}).render();
 	}
-  $("input:password").chromaHash({bars: 3, salt:"7be82b35cb0199120eea35a4507c9acf", minimum:6});
 </code>
 
 - <tt>bars</tt> number of bars displayed (1,2,3, or 4)
