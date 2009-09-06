@@ -49,12 +49,12 @@ YUI.add('chroma-hash', function(Y) {
 			}
 		},
 		bindUI: function() {
-			this.get('node').on('keyup', this._handleKey);
+			this.get('node').on('keyup', this._handleKey, this);
 		},
 		_handleKey: function(e) {
-			var n = e.target, value = n.get('value'),
+			var n = this.get('node'), value = n.get('value'), 
 				  labelSelector = 'label[for=' + n.get('id') + '].chroma-hash';
-			
+			// TODO: Store Animation Objects on this, so that I don't have to end ALL animations (breaks shit: BAD)
 			Y.Anim.stop();			
 			if(value == "" ) {
 				Y.all(labelSelector).each(
@@ -73,6 +73,7 @@ YUI.add('chroma-hash', function(Y) {
 					width = n.get('clientWidth'),
 					position = n.getXY();
 			
+			// TODO: Move this to renderUI (shouldn't have to move once positioned).
 			Y.all(labelSelector).each(
 					function(current, index, list) {
 						current.setXY([position[0] + width - 2 + (-8 * (index + 1)), position[1]]);
