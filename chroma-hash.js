@@ -9,7 +9,7 @@
  */
 
 YUI.add('chroma-hash', function(Y) {
-	var LBL_TMPL = '<label for="{id}" class="{color} chroma-hash" ></label>',
+	var LBL_TMPL = '<label for="{id}" class="{color} chroma-hash"></label>',
 			_C = function(conf) { 
 				_C.superclass.constructor.apply(this, arguments);
 			};
@@ -43,9 +43,20 @@ YUI.add('chroma-hash', function(Y) {
 	Y.extend(_C, Y.Widget, {
 		renderUI: function() {
 			var colors = ["primary", "secondary", "tertiary", "quaternary"].slice(0, this.get('bars')),
-				c = this.get('contentBox'), n = this.get('node'), i, lbl;
+				c = this.get('contentBox'), n = this.get('node'), i, lbl, width = n.get('clientWidth'),
+				height = n.get('clientHeight'), position = n.getXY();
+			// Preferably, I'd be able to set the position on the boudningBox, but for now, this will function.
 			for (i = 0 ; i < colors.length ; i += 1) {
-				c.insert(LBL_TMPL.replace(/{id}/g, n.get('id')).replace(/{color}/g, colors[i]));
+				lbl = Y.Node.create(LBL_TMPL.replace(/{id}/g, n.get('id')).replace(/{color}/g, colors[i]));
+				lbl.setStyles({
+					position: 'absolute',
+					height: height + "px",
+					width: "8px",
+					margin: "5px",
+					marginLeft: "0px"
+				});
+				c.insert(lbl);
+				lbl.setXY([position[0] + width - 2 + (-8 * (i + 1)), position[1] + 3]);
 			}
 		},
 		bindUI: function() {
@@ -67,25 +78,9 @@ YUI.add('chroma-hash', function(Y) {
 					});
 				return;
 			}
-			var md5 = hex_md5(value + ':' + this.get('salt')),
-					col = md5.match(/([\dABCDEF]{6})/ig),
-					height = n.get('clientHeight'),
-					width = n.get('clientWidth'),
-					position = n.getXY();
+			var md5 = hex_md5('' + value + ':' + this.get('salt')),
+					col = md5.match(/([\dABCDEF]{6})/ig);
 			
-			// TODO: Move this to renderUI (shouldn't have to move once positioned).
-			Y.all(labelSelector).each(
-					function(current, index, list) {
-						current.setXY([position[0] + width - 2 + (-8 * (index + 1)), position[1]]);
-						current.setStyles({
-							position: 'absolute',
-							height: height + "px",
-							width: "8px",
-							margin: "5px",
-							marginLeft: "0px"
-						});
-					});
-
 			if (value.length < this.get('minimum')) {
 				Y.all(labelSelector).each(
 					function(current, index, list) {
