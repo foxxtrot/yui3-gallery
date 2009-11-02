@@ -56,7 +56,7 @@ Y.extend(_C, Y.Widget, {
 		}
 	},
 	bindUI: function() {
-		this._keyHandler = this.get('node').on('keyup', this._handleKey, this);
+		this._keyHandler = this.get('node').after('keyup', this._handleKey, this);
 	},
 	hide: function() {
 		this.get('boundingBox').setStyle('display','none');
