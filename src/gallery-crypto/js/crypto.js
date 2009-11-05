@@ -83,6 +83,15 @@ Y.mix(_C, {
 		}
 		return output;
 	},
+	utf8ToHex: function(string) {
+		var output = "", i, cd, chars = "0123456789abcdef";
+		for (i = 0 ; i < string.length ; i += 1) {
+			cd = string.charCodeAt(i);
+			output += chars.charAt(( cd >>> 4) & 0x0f) +
+							  chars.charAt( cd & 0x0f);
+		}
+		return output;
+	},
 	/**
 	 * Converts a standard JavaScript string (utf16) to a Byte Array	 *
 	 * @method stringToByteArray	 * 

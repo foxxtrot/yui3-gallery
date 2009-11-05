@@ -85,6 +85,15 @@ Y.mix(_C, {
 		}
 		return output;
 	},
+	utf8ToHex: function(string) {
+		var output = "", i, cd, chars = "0123456789abcdef";
+		for (i = 0 ; i < string.length ; i += 1) {
+			cd = string.charCodeAt(i);
+			output += chars.charAt(( cd >>> 4) & 0x0f) +
+							  chars.charAt( cd & 0x0f);
+		}
+		return output;
+	},
 	/**
 	 * Converts a standard JavaScript string (utf16) to a Byte Array
 	 *
@@ -108,9 +117,8 @@ _C.MD5 = function (msg) {
 			return ((x) << (n)) | (x >>> (32-n));
 		},
 		transform_common = function (v, a, b, x, s, ac) {
-			a += _C.add32Bit(_C.add32Bit(v + x) + ac);
-			a = rotate_left(a, s);
-			return _C.add32Bit(a + b);
+			var t = _C.add32Bit(_C.add32Bit(_C.add32Bit(a, v), x || 0), ac);
+			return _C.add32Bit(rotate_left(t, s), b);
 		},
 		FF = function(a, b, c, d, x, s, ac) {
 			return transform_common(((b & c) | ((~b) & d)), a, b, x, s, ac);
@@ -130,11 +138,15 @@ _C.MD5 = function (msg) {
 		b = 0xefcdab89,
 		c = 0x98badcfe,
 		d = 0x10325476, i, s1, s2, s3, s4;
-	
-	data += String.fromCharCode(0x80);
-	while (data.length % 60 !== 0) { data += String.fromCharCode(0); }
+	Y.log(data);
+	Y.log(typeof data);
+//	data[data.length] = 0x80;
+  data[len >> 5] |= 0x80 << ((len) % 32);
+//	while (data.length % 15 !== 0) { data[data.length] = 0; }
 	data[(((len + 64) >>> 9) << 4) + 14] = len;
- 
+	Y.log(typeof data);
+ 	Y.log(data);
+	Y.log(data.length);
 	for ( i = 0 ; i < data.length ; i += 16) {
 		s1 = a; s2 = b; s3 = c; s4 = d;
 		
@@ -215,8 +227,11 @@ _C.MD5 = function (msg) {
 	  c = _C.add32Bit(c, s3);
 	  d = _C.add32Bit(d, s4);
 	}
-	
-	return a.toString(16) + b.toString(16) + c.toString(16) + d.toString(16);
+	Y.log('A = ' + a.toString(16));
+	Y.log('B = ' + b.toString(16));
+	Y.log('C = ' + c.toString(16));
+	Y.log('D = ' + d.toString(16));
+	return _C.utf8ToHex(_C.byteArrayToString([a, b, c, d]));
 };
 
 
