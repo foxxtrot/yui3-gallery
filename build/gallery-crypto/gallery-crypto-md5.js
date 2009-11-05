@@ -133,14 +133,12 @@ _C.MD5 = function (msg) {
 			return transform_common((c ^ (b | (~d))), a, b, x, s, ac);
 		},
 		data = _C.stringToByteArray(msg), 
-		len = data.length,
+		len = msg.length * 8,
 		a = 0x67452301,
 		b = 0xefcdab89,
 		c = 0x98badcfe,
 		d = 0x10325476, i, s1, s2, s3, s4;
-//	data[data.length] = 0x80;
   data[len >> 5] |= 0x80 << ((len) % 32);
-//	while (data.length % 15 !== 0) { data[data.length] = 0; }
 	data[(((len + 64) >>> 9) << 4) + 14] = len;
 	for ( i = 0 ; i < data.length ; i += 16) {
 		s1 = a; s2 = b; s3 = c; s4 = d;
