@@ -5,8 +5,8 @@
 
 var LBL_TMPL = '<label for="{id}" class="{color} chroma-hash"></label>',
 		_C = function(conf) { 
-			_C.superclass.constructor.apply(this, arguments);
 			this._animations = [];
+			_C.superclass.constructor.apply(this, arguments);
 			this.renderUI();
 			this.bindUI();
 		};
@@ -23,43 +23,58 @@ _C.ATTRS =
 			}
 		},
 		salt: {
-			value: "7be82b35cb0199120eea35a4507c9acf"
+			value: "7be82b35cb0199120eea35a4507c9acf",
+			validator: Y.Lang.isString
 		},
 		minimum: {
-			value: 6
+			value: 6,
+			validator: Y.Lang.isNumber
+		},
+		animationDuration: {
+			value: 0.5,
+			validator: Y.Lang.isNumber,
+			setter: function(value) {
+				Y.Array.each(this._animations, function(anim) {
+					anim.set('duration',  value);
+				});
+			}
 		},
 		host: {
-			setter: function(node) {
-				var n = Y.get(node);
-				if (!n && !n.test('input[type=password]')) {
-					Y.fail('ChromaHash: Invalid node provided: ' + node);
+			validator:function(node) {
+				if(!node.test('input[type=password]')) {
+					Y.fail("ChromaHash can't be attached to this node.");
 				}
-				this._lblQry = 'label[for=' + n.get('name') + '].chroma-hash';
-				return n;
+				return false;
+			},
+			setter: function(node) {
+				this._lblQry = 'label[for=' + node.get('name') + '].chroma-hash';
+				return node;
 			}
 		}
  };
 Y.extend(_C, Y.Plugin.Base, {
+	renderBars: function() {
+		var colors = ["primary", "secondary", "tertiary", "quaternary"].slice(0, this.get('bars')),
+			c = Y.get('body'), n = this.get('host'), i, lbl, width = n.get('clientWidth'),
+			height = n.get('clientHeight'), position = n.getXY();
+		for (i = 0 ; i < colors.length ; i += 1) {
+			lbl = Y.Node.create(LBL_TMPL.replace(/\{id\}/g, n.get('id')).replace(/\{color\}/g, colors[i]));
+			lbl.setStyles({
+				position: 'absolute',
+				height: height + "px",
+				width: "8px",
+				margin: "5px",
+				marginLeft: "0px",
+				backgroundColor: n.getStyle('backgroundColor')
+			});
+			c.insert(lbl);
+			lbl.setXY([position[0] + width - 2 + (-8 * (i + 1)), position[1] + 3]);
+			this._animations.push(new Y.Anim({node: lbl, duration: this.get('animationDuration')}));
+		}
+	},
 	renderUI: function() {
 		if (!this._rendered) {
-			var colors = ["primary", "secondary", "tertiary", "quaternary"].slice(0, this.get('bars')),
-				c = Y.get('body'), n = this.get('host'), i, lbl, width = n.get('clientWidth'),
-				height = n.get('clientHeight'), position = n.getXY();
-			// Preferably, I'd be able to set the position on the boudningBox, but for now, this will function.
-			for (i = 0 ; i < colors.length ; i += 1) {
-				lbl = Y.Node.create(LBL_TMPL.replace(/\{id\}/g, n.get('id')).replace(/\{color\}/g, colors[i]));
-				lbl.setStyles({
-					position: 'absolute',
-					height: height + "px",
-					width: "8px",
-					margin: "5px",
-					marginLeft: "0px",
-					backgroundColor: n.getStyle('backgroundColor')
-				});
-				c.insert(lbl);
-				lbl.setXY([position[0] + width - 2 + (-8 * (i + 1)), position[1] + 3]);
-				this._animations.push(new Y.Anim({node: lbl, duration: 0.5}));
-			}
+			this.renderBars();
 			this._rendered = true;
 		}
 	},
@@ -96,9 +111,8 @@ Y.extend(_C, Y.Plugin.Base, {
 
 		Y.Array.each(this._animations,
 				function(a, index) {
-					var c = a.get('node');
 					a.stop();
-					a.set('from', {backgroundColor: c.getStyle('backgroundColor')});
+					a.set('from', {backgroundColor: n.getStyle('backgroundColor')});
 					a.set('to', {backgroundColor: '#' + col[index] });
 					a.run();
 				});
