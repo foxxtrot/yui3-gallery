@@ -101,4 +101,4 @@ Y.extend(_C, Y.Widget, {
 Y.ChromaHash = _C;
 
 
-}, '@VERSION@' ,{requires:['widget', 'stylesheet', 'collection', 'anim-color', 'gallery-crypto-md5']});
+}, 'gallery-2009.11.09-19' ,{requires:['widget', 'stylesheet', 'collection', 'anim-color', 'gallery-crypto-md5']});
