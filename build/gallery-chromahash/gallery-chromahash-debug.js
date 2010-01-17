@@ -45,8 +45,9 @@ _C.ATTRS =
 			validator:function(node) {
 				if(!node.test('input[type=password]')) {
 					Y.fail("ChromaHash can't be attached to this node.");
+					return false;
 				}
-				return false;
+				return true;
 			},
 			setter: function(node) {
 				this._lblQry = 'label[for=' + node.get('name') + '].chroma-hash';
@@ -122,4 +123,5 @@ Y.extend(_C, Y.Plugin.Base, {
 });
 Y.ChromaHash = _C;
 
-}, 'gallery-2009.11.09-19' ,{requires:['widget', 'stylesheet', 'collection', 'anim-color', 'gallery-crypto-md5']});
+
+}, '@VERSION@' ,{requires:['plugin', 'node', 'stylesheet', 'collection', 'anim-color', 'gallery-crypto-md5']});
