@@ -54,13 +54,16 @@ Y.extend(SelectField, Y.ChoiceField, {
 	 */
     _renderOptionNodes : function () {
         var choices = this.get('choices'),
-            i=0, l=choices.length, 
             elOption;
-        
-        for(;i<=l;i++) {
+       
+		// Create the "Choose one" option
+		elOption = Y.Node.create(SelectField.OPTION_TEMPLATE);
+		this._fieldNode.appendChild(elOption);
+
+		Y.Array.each(choices, function (c, i, a) {
 			elOption = Y.Node.create(SelectField.OPTION_TEMPLATE);
             this._fieldNode.appendChild(elOption);
-        }
+        }, this);
     },
 
 	/**

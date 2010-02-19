@@ -78,17 +78,14 @@ Y.mix(Form, {
 		},
 
 		/**
-		 * @attribute errors
-		 * @type Array
-		 * @description An array of errors to be pre-set on form fields. Each error is defined by an object
-		 *				literal containing the properties 'name' (corresponding to a form field) and 'message'
+		 * @attribute oftValidation
+		 * @type Boolean
+		 * @description Set to true to validate fields "on the fly", where they will
+		 *				validate themselves any time the value attribute is changed
 		 */
-		errors : {
-			writeOnce : true,
-			value : [],
-			validator : function(val) {
-				return this._validateErrors(val);
-			}
+		inlineValidation : {
+			value : false,
+			validator : Y.Lang.isBoolean
 		}
 	},
 
@@ -162,41 +159,12 @@ Y.extend(Form, Y.Widget, {
 			return false;
 		}
 
-		for (var i=0,l=val.length;i<l;i++) {
-			if (val[i] instanceof Y.FormField) {
-				continue;
-			} else if (Y.Lang.isObject(val[i])) {
-				if (!val[i].name) {
-					return false;
-				}
-				continue;
-			} else {
-				return false;
-			}
-		}
-		return true;
-	},
-	
-	/**
-	 * @method _validateErrors
-	 * @private
-	 * @param {Array} val
-	 * @description Validates the value of the 'errors' attribute
-	 */
-	_validateErrors : function (val) {
-		if (!Y.Lang.isArray(val)) {
-			return false;
-		}
-
-		var valid = true, i = 0, l = val.length;
-		for (;i<l;i++) {
-			if (!Y.Lang.isObject(val[i]) ||
-				!val[i].name ||
-				!val[i].message) {
+		var valid = true;
+		Y.Array.each(val, function (f, i, a) {
+			if ((!f instanceof Y.FormField) || (!Y.Lang.isObject(f))) {
 				valid = false;
-				break;
 			}
-		}
+		});
 		return valid;
 	},
 
@@ -209,12 +177,11 @@ Y.extend(Form, Y.Widget, {
 	 */
 	_setFields : function (fields) {
 		fields = fields || [];
-		var i=0, l=fields.length, f, fieldType, t;
+		var fieldType, t;
 
-		for (;i<l;i++) {
-			
-			if (!fields[i]._classes) {
-				t = fields[i].type;
+		Y.Array.each(fields, function (f, i, a) {
+			if (!f._classes) {
+				t = f.type;
 				if (Y.Lang.isFunction(t)) {
 					fieldType = t;
 				} else {
@@ -222,6 +189,8 @@ Y.extend(Form, Y.Widget, {
 						fieldType = Y.HiddenField;
 					} else if (t == 'checkbox') {
 						fieldType = Y.CheckboxField;
+					} else if (t == 'password') {
+						fieldType = Y.PasswordField;
 					} else if (t == 'textarea') {
 						fieldType = Y.TextareaField;
 					} else if (t == 'select') {
@@ -231,12 +200,12 @@ Y.extend(Form, Y.Widget, {
 					} else if (t == 'button' || t == 'submit' || t == 'reset') {
 						fieldType = Y.Button;
 						if (t =='submit') {
-							fields[i].onclick = {
+							f.onclick = {
 								fn : this.submit,
 								scope : this
 							};
 						} else if (t == 'reset') {
-							fields[i].onclick = {
+							f.onclick = {
 								fn : this.reset,
 								scope : this
 							};
@@ -246,10 +215,9 @@ Y.extend(Form, Y.Widget, {
 					}
 				}
 				
-				f = new fieldType(fields[i]);
-				fields[i] = f;
+				fields[i] = new fieldType(f);
 			}
-		}
+		}, this);
 		return fields;
 	},
 
@@ -261,7 +229,9 @@ Y.extend(Form, Y.Widget, {
 	 */
 	_parseAction : function (contentBox) {
 		var form = contentBox.one('form');
-		return form.get('action');
+		if (form) {
+			return form.get('action');
+		}
 	},
 
 	/**
@@ -272,7 +242,9 @@ Y.extend(Form, Y.Widget, {
 	 */
 	_parseMethod : function (contentBox) {
 		var form = contentBox.one('form');
-		return form.get('method');
+		if (form) {
+			return form.get('method');
+		}
 	},
 	
 	/**
@@ -318,7 +290,13 @@ Y.extend(Form, Y.Widget, {
 					name : node.get('name'),
 					choices : c
 				};
-			}
+			} else if (nodeName == 'TEXTAREA') {
+				o = {
+					type: 'textarea',
+					name : node.get('name'),
+					value : node.get('innerHTML')
+				};
+			}		
 			
 			if (o) {
 				if (nodeId) {
@@ -359,13 +337,12 @@ Y.extend(Form, Y.Widget, {
 	 * @protected
 	 * @description Draws the form fields into the form node
 	 */
-	_renderFormFields : function() {
-		var fields = this.get('fields'),
-			i=0, l=fields.length;
+	_renderFormFields : function () {
+		var fields = this.get('fields');
 
-		for (;i<l;i++) {
-			fields[i].render(this._formNode);
-		}
+		Y.Array.each(fields, function (f, i, a) {
+			f.render(this._formNode);
+		}, this);
 	},
 
 	/**
@@ -382,43 +359,36 @@ Y.extend(Form, Y.Widget, {
 	},
 	
 	/**
-	 * @method _syncErrors
-	 * @protected
-	 * @description Syncs the form field errors with the defined attribute
-	 */
-	_syncErrors : function () {
-		var errors = this.get('errors'), 
-			field,
-			i = 0,
-			l = errors.length;
-		
-		for (;i<l;i++) {
-			field = this.getField(errors[i].name);
-			if (field) {
-				field.showError(errors[i].message);			   
-			}
-		}
-		
-		this.reset('errors');
-	},
-	
-	/**
 	 * @method _runValidation
 	 * @protected
 	 * @description Validates the form based on each field's validator
 	 */
 	_runValidation : function () {
 		var fields = this.get('fields'),
-			i=0, l=fields.length,
 			isValid = true;
-				
-		for (;i<l;i++) {
-			if (fields[i].validate() === false) {
+		
+		Y.Array.each(fields, function (f, i, a) {
+			f.set('error',null);
+			if (f.validateField() === false) {
 				isValid = false;
 			}
-		}
+		});
 			   
 		return isValid;
+	},
+
+	_enableInlineValidation : function () {
+		var fields = this.get('fields');
+		Y.Array.each(fields, function (f, i, a) {
+			f.set('validateInline', true);
+		});
+	},
+
+	_disableInlineValidation : function () {
+		var fields = this.get('fields');
+		Y.Array.each(fields, function (f, i, a) {
+			f.set('validateInline', false);
+		});
 	},
 
 	/**
@@ -430,9 +400,8 @@ Y.extend(Form, Y.Widget, {
 	 */
 	_handleIOSuccess : function (ioId, ioResponse) {
 		if (typeof this._ioIds[ioId] != 'undefined') {
-			this.reset();
-			this.fire('success', {response : ioResponse});
 			delete this._ioIds[ioId];
+			this.fire('success', {response : ioResponse});
 		}
 	},
 
@@ -452,14 +421,14 @@ Y.extend(Form, Y.Widget, {
 	
 	/**
 	 * @method reset
-	 * @description Resets all form fields to their initial value and clears all errors
+	 * @description Resets all form fields to their initial value 
 	 */
 	reset : function () {
-		this.clearErrors();
 		this._formNode.reset();
-		for (var fields=this.get('fields'), i=0, l=fields.length;i<l;i++) {
-			fields[i].clear();
-		}
+		var fields = this.get('fields');
+		Y.Array.each(fields, function (f, i, a) {
+			f.clear();
+		});
 	},
 	
 	/**
@@ -470,12 +439,23 @@ Y.extend(Form, Y.Widget, {
 		if (this._runValidation()) {
 			var formAction = this.get('action'),
 				formMethod = this.get('method'),
-				formId = this._formNode.get('id'),
-				cfg = {
-					method : formMethod,
-					form : {id : formId}
-				},
-				transaction = Y.io(formAction, cfg);
+				fields = this.get('fields'), 
+				postData = '', 
+				transaction, cfg;
+
+			Y.Array.each(fields, function (f, i, a) {
+				if (f.get('name') !== null) {
+					postData += encodeURIComponent(f.get('name')) + '=' +
+								(encodeURIComponent(f.get('value')) || '') + '&';
+				}
+			});
+
+			cfg = {
+				method : formMethod,
+				data : postData
+			};
+
+			transaction = Y.io(formAction, cfg);
 
 			this._ioIds[transaction.id] = transaction;
 		}
@@ -487,28 +467,21 @@ Y.extend(Form, Y.Widget, {
 	 * @description Get a form field by its name attribute or numerical index
 	 */
 	getField : function (selector) {
-		var fields = this.get('fields'), i=0, l=fields.length;
+		var fields = this.get('fields'),
+			sel;
+
 		if (Y.Lang.isNumber(selector)) {
 			return fields[selector];
 		} else if (Y.Lang.isString(selector)) {
-			for (;i<l;i++) {
-				if (fields[i].get('name') == selector) {
-					return fields[i];
+			Y.Array.each(fields, function (f, i, a) {
+				if (f.get('name') == selector) {
+					sel = f;
 				}
-			}
+			});
+			return sel;
 		}
 	},
 	
-	/**
-	 * @method clearErrors
-	 * @description Removes all the displayed errors on this form
-	 */
-	clearErrors : function () {
-		for (var fields=this.get('fields'), i=0, l=fields.length;i<l;i++) {
-			fields[i].clearError();
-		}
-	},
-			
 	initializer : function (config) {
 		this._ioIds = {};
 
@@ -528,11 +501,20 @@ Y.extend(Form, Y.Widget, {
 	},
 	
 	bindUI : function () {
-		this.after('errorsChange', Y.bind(function (e) {
-			Y.log(arguments);
-		}, this));
 		this._formNode.on('submit', Y.bind(function (e) {
 			e.halt();
+		}, this));
+
+		this.after('inlineValidationChange', Y.bind(function (e) {
+			if (e.newValue === true) {
+				this._enableInlineValidation();
+			} else {
+				this._disableInlineValidation();
+			}
+		}, this));
+
+		this.after('success', Y.bind(function(e) {
+			this.reset();
 		}, this));
 
 		Y.on('io:success', Y.bind(this._handleIOSuccess, this));
@@ -541,7 +523,9 @@ Y.extend(Form, Y.Widget, {
 	
 	syncUI : function () {
 		this._syncFormAttributes();
-		this._syncErrors();
+		if (this.get('inlineValidation') === true) {
+			this._enableInlineValidation();
+		}
 	}
 });
 
