@@ -1,5 +1,6 @@
 var _S = 	function() {
 						_S.superclass.constructor.apply(this, arguments);
+						this._imageLoader = new Y.ImgLoadGroup({ timeLimit: 1 });
 					};
 					
 _S.NAME = "SlideShow";
@@ -11,17 +12,21 @@ _S.ATTRS =
 					validator: Y.Lang.isNumber
 				},
 			images: {
-					validator: Y.Lang.isArray
+					validator: Y.Lang.isArray,
+					setter: function(v) {
+						Y.Array.each(v, function(i, d, a) {
+							this._imageLoader.registerImage({srcUrl: i.src});
+						}, this);
+					}
 				},
 			animation: {
 					validator: function(v) {
 						return Y.Lang.isObject(Y.Anim) && v instanceof Y.Anim;
 					},
 					setter: function(v) {
-						var s = this;
 						v.on('end', function() {
-							s.endTransition();
-						});
+							this.endTransition();
+						}, this);
 					}
 				}
 		};
@@ -30,19 +35,33 @@ Y.extend(_S, Y.Widget,
 	{ 
 		renderUI: function() {
 			var cb = this.get('contentBox'), img = this.get("images");
-			this._currentImage = Y.Node.create("<img style='position: absolute; visibility: visible; z-index: 2;' />");
-			this._currentImage.set('src', img[0].src);
-			this._nextImage = Y.Node.create("<img style='position: absolute; visibility: hidden; z-index: 1;' />");
-			this._nextImage.set('src', img[1].src);
+			
+			this._currentImage = Y.Node.create("<div class='yui-ss-img'><img /></div>");
+			this.setImage(this._currentImage, img[0]);
+			this._currentImage.setStyle('position', 'absolute');
+			this._currentImage.setStyles({zIndex: 2, visibility: 'visible'});
+			this._nextImage = Y.Node.create("<div class='yui-ss-img'><img /></div>");
+			this._nextImage.setStyle('position', 'absolute');
+			this.setImage(this._nextImage, img[1]);
+			this._nextImage.setStyles({zIndex: 1, visibility: 'hidden'});
 			this._currentIndex = 2;
 			
 			cb.insert(this._currentImage);
 			cb.insert(this._nextImage);
 		},
 		bindUI: function() {
-			this.on("slideshow:endTransition", this.endTransition);
-			this.on("slideshow:beginTransition", this.beginTransition);
 			Y.later(this.get('delay'), this, "beginTransition");
+		},
+		setImage: function(node, img) {
+			var i = node.one('img'), img_width, img_height, width = this.get('width'), height = this.get('height'), padding_left, padding_top;
+			i.set('src', img.src);
+			i.setStyles({width: 'auto', height: 'auto'});
+			img_width = img.width || i.get('width');
+			img_height = img.height || i.get('height');
+			padding_left = (width - img_width) / 2;
+			padding_top = (height - img_height) / 2;
+			i.setStyles({width: img_width, height: img_height});
+			node.setStyles({padding: padding_top + " " + padding_left});
 		},
 		beginTransition: function() {
 			this._nextImage.setStyle('visibility', 'visible');
@@ -66,7 +85,7 @@ Y.extend(_S, Y.Widget,
 			
 			if (anim) { this._nextImage.setStyles(anim.get('from')); }
 			
-			this._nextImage.set('src', img[this._currentIndex++].src);
+			this.setImage(this._nextImage, img[this._currentIndex++]);
 			if (this._currentIndex == img.length) { this._currentIndex = 0; }
 			
 			Y.later(this.get('delay'), this, "beginTransition");

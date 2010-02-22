@@ -26,7 +26,7 @@
 							'license': "CC-BY"
 						}
 					], anim = new Y.Anim({from: { opacity: 1.0 }, to: {opacity: 0.0}, duration: 2});
-				var slideshow = new Y.SlideShow({ contentBox: '#ss' , images: images, animation: anim, delay: 4000});
+				var slideshow = new Y.SlideShow({ boundingBox: '#ss', height: 300, width: 300, images: images, animation: anim, delay: 4000});
 				slideshow.render();
 			});
 		</script>
