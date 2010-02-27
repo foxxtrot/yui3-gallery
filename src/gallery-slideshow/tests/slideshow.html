@@ -3,6 +3,7 @@
 		<title>Slideshow Test</title>
 		<script src="http://yui.yahooapis.com/3.0.0/build/yui/yui-min.js"></script>
 		<script src="../../../build/gallery-slideshow/gallery-slideshow-debug.js"></script>
+		<link rel="stylesheet" type="text/css" href="../../../build/gallery-slideshow/assets/gallery-slideshow-core.css"></script>
 	</head>
 	<body>
 		<div id="ss"></div>
@@ -26,7 +27,7 @@
 							'license': "CC-BY"
 						}
 					], anim = new Y.Anim({from: { opacity: 1.0 }, to: {opacity: 0.0}, duration: 2});
-				var slideshow = new Y.SlideShow({ boundingBox: '#ss', height: 300, width: 300, images: images, animation: anim, delay: 4000});
+				var slideshow = new Y.SlideShow({ boundingBox: '#ss', height: 87, width: 87, images: images, animation: anim, delay: 4000});
 				slideshow.render();
 			});
 		</script>

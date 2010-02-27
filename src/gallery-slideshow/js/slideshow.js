@@ -1,6 +1,6 @@
 var _S = 	function() {
 						_S.superclass.constructor.apply(this, arguments);
-						this._imageLoader = new Y.ImgLoadGroup({ timeLimit: 1 });
+						//this._imageLoader = new Y.ImgLoadGroup({ timeLimit: 1 });
 					};
 					
 _S.NAME = "SlideShow";
@@ -12,12 +12,7 @@ _S.ATTRS =
 					validator: Y.Lang.isNumber
 				},
 			images: {
-					validator: Y.Lang.isArray,
-					setter: function(v) {
-						Y.Array.each(v, function(i, d, a) {
-							this._imageLoader.registerImage({srcUrl: i.src});
-						}, this);
-					}
+					validator: Y.Lang.isArray
 				},
 			animation: {
 					validator: function(v) {
@@ -33,60 +28,55 @@ _S.ATTRS =
 
 Y.extend(_S, Y.Widget, 
 	{ 
+		createImage: function(img, z) {
+			var cb = this.get('contentBox'), 
+					div = Y.Node.create("<div class='yui-slideshow-img'><img /></div>"), 
+					div_img = div.one('img');
+			div_img.set('src', img.src);
+			div.setStyle('zIndex', z);
+			cb.insert(div);
+			Y.later(1000, this, function(di, cb) {
+				di.setXY(cb.getXY());
+			}, [div, cb]);
+			return div;
+		},
 		renderUI: function() {
-			var cb = this.get('contentBox'), img = this.get("images");
-			
-			this._currentImage = Y.Node.create("<div class='yui-ss-img'><img /></div>");
-			this.setImage(this._currentImage, img[0]);
-			this._currentImage.setStyle('position', 'absolute');
-			this._currentImage.setStyles({zIndex: 2, visibility: 'visible'});
-			this._nextImage = Y.Node.create("<div class='yui-ss-img'><img /></div>");
-			this._nextImage.setStyle('position', 'absolute');
-			this.setImage(this._nextImage, img[1]);
-			this._nextImage.setStyles({zIndex: 1, visibility: 'hidden'});
-			this._currentIndex = 2;
-			
-			cb.insert(this._currentImage);
-			cb.insert(this._nextImage);
+			var i = this.get('images'), vl = i.length;
+			this.get('contentBox').all('.yui-slideshow-img').remove();
+			Y.Array.each(i, function(i, d, a) {
+				var x = this.createImage(i, vl-d);
+				if (d == 0) this.currentImage = x;
+			}, this);
 		},
 		bindUI: function() {
 			Y.later(this.get('delay'), this, "beginTransition");
 		},
 		setImage: function(node, img) {
-			var i = node.one('img'), img_width, img_height, width = this.get('width'), height = this.get('height'), padding_left, padding_top;
+			var i = node.one('img'), bb = this.get('boundingBox'),
+					width = this.get('width') || 'auto', 
+					height = this.get('height') || 'auto';
 			i.set('src', img.src);
-			i.setStyles({width: 'auto', height: 'auto'});
-			img_width = img.width || i.get('width');
-			img_height = img.height || i.get('height');
-			padding_left = (width - img_width) / 2;
-			padding_top = (height - img_height) / 2;
-			i.setStyles({width: img_width, height: img_height});
-			node.setStyles({padding: padding_top + " " + padding_left});
 		},
 		beginTransition: function() {
-			this._nextImage.setStyle('visibility', 'visible');
-						
-			var anim = this.get('animation');
+			var anim = this.get('animation'), img = this.get('contentBox').get('.yui-slideshow-img');
 			
 			if (anim) {
-				anim.set('node', this._currentImage);
+				anim.set('node', this.currentImage);
 				anim.run();
 			} else {
 				this.endTransition();
 			}
 		},
 		endTransition: function() {
-			var temp = this._currentImage, img = this.get('images'), anim = this.get('animation');
-			temp.setStyle('zIndex', 1);
-			this._nextImage.setStyle('zIndex', 2);
-			temp.setStyle('visibility', 'hidden');
-			this._currentImage = this._nextImage;
-			this._nextImage = temp;
+			var images = this.get('contentBox').all('.yui-slideshow-img'),
+					anim = this.get('animation');
 			
-			if (anim) { this._nextImage.setStyles(anim.get('from')); }
-			
-			this.setImage(this._nextImage, img[this._currentIndex++]);
-			if (this._currentIndex == img.length) { this._currentIndex = 0; }
+			images.each(function(img, index, array) {
+				var z = +img.getStyle('zIndex');
+				if (z === array.size() - 1) { this.currentImage = img; }
+				img.setStyle('zIndex', z === array.size() ? 1 : z + 1);
+			}, this);
+			images.setStyles(anim.get('from'));
 			
 			Y.later(this.get('delay'), this, "beginTransition");
 		}
