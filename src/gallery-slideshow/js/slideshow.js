@@ -45,20 +45,18 @@ Y.extend(_S, Y.Widget,
 			this.get('contentBox').all('.yui-slideshow-img').remove();
 			Y.Array.each(i, function(i, d, a) {
 				var x = this.createImage(i, vl-d);
-				if (d == 0) this.currentImage = x;
+				if (d === 0) { this.currentImage = x; }
 			}, this);
 		},
 		bindUI: function() {
 			Y.later(this.get('delay'), this, "beginTransition");
 		},
 		setImage: function(node, img) {
-			var i = node.one('img'), bb = this.get('boundingBox'),
-					width = this.get('width') || 'auto', 
-					height = this.get('height') || 'auto';
+			var i = node.one('img');
 			i.set('src', img.src);
 		},
 		beginTransition: function() {
-			var anim = this.get('animation'), img = this.get('contentBox').get('.yui-slideshow-img');
+			var anim = this.get('animation');
 			
 			if (anim) {
 				anim.set('node', this.currentImage);
