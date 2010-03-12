@@ -41,10 +41,10 @@ Y.extend(_S, Y.Widget,
 			return div;
 		},
 		renderUI: function() {
-			var i = this.get('images'), vl = i.length;
+			var i = this.get('images');
 			this.get('contentBox').all('.yui-slideshow-img').remove();
 			Y.Array.each(i, function(i, d, a) {
-				var x = this.createImage(i, vl-d);
+				var x = this.createImage(i, -1*d);
 				if (d === 0) { this.currentImage = x; }
 			}, this);
 		},
@@ -70,9 +70,10 @@ Y.extend(_S, Y.Widget,
 					anim = this.get('animation');
 			
 			images.each(function(img, index, array) {
-				var z = +img.getStyle('zIndex');
-				if (z === array.size() - 1) { this.currentImage = img; }
-				img.setStyle('zIndex', z === array.size() ? 1 : z + 1);
+				var z = +img.getStyle('zIndex'), 
+				    l = -1 * array.size();
+				if (z === -1) { this.currentImage = img; }
+				img.setStyle('zIndex', z === 0 ? l + 1 : z + 1);
 			}, this);
 			images.setStyles(anim.get('from'));
 			
