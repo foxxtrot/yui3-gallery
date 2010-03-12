@@ -15,13 +15,15 @@ _S.ATTRS =
 					validator: Y.Lang.isArray
 				},
 			animation: {
-					validator: function(v) {
-						return Y.Lang.isObject(Y.Anim) && v instanceof Y.Anim;
-					},
+					validator: Y.Lang.isObject,
 					setter: function(v) {
+						if (! (v instanceof Y.Anim) ) {
+							v = new Y.Anim(v);
+						}
 						v.on('end', function() {
 							this.endTransition();
 						}, this);
+						return v;
 					}
 				}
 		};
