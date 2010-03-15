@@ -6,37 +6,65 @@ var _S = function() {
 					
 _S.NAME = SLIDESHOW;
 _S.NS = SLIDESHOW;
+_S.HTML_PARSER = 
+	{
+		title: function(contentBox) {
+			var node = contentBox.one('.hd .yui-slideshow-title');
+			return node ? node.get('innerHTML') : "";
+		},
+		image_height: function(contentBox) {
+			var node = contentBox.one('.bd');
+			return node ? parseInt(node.getStyle('height'), 10) : null;
+		},
+		image_width: function(contentBox) {
+			var node = contentBox.one('.bd');
+			return node ? parseInt(node.getStyle('width'), 10) : null;
+		}
+	};
 _S.ATTRS = 
-		{
-			delay: { 
-					value: 5000,
-					validator: ISNUMBER
-				},
-			images: {
-					validator: Y.Lang.isArray
-				},
-			animation: {
-					validator: Y.Lang.isObject,
-					setter: function(v) {
-						if (! (v instanceof Y.Anim) ) {
-							v = new Y.Anim(v);
-						}
-						v.on('end', function() {
-							this.endTransition();
-						}, this);
-						return v;
+	{
+		delay: { 
+				value: 5000,
+				validator: ISNUMBER
+			},
+		images: {
+				validator: Y.Lang.isArray
+			},
+		animation: {
+				validator: Y.Lang.isObject,
+				setter: function(v) {
+					if (! (v instanceof Y.Anim) ) {
+						v = new Y.Anim(v);
 					}
-				},
-			image_height: {
-				validator: ISNUMBER
+					v.on('end', function() {
+						this.endTransition();
+					}, this);
+					return v;
+				}
 			},
-			image_width: {
-				validator: ISNUMBER
-			},
-			title: {
-				validator: Y.Lang.isString
+		image_height: {
+			validator: ISNUMBER,
+			setter: function(value) {
+				this.get('contentBox').one('.bd').setStyle('height', value);
+				return value;
 			}
-		};
+		},
+		image_width: {
+			validator: ISNUMBER,
+			setter: function(value) {
+				this.get('contentBox').one('.bd').setStyle('width', value);
+				return value;
+			}
+		},
+		title: {
+			value: "",
+			validator: Y.Lang.isString,
+			setter: function(value) {
+				this.get('contentBox').one('.hd .yui-slideshow-title').set('innerHTML', value);
+				return value;
+			}
+		}
+	};
 
 Y.extend(_S, Y.Widget, 
 	{
@@ -54,12 +82,17 @@ Y.extend(_S, Y.Widget,
 			return div;
 		},
 		renderUI: function() {
-			var i = this.get('images'), contentBox = this.get('contentBox');
-			// TODO: Add any .yui-slideshow-img instances to images array for progressive enhancement.
-			contentBox.all('.yui-slideshow-img').remove();
-			contentBox.one('.hd .yui-slideshow-title').set('innerHTML', this.get('title'));
-			contentBox.one('.bd').setStyles({height: this.get('image_height'), width: this.get('image_width')});
-			Y.Array.each(i, function(i, d, a) {
+			var images = this.get('images'), contentBox = this.get('contentBox'), title = this.get('title'), image_height = this.get('image_height'), image_width = this.get('image_width');
+			if (title) { contentBox.one('.yui-slideshow-title').set('innerHTML', title); }
+			if (image_width) { contentBox.one('.bd').setStyle('width', image_width); }
+			if (image_height) { contentBox.one('.bd').setStyle('height', image_height); }
+			contentBox.all('.yui-slideshow-img').each(function(node, index, nodeList) {
+				var img = {};
+				img.src = node.one('img').get('src');
+				images.unshift(img);
+				node.remove();
+			}, this);
+			Y.Array.each(images, function(i, d, a) {
 				var x = this.createImage(i, -1*d);
 				if (d === 0) { this.currentImage = x; }
 			}, this);
