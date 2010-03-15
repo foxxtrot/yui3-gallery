@@ -1,9 +1,11 @@
-.yui-slideshow
+.yui-slideshow-content .bd
 {
 	overflow: hidden;
+	margin-left: auto;
+	margin-right: auto;
 }
 
-.yui-slideshow-content .yui-slideshow-img
+.yui-slideshow-content .bd .yui-slideshow-img
 {
 	position: relative;
 }

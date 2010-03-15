@@ -1,15 +1,16 @@
-var _S = 	function() {
-						_S.superclass.constructor.apply(this, arguments);
-						//this._imageLoader = new Y.ImgLoadGroup({ timeLimit: 1 });
-					};
+var _S = function() {
+	_S.superclass.constructor.apply(this, arguments);
+}, 
+	SLIDESHOW = "SlideShow", 
+	ISNUMBER = Y.Lang.isNumber;
 					
-_S.NAME = "SlideShow";
-_S.NS = "SlideShow";
+_S.NAME = SLIDESHOW;
+_S.NS = SLIDESHOW;
 _S.ATTRS = 
 		{
 			delay: { 
 					value: 5000,
-					validator: Y.Lang.isNumber
+					validator: ISNUMBER
 				},
 			images: {
 					validator: Y.Lang.isArray
@@ -25,13 +26,23 @@ _S.ATTRS =
 						}, this);
 						return v;
 					}
-				}
+				},
+			image_height: {
+				validator: ISNUMBER
+			},
+			image_width: {
+				validator: ISNUMBER
+			},
+			title: {
+				validator: Y.Lang.isString
+			}
 		};
 
 Y.extend(_S, Y.Widget, 
-	{ 
+	{
+		CONTENT_TEMPLATE: "<div class='yui-slideshow-content'><div class='hd'><span class='yui-slideshow-title'></span></div><div class='bd'></div><div class='ft'></div></div>", 
 		createImage: function(img, z) {
-			var cb = this.get('contentBox'), 
+			var cb = this.get('contentBox').one('.bd'), 
 					div = Y.Node.create("<div class='yui-slideshow-img'><img /></div>"), 
 					div_img = div.one('img');
 			div_img.set('src', img.src);
@@ -43,8 +54,11 @@ Y.extend(_S, Y.Widget,
 			return div;
 		},
 		renderUI: function() {
-			var i = this.get('images');
-			this.get('contentBox').all('.yui-slideshow-img').remove();
+			var i = this.get('images'), contentBox = this.get('contentBox');
+			// TODO: Add any .yui-slideshow-img instances to images array for progressive enhancement.
+			contentBox.all('.yui-slideshow-img').remove();
+			contentBox.one('.hd .yui-slideshow-title').set('innerHTML', this.get('title'));
+			contentBox.one('.bd').setStyles({height: this.get('image_height'), width: this.get('image_width')});
 			Y.Array.each(i, function(i, d, a) {
 				var x = this.createImage(i, -1*d);
 				if (d === 0) { this.currentImage = x; }
