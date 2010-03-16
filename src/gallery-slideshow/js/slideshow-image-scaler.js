@@ -26,13 +26,14 @@ Y.extend(ImageScaling, Y.Plugin.Base, {
 	_scaleImage: function(img) {
 		var scaleFactor = this.get('scaleFactor'),
 		    width = img.width || this.get('width'),
-		    height = img.height || this.get('height');
+		    height = img.height || this.get('height'),
+		    imageNode = img._node.one('img');
 
 		if (scaleFactor) {
-			img._node.setStyles({height: scaleFactor + '%', width: scaleFactor + '%'});
+			imageNode.setStyles({height: scaleFactor + '%', width: scaleFactor + '%'});
 		} else {
-			if (width) { img._node.setStyle('width', width); }
-			if (height){ img._node.setStyle('height', height); }
+			if (width) { imageNode.setStyle('width', width); }
+			if (height){ imageNode.setStyle('height', height); }
 		}
 	}
 });
