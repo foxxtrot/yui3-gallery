@@ -78,6 +78,7 @@ Y.extend(_S, Y.Widget,
 					div_img = div.one('img');
 			div_img.set('src', img.src);
 			div.setStyle('zIndex', z);
+			img._node = div_img;
 			cb.insert(div);
 			Y.later(1000, this, function(di, cb) {
 				di.setXY(cb.getXY());
