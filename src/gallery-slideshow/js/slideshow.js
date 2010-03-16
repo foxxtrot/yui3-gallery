@@ -8,8 +8,11 @@ _S.NAME = SLIDESHOW;
 _S.NS = SLIDESHOW;
 _S.HTML_PARSER = 
 	{
+	/*	boundingBox: '.yui-slideshow',
+		contentBox: '.yui-slideshow-content',
+	 */
 		title: function(contentBox) {
-			var node = contentBox.one('.hd .yui-slideshow-title');
+			var node = contentBox.one('.hd h4');
 			return node ? node.get('innerHTML') : "";
 		},
 		image_height: function(contentBox) {
@@ -60,7 +63,7 @@ _S.ATTRS =
 			value: "",
 			validator: Y.Lang.isString,
 			setter: function(value) {
-				this.get('contentBox').one('.hd .yui-slideshow-title').set('innerHTML', value);
+				this.get('contentBox').one('.hd h4').get('innerHTML', value);
 				return value;
 			}
 		}
@@ -68,10 +71,10 @@ _S.ATTRS =
 
 Y.extend(_S, Y.Widget, 
 	{
-		CONTENT_TEMPLATE: "<div class='yui-slideshow-content'><div class='hd'><span class='yui-slideshow-title'></span></div><div class='bd'></div><div class='ft'></div></div>", 
+		CONTENT_TEMPLATE: "<div class='yui3-slideshow-content'><div class='hd'><h4></h4></div><div class='bd'></div><div class='ft'></div></div>", 
 		createImage: function(img, z) {
 			var cb = this.get('contentBox').one('.bd'), 
-					div = Y.Node.create("<div class='yui-slideshow-img'><img /></div>"), 
+					div = Y.Node.create("<div class='yui3-slideshow-img'><img /></div>"), 
 					div_img = div.one('img');
 			div_img.set('src', img.src);
 			div.setStyle('zIndex', z);
@@ -83,10 +86,10 @@ Y.extend(_S, Y.Widget,
 		},
 		renderUI: function() {
 			var images = this.get('images'), contentBox = this.get('contentBox'), title = this.get('title'), image_height = this.get('image_height'), image_width = this.get('image_width');
-			if (title) { contentBox.one('.yui-slideshow-title').set('innerHTML', title); }
+			if (title) { contentBox.one('.hd h4').set('innerHTML', title); }
 			if (image_width) { contentBox.one('.bd').setStyle('width', image_width); }
 			if (image_height) { contentBox.one('.bd').setStyle('height', image_height); }
-			contentBox.all('.yui-slideshow-img').each(function(node, index, nodeList) {
+			contentBox.all('.yui3-slideshow-img').each(function(node, index, nodeList) {
 				var img = {};
 				img.src = node.one('img').get('src');
 				images.unshift(img);
@@ -115,7 +118,7 @@ Y.extend(_S, Y.Widget,
 			}
 		},
 		endTransition: function() {
-			var images = this.get('contentBox').all('.yui-slideshow-img'),
+			var images = this.get('contentBox').all('.yui3-slideshow-img'),
 					anim = this.get('animation');
 			
 			images.each(function(img, index, array) {
