@@ -8,9 +8,6 @@ _S.NAME = SLIDESHOW;
 _S.NS = SLIDESHOW;
 _S.HTML_PARSER = 
 	{
-	/*	boundingBox: '.yui-slideshow',
-		contentBox: '.yui-slideshow-content',
-	 */
 		title: function(contentBox) {
 			var node = contentBox.one('.hd h4');
 			return node ? node.get('innerHTML') : "";
@@ -22,7 +19,10 @@ _S.HTML_PARSER =
 		image_width: function(contentBox) {
 			var node = contentBox.one('.bd');
 			return node ? parseInt(node.getStyle('width'), 10) : null;
-		}
+		},
+		bodyNode: ".yui3-widget-body",
+		headerNode: ".yui3-widget-header",
+		footerNode: ".yui3-widget-footer"
 	};
 _S.ATTRS = 
 	{
@@ -31,6 +31,7 @@ _S.ATTRS =
 				validator: ISNUMBER
 			},
 		images: {
+				value: [],
 				validator: Y.Lang.isArray
 			},
 		animation: {
@@ -48,14 +49,18 @@ _S.ATTRS =
 		image_height: {
 			validator: ISNUMBER,
 			setter: function(value) {
-				this.get('contentBox').one('.bd').setStyle('height', value);
+				if (this.get('rendered')) {
+					this.get('bodyNode').setStyle('height', value);
+				}
 				return value;
 			}
 		},
 		image_width: {
 			validator: ISNUMBER,
 			setter: function(value) {
-				this.get('contentBox').one('.bd').setStyle('width', value);
+				if (this.get('rendered')) {
+					this.get('bodyNode').setStyle('width', value);
+				}
 				return value;
 			}
 		},
@@ -63,19 +68,31 @@ _S.ATTRS =
 			value: "",
 			validator: Y.Lang.isString,
 			setter: function(value) {
-				this.get('contentBox').one('.hd h4').get('innerHTML', value);
+				if (this.get('rendered')) {
+					this._setHeaderContents(value);
+				}
 				return value;
 			}
+		},
+		bodyNode: {
+			writeOnce: true
+		},
+		headerNode: {
+			writeOnce: true
 		}
 	};
 
 Y.extend(_S, Y.Widget, 
 	{
-		CONTENT_TEMPLATE: "<div class='yui3-slideshow-content'><div class='hd'><h4></h4></div><div class='bd'></div><div class='ft'></div></div>", 
+		TEMPLATES: {
+			header: "<div class='yui3-widget-header'></div>",
+			body:   "<ul class='yui3-widget-body'></ul>",
+			footer: "<div class='yui3-widget-footer'></div>"
+		},	
 		createImage: function(img, z) {
-			var cb = this.get('contentBox').one('.bd'), 
-					div = Y.Node.create("<div class='yui3-slideshow-img'><img /></div>"), 
-					div_img = div.one('img');
+			var cb = this.get('bodyNode'),
+			    div = Y.Node.create("<li><img /></li>"), 
+			    div_img = div.one('img');
 			div_img.set('src', img.src);
 			div.setStyle('zIndex', z);
 			img._node = div;
@@ -85,15 +102,38 @@ Y.extend(_S, Y.Widget,
 			}, [div, cb]);
 			return div;
 		},
+		_setHeaderContents: function(title) {
+			var headerNode = this.get('headerNode');
+			if (!Y.Lang.isValue(headerNode)) {
+				headerNode = this._addTemplate(this.TEMPLATES.header, 0);
+				
+				this.set('headerNode', headerNode);
+			}
+			headerNode.set('innerHTML', title);
+		},
+		_addTemplate: function(template, where) {
+			var node = Y.Node.create(template);
+			this.get('contentBox').insert(node, where);
+			return node;
+		},
+		_parseImage: function(imgNode) {
+			var img = {}, images = this.get('images');
+			img.src = imgNode.get('src');
+			images.unshift(img);
+			this.set('images', images);
+		},
 		renderUI: function() {
-			var images = this.get('images'), contentBox = this.get('contentBox'), title = this.get('title'), image_height = this.get('image_height'), image_width = this.get('image_width');
-			if (title) { contentBox.one('.hd h4').set('innerHTML', title); }
-			if (image_width) { contentBox.one('.bd').setStyle('width', image_width); }
-			if (image_height) { contentBox.one('.bd').setStyle('height', image_height); }
-			contentBox.all('.yui3-slideshow-img').each(function(node, index, nodeList) {
-				var img = {};
-				img.src = node.one('img').get('src');
-				images.unshift(img);
+			var images = this.get('images'), bodyNode = this.get('bodyNode'), title = this.get('title'), image_height = this.get('image_height'), image_width = this.get('image_width');
+
+			if (title.length > 0) { this._setHeaderContents(title);
+			if (!Y.Lang.isValue(bodyNode)) { 
+				bodyNode = this._addTemplate(this.TEMPLATES.body);
+				this.set('bodyNode', bodyNode);
+			}}
+			if (image_width) { bodyNode.setStyle('width', image_width); }
+			if (image_height) { bodyNode.setStyle('height', image_height); }
+			bodyNode.all('li').each(function(node, index, nodeList) {
+				this._parseImage(node.one('img'));
 				node.remove();
 			}, this);
 			Y.Array.each(images, function(i, d, a) {
@@ -103,10 +143,6 @@ Y.extend(_S, Y.Widget,
 		},
 		bindUI: function() {
 			Y.later(this.get('delay'), this, "beginTransition");
-		},
-		setImage: function(node, img) {
-			var i = node.one('img');
-			i.set('src', img.src);
 		},
 		beginTransition: function() {
 			var anim = this.get('animation');
@@ -119,7 +155,7 @@ Y.extend(_S, Y.Widget,
 			}
 		},
 		endTransition: function() {
-			var images = this.get('contentBox').all('.yui3-slideshow-img'),
+			var images = this.get('bodyNode').all('li'),
 					anim = this.get('animation');
 			
 			images.each(function(img, index, array) {

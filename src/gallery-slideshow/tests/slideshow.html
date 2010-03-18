@@ -1,7 +1,7 @@
 <html>
 	<head>
 		<title>Slideshow Test</title>
-		<script src="http://yui.yahooapis.com/3.0.0/build/yui/yui-min.js"></script>
+		<script src="../../../../yui3/build/yui/yui.js"></script>
 		<script src="../../../build/gallery-slideshow/gallery-slideshow-debug.js"></script>
 		<link rel="stylesheet" type="text/css" href="../../../build/gallery-slideshow/assets/gallery-slideshow-core.css"></link>
 		<style type="text/css">
@@ -10,7 +10,7 @@
 	<body>
 		<div id="ss"></div>
 		<script type="text/javascript">
-			YUI().use('gallery-slideshow', 'anim', function(Y) {
+			YUI({filter: 'RAW'}).use('gallery-slideshow', 'anim', function(Y) {
 				var images =  
 					[
 						{
