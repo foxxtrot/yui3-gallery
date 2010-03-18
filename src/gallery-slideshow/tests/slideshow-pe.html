@@ -38,7 +38,8 @@
 							'license': "CC-BY"
 						}
 					], anim = {from: { opacity: 1.0 }, to: {opacity: 0.0}, duration: 2};
-				var slideshow = new Y.SlideShow({ srcNode: '#ss', width: 200, images: images, animation: anim, delay: 4000});
+				var slideshow = new Y.SlideShow({ srcNode: '#ss', width: 200, animation: anim, delay: 4000});
+				slideshow.addImages(images);
 				slideshow.render();
 			});
 		</script>

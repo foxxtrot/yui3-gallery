@@ -9,7 +9,7 @@ ImagePadding.NAME = 'slideshowImagePadder';
 
 Y.extend(ImagePadding, Y.Plugin.Base, {
 	initializer: function(config) {
-		this.doAfter("createImage", this._padImage);
+		this.doAfter("_createImage", this._padImage);
 	},
 	_padImage: function(img) {
 		Y.later(500, this, function(imageNode, contentBox) {
