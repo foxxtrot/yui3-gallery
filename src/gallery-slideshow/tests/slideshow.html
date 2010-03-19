@@ -29,8 +29,12 @@
 							'license': "CC-BY"
 						}
 					], anim = {from: { opacity: 1.0 }, to: {opacity: 0.0}, duration: 2};
-				var slideshow = new Y.SlideShow({ boundingBox: '#ss', image_height: 87, image_width: 87, width: 121, animation: anim, delay: 4000, title: "Slideshow Test", images: images});
+				var slideshow = new Y.SlideShow({ boundingBox: '#ss', image_height: 87, image_width: 87, width: 121, animation: anim, delay: 4000, title: "Slideshow Test", images: images.splice(1,2)});
 				slideshow.render();
+				Y.later(10000, this, function() {
+					Y.log('Later fired.');
+					slideshow.addImages(images.splice(0,1));	
+				}, null, false);
 			});
 		</script>
 	</body>

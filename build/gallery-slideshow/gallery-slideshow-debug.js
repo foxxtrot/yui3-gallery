@@ -1,10 +1,10 @@
 YUI.add('gallery-slideshow', function(Y) {
 
 var _S = function() {
-	this._imageList = [];
-	_S.superclass.constructor.apply(this, arguments);
-
-}, 
+		this._imageList = [];
+		_S.superclass.constructor.apply(this, arguments);
+	},
+	ZINDEX = 'zIndex',
 	SLIDESHOW = "SlideShow",
 	SLIDESHOW_LC = "slideshow",
 	ISNUMBER = Y.Lang.isNumber,
@@ -17,7 +17,6 @@ var _S = function() {
 					
 _S.NAME = SLIDESHOW;
 _S.NS = SLIDESHOW;
-
 
 _S.HTML_PARSER = 
 	{
@@ -40,7 +39,7 @@ _S.HTML_PARSER =
 			contentBox.all(CLASSNAMES.body + ' li').each(function(node, index) {
 				var img = {};
 				this._parseImage(node, img);
-				img._node.setStyle('zIndex', -1*index);
+				img._node.setStyle(ZINDEX, -1*index);
 				// imageList is empty at this point
 				this._imageList.push(img);
 			}, this);
@@ -122,9 +121,15 @@ Y.extend(_S, Y.Widget,
 			footer: "<div class='" + CLASSNAMES.footer + "'></div>"
 		},
 		_renderImages: function() {
+			var zIndex = 1, bodyNode = this.get('bodyNode');
+			bodyNode.all('li').each(function(node) { 
+				var z = +node.getStyle(ZINDEX) || 2; 
+				zIndex = zIndex > z ? z : zIndex; 
+			});
 			Y.Array.each(this._imageList, function(value, index) {
 				if (!Y.Lang.isValue(value._node)) {
-					var x = this._createImage(value, -1*index);
+					zIndex -= 1;
+					var x = this._createImage(value, zIndex);
 					if (index === 0) { this.currentImage = x; }
 				}
 			}, this);
@@ -134,7 +139,7 @@ Y.extend(_S, Y.Widget,
 			    div = Y.Node.create("<li><img /></li>"), 
 			    div_img = div.one('img');
 			div_img.set('src', img.src);
-			div.setStyle('zIndex', z);
+			div.setStyle(ZINDEX, z);
 			img._node = div;
 			cb.insert(div);
 			Y.later(1000, this, function(di, cb) {
@@ -213,10 +218,10 @@ Y.extend(_S, Y.Widget,
 					anim = this.get('animation');
 			
 			images.each(function(img, index, array) {
-				var z = +img.getStyle('zIndex'), 
+				var z = +img.getStyle(ZINDEX), 
 				    l = -1 * array.size();
 				if (z === -1) { this.currentImage = img; }
-				img.setStyle('zIndex', z === 0 ? l + 1 : z + 1);
+				img.setStyle(ZINDEX, z === 0 ? l + 1 : z + 1);
 			}, this);
 			images.setStyles(anim.get('from'));
 			
