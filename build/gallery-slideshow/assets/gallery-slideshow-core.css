@@ -1,4 +1,4 @@
-.yui3-slideshow-content .yui3-widget-body
+.yui3-slideshow-content .yui3-slideshow-body
 {
 	overflow: hidden;
 	margin-left: auto;
@@ -6,13 +6,13 @@
 	padding-left: 0;
 }
 
-.yui3-slideshow-content .yui3-widget-body li
+.yui3-slideshow-content .yui3-slideshow-body li
 {
 	position: relative;
 	background-color: #fff;
 }
 
-.yui3-slideshow-content .yui3-widget-header
+.yui3-slideshow-content .yui3-slideshow-header
 {
 	text-align: center;
 	margin: 0;

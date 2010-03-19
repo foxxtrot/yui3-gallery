@@ -3,30 +3,39 @@ var _S = function() {
 	_S.superclass.constructor.apply(this, arguments);
 
 }, 
-	SLIDESHOW = "SlideShow", 
-	ISNUMBER = Y.Lang.isNumber;
+	SLIDESHOW = "SlideShow",
+	SLIDESHOW_LC = "slideshow",
+	ISNUMBER = Y.Lang.isNumber,
+	getClassName = Y.ClassNameManager.getClassName,
+	CLASSNAMES = {
+		header: getClassName(SLIDESHOW_LC, "header"),
+		body: getClassName(SLIDESHOW_LC, "body"),
+		footer: getClassName(SLIDESHOW_LC, "footer")
+	};
 					
 _S.NAME = SLIDESHOW;
 _S.NS = SLIDESHOW;
+
+
 _S.HTML_PARSER = 
 	{
 		title: function(contentBox) {
-			var node = contentBox.one('.yui3-widget-header');
+			var node = contentBox.one(CLASSNAMES.header);
 			return node ? node.get('innerHTML') : "";
 		},
 		image_height: function(contentBox) {
-			var node = contentBox.one('.yui3-widget-body');
+			var node = contentBox.one(CLASSNAMES.body);
 			return node ? parseInt(node.getStyle('height'), 10) : null;
 		},
 		image_width: function(contentBox) {
-			var node = contentBox.one('.yui3-widget-body');
+			var node = contentBox.one(CLASSNAMES.body);
 			return node ? parseInt(node.getStyle('width'), 10) : null;
 		},
-		bodyNode: ".yui3-widget-body",
-		headerNode: ".yui3-widget-header",
-		footerNode: ".yui3-widget-footer",
+		bodyNode: CLASSNAMES.body,
+		headerNode: CLASSNAMES.header,
+		footerNode: CLASSNAMES.footer,
 		images: function(contentBox) {
-			contentBox.all('.yui3-widget-body li').each(function(node, index) {
+			contentBox.all(CLASSNAMES.body + ' li').each(function(node, index) {
 				var img = {};
 				this._parseImage(node, img);
 				img._node.setStyle('zIndex', -1*index);
@@ -106,9 +115,9 @@ _S.ATTRS =
 Y.extend(_S, Y.Widget, 
 	{
 		TEMPLATES: {
-			header: "<div class='yui3-widget-header'></div>",
-			body:   "<ul class='yui3-widget-body'></ul>",
-			footer: "<div class='yui3-widget-footer'></div>"
+			header: "<div class='" + CLASSNAMES.header + "'></div>",
+			body:   "<ul class='" + CLASSNAMES.body + "'></ul>",
+			footer: "<div class='" + CLASSNAMES.footer + "'></div>"
 		},
 		_renderImages: function() {
 			Y.Array.each(this._imageList, function(value, index) {
