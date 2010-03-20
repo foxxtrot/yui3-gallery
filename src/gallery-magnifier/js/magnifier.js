@@ -6,7 +6,7 @@ var _C = function(conf) {
    MAGNIFIER_LC = 'magnifier',
    CLASSNAME = Y.ClassNameManager.getClassName(MAGNIFIER_LC, 'display'),
    HIDECLASS = Y.ClassNameManager.getClassName(MAGNIFIER_LC, 'hidden'),
-   TEMPLATE = "<div><div><img /></div></div>";
+   TEMPLATE = "<div><img /></div>";
 
 _C.NAME = MAGNIFIER;
 _C.NS = MAGNIFIER;
@@ -20,6 +20,10 @@ _C.ATTRS =
 				}
 				return true;
 			}
+		},
+		follow: {
+			value: false,
+			validator: Y.Lang.isBoolean
 		},
 		display: {
 			writeOnce: true,
@@ -38,6 +42,12 @@ _C.ATTRS =
 		},
 		zoom: {
 			value: 2,
+			validator: Y.Lang.isNumber
+		},
+		staticX: {
+			validator: Y.Lang.isNumber
+		},
+		staticY: {
 			validator: Y.Lang.isNumber
 		}
  };
@@ -64,16 +74,28 @@ Y.extend(_C, Y.Plugin.Base, {
 		var display = this.get('display'),
 		    height = this.get('height'),
 		    width = this.get('width'),
-		    host = this.get('host'),
 		    img;
 		if (!Y.Lang.isValue(display)) {
-			display = Y.Node.create(TEMPLATE);
+			display = Y.Node.create('<div></div>');
 			this.set('display', display);
 			this.get('host').get('parentNode').append(display);
 		}
+		display.setContent(TEMPLATE);
 		img = display.one('img');
 		if (Y.Lang.isValue(height)) { display.setStyle('height', height); }
 		if (Y.Lang.isValue(width)) { display.setStyle('width', width); }
+		if (!this.get('follow')) {
+			display.setStyles({
+				top: this.get('staticY'),
+				left: this.get('staticX')
+			});
+		} else {
+			display.setStyles({
+				top: 0,
+				left: 0
+			});
+		}
+		display.setStyle('position', 'absolute');
 		display.addClass(CLASSNAME);
 		this._configureImage();
 		display.addClass(HIDECLASS);
@@ -81,28 +103,35 @@ Y.extend(_C, Y.Plugin.Base, {
 	_configureImage: function() {
 		var magnificationFactor = this.get('zoom'),
 		    display = this.get('display'),
-		    img = display.one('img'),
 		    host = this.get('host'),
-		    host_xy = host.getXY(),
-		    img_xy = display.getXY();
+		    img = display.one('img'),
+		    follow = this.get('follow');
 
 		img.set('src', host.get('src'));
 		img.setStyles({height: this._image.height * magnificationFactor,
                                width: this._image.width * magnificationFactor}); 
-		// The following will work when the image zoom follows the cursor
-		//img.setXY(host.getXY());
-		img.setXY(img_xy);
+		if (follow) {
+			img.setXY(host.getXY());
+		} else {
+			img.setStyles({ top: this.get('staticY'), left: this.get('staticX')});
+		}	
 	},
 	_moveViewport: function(e) {
 		var magnificationFactor = this.get('zoom'),
-		    view = this.get('display').one('div'),
+		    display = this.get('display'),
+		    view = display.one('div'),
 		    host = this.get('host'),
 		    x = e.pageX - host.getX(),
 		    y = e.pageY - host.getY(),
 		    newX = -x * magnificationFactor + this.get('height')/2,
 		    newY = -y * magnificationFactor + this.get('width')/2;
-
-		//Y.log("Setting to: [" + newX + ", " + newY + "]");
+		
+		if (this.get('follow')) {
+			display.setStyles({
+				top: e.pageY,
+				left: e.pageX
+			});
+		}
 		view.setXY([newX, newY]);
 	}
 });
