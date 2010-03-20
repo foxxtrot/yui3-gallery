@@ -53,22 +53,35 @@ _C.ATTRS =
  };
 Y.extend(_C, Y.Plugin.Base, {
 	initializer: function() {
-		var host = this.get('host');
-		this._image.width = parseInt(host.getStyle('width'), 10);
-		this._image.height = parseInt(host.getStyle('height'), 10);
+		var host = this.get('host'), image = this._image;
+		image.width = parseInt(host.getStyle('width'), 10);
+		image.height = parseInt(host.getStyle('height'), 10);
+		image.left = host.getX();
+		image.top = host.getY();
+		image.right = image.left + image.width;
+		image.bottom = image.top + image.height;
+	
 		this._renderDisplay();
 		this.bindEvents();
 	},
 	bindEvents: function() {
 		var host = this.get('host'),
-                    display = this.get('display');
-		host.on('mouseover', function() {
-			display.removeClass(HIDECLASS);
-		}, this);
-		host.on('mouseout', function() {
-			display.addClass(HIDECLASS);
-		}, this);
-		host.on('mousemove', this._moveViewport, this);
+        display = this.get('display'),
+        follow = this.get('follow');
+    if (!follow) {
+			this._MM = host.on('mousemove', this._moveViewport, this);
+			this._MO = host.on('mouseout', function() {
+				display.addClass(HIDECLASS);
+			}, this);
+			this._ME = host.on('mouseover', function() { 
+    		display.removeClass(HIDECLASS);
+    	}, this);
+		} else {
+			this._ME = host.on('mouseover', function() { 
+    		display.removeClass(HIDECLASS);
+    		this._MM = Y.one('body').on('mousemove', this._moveViewport, this);	
+    	}, this);
+		}
 	},
 	_renderDisplay: function() {
 		var display = this.get('display'),
@@ -89,6 +102,7 @@ Y.extend(_C, Y.Plugin.Base, {
 				top: this.get('staticY'),
 				left: this.get('staticX')
 			});
+			display.one('div').setStyle('position', 'relative');
 		} else {
 			display.setStyles({
 				top: 0,
@@ -117,22 +131,32 @@ Y.extend(_C, Y.Plugin.Base, {
 		}	
 	},
 	_moveViewport: function(e) {
-		var magnificationFactor = this.get('zoom'),
+		var imageData = this._image,
+				magnificationFactor = this.get('zoom'),
 		    display = this.get('display'),
 		    view = display.one('div'),
-		    host = this.get('host'),
-		    x = e.pageX - host.getX(),
-		    y = e.pageY - host.getY(),
-		    newX = -x * magnificationFactor + this.get('height')/2,
-		    newY = -y * magnificationFactor + this.get('width')/2;
+		    x = e.pageX - imageData.left,
+		    y = e.pageY - imageData.top,
+		    heightMod = this.get('height')/2,
+		    widthMod = this.get('width')/2,
+		    newX = -x * magnificationFactor + heightMod,
+		    newY = -y * magnificationFactor + widthMod;
 		
-		if (this.get('follow')) {
-			display.setStyles({
-				top: e.pageY,
-				left: e.pageX
+		if(e.pageX >= imageData.left && e.pageX <= imageData.right && e.pageY >= imageData.top && e.pageY <= imageData.bottom) {
+			if (this.get('follow')) {
+				display.setStyles({
+					top: e.pageY - heightMod,
+					left: e.pageX - widthMod
+				});
+			}
+			view.setStyles({
+				left: newX, top: newY
 			});
+		} else {
+			display.addClass(HIDECLASS);
+			this._MM.detach();
+			Y.log('Hiding Display.');
 		}
-		view.setXY([newX, newY]);
 	}
 });
 Y.Magnifier = _C;
