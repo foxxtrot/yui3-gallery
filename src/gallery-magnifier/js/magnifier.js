@@ -92,6 +92,9 @@ Y.extend(_C, Y.Plugin.Base, {
 		if (this._MO) { this._MO.unbind(); }
 		if (this._ME) { this._ME.unbind(); }
 	},
+	_destroyDisplay: function() {
+		this.get('display').remove();
+	},
 	_renderDisplay: function() {
 		var display = this.get('display'),
 		    height = this.get('height'),
@@ -106,19 +109,13 @@ Y.extend(_C, Y.Plugin.Base, {
 		img = display.one('img');
 		if (Y.Lang.isValue(height)) { display.setStyle('height', height); }
 		if (Y.Lang.isValue(width)) { display.setStyle('width', width); }
+		display.setStyle('position', 'absolute');
 		if (!this.get('follow')) {
-			display.setStyles({
-				top: this.get('staticY'),
-				left: this.get('staticX')
-			});
+			display.setXY([this.get('staticX'), this.get('staticY')]);
 			display.one('div').setStyle('position', 'relative');
 		} else {
-			display.setStyles({
-				top: 0,
-				left: 0
-			});
+			display.setXY([0, 0]);
 		}
-		display.setStyle('position', 'absolute');
 		display.addClass(CLASSNAME);
 		this._configureImage();
 		display.addClass(HIDECLASS);
@@ -131,7 +128,7 @@ Y.extend(_C, Y.Plugin.Base, {
 
 		img.set('src', host.get('src'));
 		img.setStyles({height: this._image.height * magnificationFactor,
-                               width: this._image.width * magnificationFactor}); 
+                   width: this._image.width * magnificationFactor}); 
 	},
 	_moveViewport: function(e) {
 		var imageData = this._image,
@@ -147,14 +144,9 @@ Y.extend(_C, Y.Plugin.Base, {
 		
 		if(e.pageX >= imageData.left && e.pageX <= imageData.right && e.pageY >= imageData.top && e.pageY <= imageData.bottom) {
 			if (this.get('follow')) {
-				display.setStyles({
-					top: e.pageY - heightMod,
-					left: e.pageX - widthMod
-				});
+				display.setXY([e.pageX - widthMod, e.pageY - heightMod]);
 			}
-			view.setStyles({
-				left: newX, top: newY
-			});
+			view.setXY([newX, newY]);
 		} else {
 			display.addClass(HIDECLASS);
 			this._MM.detach();
