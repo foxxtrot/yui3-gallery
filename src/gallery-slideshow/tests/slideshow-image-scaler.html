@@ -3,7 +3,6 @@
 		<title>Slideshow Test</title>
 		<script src="../../../../yui3/build/yui/yui-min.js"></script>
 		<script src="../../../build/gallery-slideshow/gallery-slideshow-debug.js"></script>
-		<script src="../../../build/gallery-slideshow/gallery-slideshow-image-scaler-debug.js"></script>
 		<link rel="stylesheet" type="text/css" href="../../../build/gallery-slideshow/assets/gallery-slideshow-core.css"></link>
 		<style type="text/css">
 		</style>	
@@ -11,7 +10,7 @@
 	<body>
 		<div id="ss"></div>
 		<script type="text/javascript">
-			YUI().use('gallery-slideshow-image-scaler', 'anim', function(Y) {
+			YUI().use('gallery-slideshow', 'anim', function(Y) {
 				var images =  
 					[
 						{

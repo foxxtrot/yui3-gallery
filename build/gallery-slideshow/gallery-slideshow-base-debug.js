@@ -1,4 +1,4 @@
-YUI.add('gallery-slideshow', function(Y) {
+YUI.add('gallery-slideshow-base', function(Y) {
 
 var _S = function() {
 		this._imageList = [];
@@ -232,74 +232,6 @@ Y.extend(_S, Y.Widget,
 	});
 
 Y.SlideShow = _S;
-var ImagePadding = function(config) {
-	this._ss = config.host;
-
-	ImagePadding.superclass.constructor.apply(this, arguments);
-};
-
-ImagePadding.NS = 'padder';
-ImagePadding.NAME = 'slideshowImagePadder';
-
-Y.extend(ImagePadding, Y.Plugin.Base, {
-	initializer: function(config) {
-		this.doAfter("_createImage", this._padImage);
-	},
-	_padImage: function(img) {
-		Y.later(500, this, function(imageNode, contentBox) {
-			var height = parseInt(contentBox.getStyle('height'), 10),
-			    width  = parseInt(contentBox.getStyle('width'), 10),
-			    img_height = parseInt(imageNode.one('img').getStyle('height'), 10),
-			    img_width = parseInt(imageNode.one('img').getStyle('width'), 10),
-			    padding_width = (width - img_width)/2,
-			    padding_height = (height - img_height)/2;
-			imageNode.setStyle('padding', padding_height + ' ' + padding_width); 
-		}, [img._node, this._ss.get('bodyNode')]);
-	}
-});
-
-Y.SlideShow.ImagePadder = ImagePadding;
-var ImageScaling = function(config) {
-	this._ss = config.host;
-
-	ImageScaling.superclass.constructor.apply(this, arguments);
-};
-
-ImageScaling.NS = 'scaling';
-ImageScaling.NAME = 'slideshowImageScaler';
-
-ImageScaling.ATTRS = {
-	height: {
-		validator: Y.Lang.isNumber
-	},
-	width: {
-		validator: Y.Lang.isNumber
-	},
-	scaleFactor: {
-		validator: Y.Lang.isNumber
-	}
-};
-
-Y.extend(ImageScaling, Y.Plugin.Base, {
-	initializer: function(config) {
-		this.doAfter("_createImage", this._scaleImage);
-	},
-	_scaleImage: function(img) {
-		var scaleFactor = this.get('scaleFactor'),
-		    width = img.width || this.get('width'),
-		    height = img.height || this.get('height'),
-		    imageNode = img._node.one('img');
-
-		if (scaleFactor) {
-			imageNode.setStyles({height: scaleFactor + '%', width: scaleFactor + '%'});
-		} else {
-			if (width) { imageNode.setStyle('width', width); }
-			if (height){ imageNode.setStyle('height', height); }
-		}
-	}
-});
-
-Y.SlideShow.ImageScaler = ImageScaling;
 
 
-}, '@VERSION@' ,{requires:['widget', 'substitute', 'plugin'], optional:['anim']});
+}, '@VERSION@' ,{optional:['anim'], requires:['widget', 'substitute']});

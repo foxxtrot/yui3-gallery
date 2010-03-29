@@ -19,22 +19,22 @@ _S.NS = SLIDESHOW;
 _S.HTML_PARSER = 
 	{
 		title: function(contentBox) {
-			var node = contentBox.one(CLASSNAMES.header);
+			var node = contentBox.one('.' + CLASSNAMES.header);
 			return node ? node.get('innerHTML') : "";
 		},
 		image_height: function(contentBox) {
-			var node = contentBox.one(CLASSNAMES.body);
+			var node = contentBox.one('.' + CLASSNAMES.body);
 			return node ? parseInt(node.getStyle('height'), 10) : null;
 		},
 		image_width: function(contentBox) {
-			var node = contentBox.one(CLASSNAMES.body);
+			var node = contentBox.one('.' + CLASSNAMES.body);
 			return node ? parseInt(node.getStyle('width'), 10) : null;
 		},
-		bodyNode: CLASSNAMES.body,
-		headerNode: CLASSNAMES.header,
-		footerNode: CLASSNAMES.footer,
+		bodyNode: 'ul.' + CLASSNAMES.body,
+		headerNode: 'div.' + CLASSNAMES.header,
+		footerNode: 'div.' + CLASSNAMES.footer,
 		images: function(contentBox) {
-			contentBox.all(CLASSNAMES.body + ' li').each(function(node, index) {
+			contentBox.all('.' + CLASSNAMES.body + ' li').each(function(node, index) {
 				var img = {};
 				this._parseImage(node, img);
 				img._node.setStyle(ZINDEX, -1*index);
@@ -125,11 +125,13 @@ Y.extend(_S, Y.Widget,
 				zIndex = zIndex > z ? z : zIndex; 
 			});
 			Y.Array.each(this._imageList, function(value, index) {
+				zIndex -= 1;
 				if (!Y.Lang.isValue(value._node)) {
-					zIndex -= 1;
-					var x = this._createImage(value, zIndex);
-					if (index === 0) { this.currentImage = x; }
+					this._createImage(value, zIndex);
+				} else {
+					value._node.setStyle(ZINDEX, zIndex);
 				}
+				if (index === 0) { this.currentImage = value._node; }
 			}, this);
 		},
 		_createImage: function(img, z) {
@@ -189,11 +191,11 @@ Y.extend(_S, Y.Widget,
 		renderUI: function() {
 			var bodyNode = this.get('bodyNode'), title = this.get('title'), image_height = this.get('image_height'), image_width = this.get('image_width');
 
-			if (title.length > 0) { this._setHeaderContents(title);
+			if (title.length > 0) { this._setHeaderContents(title); }
 			if (!Y.Lang.isValue(bodyNode)) { 
 				bodyNode = this._addTemplate(this.TEMPLATES.body);
 				this.set('bodyNode', bodyNode);
-			}}
+			}
 			if (image_width) { bodyNode.setStyle('width', image_width); }
 			if (image_height) { bodyNode.setStyle('height', image_height); }
 			this._renderImages();

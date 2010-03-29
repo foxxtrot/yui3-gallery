@@ -43,4 +43,4 @@ Y.extend(ImageScaling, Y.Plugin.Base, {
 Y.SlideShow.ImageScaler = ImageScaling;
 
 
-}, '@VERSION@' ,{requires:['gallery-slideshow', 'plugin']});
+}, '@VERSION@' ,{requires:['gallery-slideshow-base', 'plugin']});
