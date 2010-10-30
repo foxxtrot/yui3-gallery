@@ -1,19 +1,9 @@
-.yui3-slideshow-content .yui3-slideshow-body
+.yui-slideshow
 {
 	overflow: hidden;
-	margin-left: auto;
-	margin-right: auto;
-	padding-left: 0;
 }
 
-.yui3-slideshow-content .yui3-slideshow-body li
+.yui-slideshow-content .yui-slideshow-img
 {
 	position: relative;
-	background-color: #fff;
-}
-
-.yui3-slideshow-content .yui3-slideshow-header
-{
-	text-align: center;
-	margin: 0;
 }

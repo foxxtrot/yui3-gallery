@@ -158,4 +158,4 @@ Y.extend(_C, Y.Plugin.Base, {
 Y.Magnifier = _C;
 
 
-}, '@VERSION@' ,{requires:['plugin', 'node', 'classnamemanager']});
+}, 'gallery-2010.03.23-17-54' ,{requires:['plugin', 'node', 'classnamemanager']});

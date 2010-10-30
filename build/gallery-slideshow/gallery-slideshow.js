@@ -232,4 +232,4 @@ Y.extend(_S, Y.Widget,
 Y.SlideShow = _S;
 
 
-}, '@VERSION@' ,{requires:['widget', 'substitute'], optional:['anim']});
+}, 'gallery-2010.03.23-17-54' ,{requires:['widget', 'substitute'], optional:['anim']});

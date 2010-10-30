@@ -224,4 +224,4 @@ _C.MD5 = function (msg) {
 };
 
 
-}, '@VERSION@' );
+}, 'gallery-2009.11.19-20' );
