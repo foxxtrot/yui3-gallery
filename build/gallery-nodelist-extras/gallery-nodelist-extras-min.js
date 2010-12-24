@@ -1,0 +1,1 @@
+YUI.add("gallery-nodelist-extras",function(c){var a=c.NodeList.prototype,b=a.filter;a.filter=function(e){var d;if(typeof(e)==="string"){return b.apply(this,arguments);}if(typeof(e)==="function"){d=new c.NodeList([]);this.each(function(f){if(e(f)){d.push(f);}});return d;}return this;};},"@VERSION@",{requires:["node"]});
