@@ -29,4 +29,8 @@ Y.extend(ImagePadding, Y.Plugin.Base, {
 Y.SlideShow.ImagePadder = ImagePadding;
 
 
+<<<<<<< HEAD
 }, '@VERSION@' ,{requires:['gallery-slideshow-base', 'plugin']});
+=======
+}, 'gallery-2010.03.23-17-54' ,{requires:['gallery-slideshow', 'plugin']});
+>>>>>>> 94439ec26f261e2b796f74cb22f5a85434b025c4

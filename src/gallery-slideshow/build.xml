@@ -4,21 +4,30 @@
 
 	<target name="local">
 		<ant antfile="build.slideshow.xml" target="local" />
+<<<<<<< HEAD
 		<ant antfile="build.slideshow-base.xml" target="local" />
+=======
+>>>>>>> 94439ec26f261e2b796f74cb22f5a85434b025c4
 		<ant antfile="build.slideshow-image-scaler.xml" target="local" />
 		<ant antfile="build.slideshow-image-padder.xml" target="local" />
 	</target>
 
 	<target name="deploy">
 		<ant antfile="build.slideshow.xml" target="deploy" />
+<<<<<<< HEAD
 		<ant antfile="build.slideshow-base.xml" target="deploy" />
+=======
+>>>>>>> 94439ec26f261e2b796f74cb22f5a85434b025c4
 		<ant antfile="build.slideshow-image-scaler.xml" target="deploy" />
 		<ant antfile="build.slideshow-image-padder.xml" target="deploy" />
 	</target>
 
 	<target name="all">
 		<ant antfile="build.slideshow.xml" target="all" />
+<<<<<<< HEAD
 		<ant antfile="build.slideshow-base.xml" target="all" />
+=======
+>>>>>>> 94439ec26f261e2b796f74cb22f5a85434b025c4
 		<ant antfile="build.slideshow-image-scaler.xml" target="all" />
 		<ant antfile="build.slideshow-image-padder.xml" target="all" />
 	</target>

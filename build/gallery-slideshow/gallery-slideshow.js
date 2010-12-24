@@ -21,6 +21,7 @@ _S.NS = SLIDESHOW;
 _S.HTML_PARSER = 
 	{
 		title: function(contentBox) {
+<<<<<<< HEAD
 			var node = contentBox.one('.' + CLASSNAMES.header);
 			return node ? node.get('innerHTML') : "";
 		},
@@ -37,6 +38,24 @@ _S.HTML_PARSER =
 		footerNode: 'div.' + CLASSNAMES.footer,
 		images: function(contentBox) {
 			contentBox.all('.' + CLASSNAMES.body + ' li').each(function(node, index) {
+=======
+			var node = contentBox.one(CLASSNAMES.header);
+			return node ? node.get('innerHTML') : "";
+		},
+		image_height: function(contentBox) {
+			var node = contentBox.one(CLASSNAMES.body);
+			return node ? parseInt(node.getStyle('height'), 10) : null;
+		},
+		image_width: function(contentBox) {
+			var node = contentBox.one(CLASSNAMES.body);
+			return node ? parseInt(node.getStyle('width'), 10) : null;
+		},
+		bodyNode: CLASSNAMES.body,
+		headerNode: CLASSNAMES.header,
+		footerNode: CLASSNAMES.footer,
+		images: function(contentBox) {
+			contentBox.all(CLASSNAMES.body + ' li').each(function(node, index) {
+>>>>>>> 94439ec26f261e2b796f74cb22f5a85434b025c4
 				var img = {};
 				this._parseImage(node, img);
 				img._node.setStyle(ZINDEX, -1*index);
@@ -127,6 +146,7 @@ Y.extend(_S, Y.Widget,
 				zIndex = zIndex > z ? z : zIndex; 
 			});
 			Y.Array.each(this._imageList, function(value, index) {
+<<<<<<< HEAD
 				zIndex -= 1;
 				if (!Y.Lang.isValue(value._node)) {
 					this._createImage(value, zIndex);
@@ -134,6 +154,13 @@ Y.extend(_S, Y.Widget,
 					value._node.setStyle(ZINDEX, zIndex);
 				}
 				if (index === 0) { this.currentImage = value._node; }
+=======
+				if (!Y.Lang.isValue(value._node)) {
+					zIndex -= 1;
+					var x = this._createImage(value, zIndex);
+					if (index === 0) { this.currentImage = x; }
+				}
+>>>>>>> 94439ec26f261e2b796f74cb22f5a85434b025c4
 			}, this);
 		},
 		_createImage: function(img, z) {
@@ -193,11 +220,19 @@ Y.extend(_S, Y.Widget,
 		renderUI: function() {
 			var bodyNode = this.get('bodyNode'), title = this.get('title'), image_height = this.get('image_height'), image_width = this.get('image_width');
 
+<<<<<<< HEAD
 			if (title.length > 0) { this._setHeaderContents(title); }
 			if (!Y.Lang.isValue(bodyNode)) { 
 				bodyNode = this._addTemplate(this.TEMPLATES.body);
 				this.set('bodyNode', bodyNode);
 			}
+=======
+			if (title.length > 0) { this._setHeaderContents(title);
+			if (!Y.Lang.isValue(bodyNode)) { 
+				bodyNode = this._addTemplate(this.TEMPLATES.body);
+				this.set('bodyNode', bodyNode);
+			}}
+>>>>>>> 94439ec26f261e2b796f74cb22f5a85434b025c4
 			if (image_width) { bodyNode.setStyle('width', image_width); }
 			if (image_height) { bodyNode.setStyle('height', image_height); }
 			this._renderImages();
@@ -232,6 +267,7 @@ Y.extend(_S, Y.Widget,
 	});
 
 Y.SlideShow = _S;
+<<<<<<< HEAD
 var ImagePadding = function(config) {
 	this._ss = config.host;
 
@@ -303,3 +339,8 @@ Y.SlideShow.ImageScaler = ImageScaling;
 
 
 }, '@VERSION@' ,{requires:['widget', 'substitute', 'plugin'], optional:['anim']});
+=======
+
+
+}, 'gallery-2010.03.23-17-54' ,{requires:['widget', 'substitute'], optional:['anim']});
+>>>>>>> 94439ec26f261e2b796f74cb22f5a85434b025c4

@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 .yui3-slideshow-content .yui3-slideshow-body
 {
 	overflow: hidden;
@@ -17,3 +18,14 @@
 	text-align: center;
 	margin: 0;
 }
+=======
+.yui-slideshow
+{
+	overflow: hidden;
+}
+
+.yui-slideshow-content .yui-slideshow-img
+{
+	position: relative;
+}
+>>>>>>> 94439ec26f261e2b796f74cb22f5a85434b025c4
