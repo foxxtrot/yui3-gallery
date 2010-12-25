@@ -202,6 +202,18 @@ button {
             Assert.areEqual(filteredList.size(), 2, "Expected 2 options after filtering.");
             Assert.areEqual(rejectList.size(), 1, "Expected 1 option in reject NodeList");
             Assert.areEqual(list.size(), filteredList.size() + rejectList.size(), "Symmetry Test");
+        },
+        "NodeList.first should return the same as Y.one": function() {
+            var optFromNode = Y.one("#test-select option"),
+                optFromFirst = Y.all("#test-select option").first();
+
+            Assert.areEqual(optFromNode, optFromFirst);
+        },
+        "NodeList.last should return the same as Y.one with the :last-child modifier": function() {
+            var optFromNode = Y.one("#test-select option:last-child"),
+                optFromLast = Y.all("#test-select option").last();
+
+            Assert.areEqual(optFromNode, optFromLast);
         }
     })); 
     Y.Test.Runner.add(suite);

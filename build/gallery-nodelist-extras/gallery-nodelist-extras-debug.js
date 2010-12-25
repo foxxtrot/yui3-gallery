@@ -56,5 +56,22 @@ NodeListPrototype.reject = function(filter) {
     return this;
 };
 
+/**
+ * Returns the first item in the NodeList.
+ * An alias for NodeList.item(0);
+ * @return {Node} Y.Node of the first item in the NodeList
+ */
+NodeListPrototype.first = function() {
+    return this.item(0);
+};
+
+/**
+ * Returns the last item in the NodeList.
+ * @return {Node} Y.Node of the last item in the NodeList
+ */
+NodeListPrototype.last = function() {
+    return this.item(this.size()-1);
+}
+
 
 }, '@VERSION@' ,{requires:['node']});
