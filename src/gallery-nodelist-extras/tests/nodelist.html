@@ -183,19 +183,25 @@ button {
         name: 'NodeList Filtering',
         "filter nodelist with a string should filter using selector": function() {
             var list = Y.all("#test-nodes li"),
-                filteredList = list.filter(".bar");
+                filteredList = list.filter(".bar"),
+                rejectList = list.reject(".bar");
             Assert.areEqual(list.size(), 8, "Expected 8 li's under #test-nodes");
             Assert.areEqual(filteredList.size(), 2, "Expected 2 li's in filtered NodeList");
+            Assert.areEqual(rejectList.size(), 6, "Expected 6 li's in reject NodeList");
+            Assert.areEqual(list.size(), filteredList.size() + rejectList.size(), "Symmetry Test");
         },
         "filter NodeList with a function should iterate over the list exectuing a boolean function on each": function() {
             var list = Y.all("#test-select option"),
                 filterFunc = function(node) {
                     return Y.Lang.isNumber(+node.get('value'));
                 },
-                filteredList = list.filter(filterFunc);
+                filteredList = list.filter(filterFunc),
+                rejectList = list.reject(filterFunc);
 
             Assert.areEqual(list.size(), 3, "Expected 3 options under #test-select.");
             Assert.areEqual(filteredList.size(), 2, "Expected 2 options after filtering.");
+            Assert.areEqual(rejectList.size(), 1, "Expected 1 option in reject NodeList");
+            Assert.areEqual(list.size(), filteredList.size() + rejectList.size(), "Symmetry Test");
         }
     })); 
     Y.Test.Runner.add(suite);
