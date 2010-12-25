@@ -1,4 +1,5 @@
-var NodeListPrototype = Y.NodeList.prototype,
+var NodeList = Y.NodeList,
+    NodeListPrototype = NodeList.prototype,
     _selectorFilter = NodeListPrototype.filter;
 
 /**
@@ -16,7 +17,7 @@ NodeListPrototype.filter = function(filter) {
         return _selectorFilter.apply(this, arguments);
     }
     if (typeof(filter) === 'function') {
-        newList = new Y.NodeList([]);
+        newList = new NodeList([]);
         this.each(function(node, index, list) {
             if (filter(node, index, list)) {
                 newList.push(node);
