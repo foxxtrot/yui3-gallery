@@ -1,3 +1,10 @@
+/**
+ * An expanded collection of methods for Y.NodeList
+ *
+ * @module gallery-nodelist-extras
+ * @class NodeList
+ */
+
 var NodeList = Y.NodeList,
     NodeListPrototype = NodeList.prototype,
     _selectorFilter = NodeListPrototype.filter,
@@ -8,7 +15,7 @@ var NodeList = Y.NodeList,
 
 /**
  * Filters the NodeList instance to only the matching nodes
- * @method Y.NodeList.filter
+ * @method filter
  * @param {string|function} filter A CSS selector string to apply to the list,
  * or a boolean function to apply to each element in the list. The function
  * will be passed three arguments, a Y.Node instance of the current node, the
@@ -36,6 +43,7 @@ NodeListPrototype.filter = function(filter) {
 /**
  * This inverse of filter. Applies :not to a selector, or builds a NodeList
  * consisting of all the nodes for which the argument is false
+ * @method reject
  * @param {string|function} filter A CSS selector string to apply to the list,
  * or a boolean function to apply to each element in the list. The function
  * will be passed three arguments, a Y.Node instance of the current node, the
@@ -62,7 +70,8 @@ NodeListPrototype.reject = function(filter) {
  * Returns either the first node in the list, if there is no arugment provided,
  * the first n-items in the list, if provided a numeric argument, or the first
  * item in the list which tests 'true' to the provide boolean function
- * @param {Integer|Function} The number of items to return or the boolean
+ * @method first
+ * @param {Integer|Function} first The number of items to return or the boolean
  * function to execute against the list.
  * @return {Node|NodeList}
  */
@@ -86,7 +95,8 @@ NodeListPrototype.first = function(first) {
  * Returns either the last node in the list, if there is no arugment provided,
  * the last n-items in the list, if provided a numeric argument, or the last
  * item in the list which tests 'true' to the provide boolean function
- * @param {Integer|Function} The number of items to return or the boolean
+ * @method last
+ * @param {Integer|Function} last The number of items to return or the boolean
  * function to execute against the list.
  * @return {Node|NodeList}
  */
