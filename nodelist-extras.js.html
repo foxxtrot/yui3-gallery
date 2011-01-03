@@ -1,0 +1,213 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html xmlns:yui="http://yuilibrary.com/rdf/1.0/yui.rdf#">
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+	<title>API: gallery-nodelist-extras   nodelist-extras.js  (YUI Library)</title>
+
+	<link rel="stylesheet" type="text/css" href="assets/reset-fonts-grids-min.css" />
+	<link rel="stylesheet" type="text/css" href="assets/api.css" />
+
+    <script type="text/javascript" src="assets/api-js"></script>
+    <script type="text/javascript" src="assets/ac-js"></script>
+</head>
+
+<body id="yahoo-com">
+
+<div id="doc3" class="yui-t2">
+	<div id="hd">
+        <h1><a href="http://developer.yahoo.com/yui/" title="Yahoo! UI Library">Yahoo! UI Library</a></h1>
+        <h3>gallery-nodelist-extras&nbsp; <span class="subtitle">2011.01.03</span></h3>
+        <a href="./index.html" title="Yahoo! UI Library">Yahoo! UI Library</a> 
+            &gt; <a href="./module_gallery-nodelist-extras.html" title="gallery-nodelist-extras">gallery-nodelist-extras</a>
+                
+                 &gt; nodelist-extras.js (source view) 
+        <form onsubmit="return false">
+            <div id="propertysearch">
+                Search: <input autocomplete="off" id="searchinput" />
+                <div id="searchresults">
+                    &nbsp;
+                </div>
+            </div>
+        </form>
+	</div>
+
+	<div id="bd">
+		<div id="yui-main">
+			<div class="yui-b">
+            <form action="#" name="yui-classopts-form" method="get" id="yui-classopts-form">
+                <fieldset>
+                    <legend>Filters</legend>
+                <span class="classopts"><input type="checkbox" name="show_private" id="show_private" /> <label for="show_private">Show Private</label></span>
+                <span class="classopts"><input type="checkbox" name="show_protected" id="show_protected" /> <label for="show_protected">Show Protected</label></span>
+                <span class="classopts"><input type="checkbox" name="show_deprecated" id="show_deprecated" /> <label for="show_deprecated">Show Deprecated</label></span>
+                </fieldset>
+            </form>
+
+                    <div id="srcout">
+                        <style>
+                            #doc3 .classopts { display:none; }
+                        </style>
+                        <div class="highlight"><pre><span class="cm">/**</span>
+<span class="cm"> * An expanded collection of methods for Y.NodeList</span>
+<span class="cm"> *</span>
+<span class="cm"> * @module gallery-nodelist-extras</span>
+<span class="cm"> * @class NodeList</span>
+<span class="cm"> */</span>
+
+<span class="kd">var</span> <span class="nx">NodeList</span> <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">NodeList</span><span class="p">,</span>
+    <span class="nx">NodeListPrototype</span> <span class="o">=</span> <span class="nx">NodeList</span><span class="p">.</span><span class="nx">prototype</span><span class="p">,</span>
+    <span class="nx">_selectorFilter</span> <span class="o">=</span> <span class="nx">NodeListPrototype</span><span class="p">.</span><span class="nx">filter</span><span class="p">,</span>
+    <span class="nx">ISSTRING</span> <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">isString</span><span class="p">,</span>
+    <span class="nx">ISFUNCTION</span> <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">isFunction</span><span class="p">,</span>
+    <span class="nx">ISNUMBER</span> <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">isNumber</span><span class="p">,</span>
+    <span class="nx">ISVALUE</span> <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">isValue</span><span class="p">;</span>
+
+<span class="cm">/**</span>
+<span class="cm"> * Filters the NodeList instance to only the matching nodes</span>
+<span class="cm"> * @method filter</span>
+<span class="cm"> * @param {string|function} filter A CSS selector string to apply to the list,</span>
+<span class="cm"> * or a boolean function to apply to each element in the list. The function</span>
+<span class="cm"> * will be passed three arguments, a Y.Node instance of the current node, the</span>
+<span class="cm"> * current index in the list, and the NodeList instance.</span>
+<span class="cm"> * @return {NodeList} NodeList containing the updated collection</span>
+<span class="cm"> */</span>
+<span class="nx">NodeListPrototype</span><span class="p">.</span><span class="nx">filter</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">filter</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">newList</span><span class="p">;</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">ISSTRING</span><span class="p">(</span><span class="nx">filter</span><span class="p">))</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="nx">_selectorFilter</span><span class="p">.</span><span class="nx">apply</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="nx">arguments</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">ISFUNCTION</span><span class="p">(</span><span class="nx">filter</span><span class="p">))</span> <span class="p">{</span>
+        <span class="nx">newList</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">NodeList</span><span class="p">([]);</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">each</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">node</span><span class="p">,</span> <span class="nx">index</span><span class="p">,</span> <span class="nx">list</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span><span class="nx">filter</span><span class="p">(</span><span class="nx">node</span><span class="p">,</span> <span class="nx">index</span><span class="p">,</span> <span class="nx">list</span><span class="p">))</span> <span class="p">{</span>
+                <span class="nx">newList</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">node</span><span class="p">);</span>
+            <span class="p">}</span>
+        <span class="p">});</span>
+        <span class="k">return</span> <span class="nx">newList</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="nx">Y</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&quot;Unrecognized filter type, returning list&quot;</span><span class="p">);</span>
+    <span class="k">return</span> <span class="k">this</span><span class="p">;</span>
+<span class="p">};</span>
+<span class="cm">/**</span>
+<span class="cm"> * This inverse of filter. Applies :not to a selector, or builds a NodeList</span>
+<span class="cm"> * consisting of all the nodes for which the argument is false</span>
+<span class="cm"> * @method reject</span>
+<span class="cm"> * @param {string|function} filter A CSS selector string to apply to the list,</span>
+<span class="cm"> * or a boolean function to apply to each element in the list. The function</span>
+<span class="cm"> * will be passed three arguments, a Y.Node instance of the current node, the</span>
+<span class="cm"> * current index in the list, and the NodeList instance.</span>
+<span class="cm"> * @return {NodeList} NodeList containing the updated collection</span>
+<span class="cm"> */</span>
+<span class="nx">NodeListPrototype</span><span class="p">.</span><span class="nx">reject</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">filter</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">ISSTRING</span><span class="p">(</span><span class="nx">filter</span><span class="p">))</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">filter</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">item</span><span class="p">)</span> <span class="p">{</span>
+                    <span class="k">return</span> <span class="o">!</span><span class="nx">item</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span><span class="nx">filter</span><span class="p">);</span>
+                <span class="p">});</span>
+    <span class="p">}</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">ISFUNCTION</span><span class="p">(</span><span class="nx">filter</span><span class="p">))</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">filter</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">item</span><span class="p">,</span> <span class="nx">i</span><span class="p">,</span> <span class="nx">a</span><span class="p">)</span> <span class="p">{</span>
+                    <span class="k">return</span> <span class="o">!</span><span class="nx">filter</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="kc">null</span><span class="p">,</span> <span class="nx">item</span><span class="p">,</span> <span class="nx">i</span><span class="p">,</span> <span class="nx">a</span><span class="p">);</span>
+                <span class="p">});</span>
+    <span class="p">}</span>
+
+    <span class="nx">Y</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&quot;Unrecognized filter type, returning list&quot;</span><span class="p">);</span>
+    <span class="k">return</span> <span class="k">this</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="cm">/**</span>
+<span class="cm"> * Returns either the first node in the list, if there is no arugment provided,</span>
+<span class="cm"> * the first n-items in the list, if provided a numeric argument, or the first</span>
+<span class="cm"> * item in the list which tests &#39;true&#39; to the provide boolean function</span>
+<span class="cm"> * @method first</span>
+<span class="cm"> * @param {Integer|Function} first The number of items to return or the boolean</span>
+<span class="cm"> * function to execute against the list.</span>
+<span class="cm"> * @return {Node|NodeList}</span>
+<span class="cm"> */</span>
+<span class="nx">NodeListPrototype</span><span class="p">.</span><span class="nx">first</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">first</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">nodes</span><span class="p">,</span> <span class="nx">i</span><span class="p">,</span> <span class="nx">length</span><span class="p">;</span>
+    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">ISVALUE</span><span class="p">(</span><span class="nx">first</span><span class="p">))</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">item</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">ISNUMBER</span><span class="p">(</span><span class="nx">first</span><span class="p">))</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="k">new</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">NodeList</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">_nodes</span><span class="p">.</span><span class="nx">slice</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nx">first</span><span class="p">));</span>
+    <span class="p">}</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">ISFUNCTION</span><span class="p">(</span><span class="nx">first</span><span class="p">))</span> <span class="p">{</span>
+        <span class="nx">nodes</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">_nodes</span><span class="p">;</span> <span class="nx">length</span> <span class="o">=</span> <span class="nx">nodes</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span>
+        <span class="k">for</span> <span class="p">(</span><span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span> <span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">length</span> <span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span><span class="nx">first</span><span class="p">(</span><span class="nx">nodes</span><span class="p">[</span><span class="nx">i</span><span class="p">]))</span> <span class="p">{</span> <span class="k">return</span> <span class="nx">nodes</span><span class="p">[</span><span class="nx">i</span><span class="p">];</span> <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">};</span>
+
+<span class="cm">/**</span>
+<span class="cm"> * Returns either the last node in the list, if there is no arugment provided,</span>
+<span class="cm"> * the last n-items in the list, if provided a numeric argument, or the last</span>
+<span class="cm"> * item in the list which tests &#39;true&#39; to the provide boolean function</span>
+<span class="cm"> * @method last</span>
+<span class="cm"> * @param {Integer|Function} last The number of items to return or the boolean</span>
+<span class="cm"> * function to execute against the list.</span>
+<span class="cm"> * @return {Node|NodeList}</span>
+<span class="cm"> */</span>
+<span class="nx">NodeListPrototype</span><span class="p">.</span><span class="nx">last</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">last</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">nodes</span><span class="p">,</span> <span class="nx">i</span><span class="p">,</span> <span class="nx">length</span><span class="p">;</span>
+    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">ISVALUE</span><span class="p">(</span><span class="nx">last</span><span class="p">))</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">item</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">size</span><span class="p">()</span><span class="o">-</span><span class="mi">1</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">ISNUMBER</span><span class="p">(</span><span class="nx">last</span><span class="p">))</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="k">new</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">NodeList</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">_nodes</span><span class="p">.</span><span class="nx">slice</span><span class="p">(</span><span class="o">-</span><span class="nx">last</span><span class="p">));</span>
+    <span class="p">}</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">ISFUNCTION</span><span class="p">(</span><span class="nx">last</span><span class="p">))</span> <span class="p">{</span>
+        <span class="nx">nodes</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">_nodes</span><span class="p">;</span> <span class="nx">length</span> <span class="o">=</span> <span class="nx">nodes</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span>
+        <span class="k">for</span> <span class="p">(</span><span class="nx">i</span> <span class="o">=</span> <span class="nx">length</span> <span class="o">-</span> <span class="mi">1</span> <span class="p">;</span> <span class="nx">i</span> <span class="o">&gt;=</span> <span class="mi">0</span> <span class="p">;</span> <span class="nx">i</span><span class="o">--</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span><span class="nx">last</span><span class="p">(</span><span class="nx">nodes</span><span class="p">[</span><span class="nx">i</span><span class="p">]))</span> <span class="p">{</span> <span class="k">return</span> <span class="nx">nodes</span><span class="p">[</span><span class="nx">i</span><span class="p">];</span> <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">};</span>
+</pre></div>
+
+                    </div>
+			</div>
+		</div>
+		<div class="yui-b">
+            <div class="nav">
+
+                    <div id="moduleList" class="module">
+                        <h4>Modules</h4>
+                        <ul class="content">
+                                <li class="selected"><a href="module_gallery-nodelist-extras.html" title="gallery-nodelist-extras">gallery-nodelist-extras</a></li>
+                        </ul>
+                    </div>
+
+                    <div id="classList" class="module">
+                        <h4>Classes</h4>
+                        <ul class="content">
+                                <li class=""><a href="NodeList.html" title="NodeList">NodeList</a></li>
+                        </ul>
+                    </div>
+
+                    <div id="fileList" class="module">
+                        <h4>Files</h4>
+                        <ul class="content">        
+                                <li class="selected"><a href="nodelist-extras.js.html" title="nodelist-extras.js">nodelist-extras.js</a></li>
+                        </ul>
+                    </div>
+
+
+
+
+
+            </div>
+		</div>
+	</div>
+	<div id="ft">
+        <hr />
+        Copyright &copy; 2011 Yahoo! Inc. All rights reserved.
+	</div>
+</div>
+<script type="text/javascript">
+
+    var ALL_YUI_PROPS = [{"url": "NodeList.html#method_filter", "access": "", "host": "NodeList", "type": "method", "name": "filter"}, {"url": "NodeList.html#method_first", "access": "", "host": "NodeList", "type": "method", "name": "first"}, {"url": "NodeList.html#method_last", "access": "", "host": "NodeList", "type": "method", "name": "last"}, {"url": "NodeList.html#method_reject", "access": "", "host": "NodeList", "type": "method", "name": "reject"}];
+</script>
+</body>
+</html>
