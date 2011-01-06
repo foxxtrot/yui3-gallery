@@ -15,11 +15,17 @@ var NodePrototype = Y.Node.prototype;
  * @chainable
  */
 NodePrototype.wrapInner = function(html) {
-    var wrapper = Y.Node.create(html);
-
-    this.all('> *').each(function(node) {
-                wrapper.append(node);
-            });
+    var wrapper = Y.Node.create(html),
+        container = wrapper.one('*:empty') || wrapper;
+        list = this.all('> *');
+    if (list.size() > 0) {
+        this.all('> *').each(function(node) {
+                    container.append(node);
+                });
+    } else {
+        container.setContent(this.getContent());
+        this.setContent('');
+    }
     this.append(wrapper);
 }
 

@@ -188,7 +188,7 @@ button {
             Y.Assert.areEqual(1, nl.size());
             Y.Assert.isTrue(nl.item(0).test('.inner'));
         },
-        "test Node.wrapInner creating a multi-layered wrapper": function() {
+        "test Node.wrapInner creating a multi-layered wrapper around text node": function() {
             var node = Y.one('#test-computed'), nl;
             node.wrapInner('<div class="outer"><div class="inner" /></div>');
             nl = node.all('> *');
@@ -196,7 +196,8 @@ button {
             Y.Assert.isTrue(nl.item(0).test('.outer'));
             nl = nl.item(0).all('> *');
             Y.Assert.areEqual(1, nl.size());
-            Y.Assert.isTrue(nl.item(0).test('.inner'));
+	    Y.Assert.isTrue(nl.item(0).test('.inner'));
+	    Y.Assert.areEqual('test computed style', nl.item(0).getContent());
         },
         "test NodeList.wrapInner": function() {
             var list = Y.all("#test-nodes li");
