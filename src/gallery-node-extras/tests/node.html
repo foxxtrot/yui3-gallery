@@ -180,6 +180,14 @@ button {
     var $ = Y.Selector.query;
 
     suite.add( new Y.Test.Case({
+        name: 'Node frag',
+        "frag should return a Document Fragment Node": function() {
+            var node = Y.Node.frag();
+            Y.Assert.areEqual(11, node.get('nodeType'));
+        }
+    }));
+
+    suite.add( new Y.Test.Case({
         name: 'Node WrapInner',
         "Node.wrapInner should create a simple wrapper around a Node's contents": function() {
             var node = Y.one('#test-frag'), nl;

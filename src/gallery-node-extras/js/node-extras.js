@@ -16,10 +16,10 @@ var NodePrototype = Y.Node.prototype;
  */
 NodePrototype.wrapInner = function(html) {
     var wrapper = Y.Node.create(html),
-        container = wrapper.one('*:empty') || wrapper;
+        container = wrapper.one('*:empty') || wrapper,
         list = this.all('> *');
     if (list.size() > 0) {
-        this.all('> *').each(function(node) {
+        list.each(function(node) {
                     container.append(node);
                 });
     } else {
@@ -27,6 +27,16 @@ NodePrototype.wrapInner = function(html) {
         this.setContent('');
     }
     this.append(wrapper);
-}
+};
 
 Y.NodeList.importMethod(NodePrototype, 'wrapInner');
+
+/**
+ * Returns a Document Fragment as a Y.Node
+ * @method frag
+ * @for Node
+ * @static
+ */
+Y.Node.frag = function() {
+    return new Y.Node(document.createDocumentFragment());
+};
