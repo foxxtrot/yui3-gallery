@@ -83,7 +83,7 @@ NodeListPrototype.first = function(first) {
         return this.item(0);
     }
     if (ISNUMBER(first)) {
-        return new Y.NodeList(this._nodes.slice(0, first));
+        return this.slice(0, first);
     }
     if (ISFUNCTION(first)) {
         nodes = this._nodes; length = nodes.length;
@@ -108,7 +108,7 @@ NodeListPrototype.last = function(last) {
         return this.item(this.size()-1);
     }
     if (ISNUMBER(last)) {
-        return new Y.NodeList(this._nodes.slice(-last));
+        return this.slice(-last);
     }
     if (ISFUNCTION(last)) {
         nodes = this._nodes; length = nodes.length;
