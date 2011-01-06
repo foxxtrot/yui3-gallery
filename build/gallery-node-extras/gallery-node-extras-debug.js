@@ -20,7 +20,6 @@ NodePrototype.wrapInner = function(html) {
     var wrapper = Y.Node.create(html);
 
     this.all('> *').each(function(node) {
-                node.remove();
                 wrapper.append(node);
             });
     this.append(wrapper);
