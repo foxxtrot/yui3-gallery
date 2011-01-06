@@ -1,3 +1,24 @@
+<<<<<<< HEAD
+.yui3-slideshow-content .yui3-slideshow-body
+{
+	overflow: hidden;
+	margin-left: auto;
+	margin-right: auto;
+	padding-left: 0;
+}
+
+.yui3-slideshow-content .yui3-slideshow-body li
+{
+	position: relative;
+	background-color: #fff;
+}
+
+.yui3-slideshow-content .yui3-slideshow-header
+{
+	text-align: center;
+	margin: 0;
+}
+=======
 .yui-slideshow
 {
 	overflow: hidden;
@@ -7,3 +28,4 @@
 {
 	position: relative;
 }
+>>>>>>> 94439ec26f261e2b796f74cb22f5a85434b025c4
