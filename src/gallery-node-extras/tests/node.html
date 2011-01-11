@@ -188,6 +188,25 @@ button {
     }));
 
     suite.add( new Y.Test.Case({
+        name: 'Node one and all',
+        'one with no arguments should return the first child': function() {
+            var node = Y.one('#test-swap'),
+                oneNoArgs = node.one(),
+                oneChildSelector = node.one('> *');
+
+            Y.Assert.areEqual(oneNoArgs, oneChildSelector);
+        },
+        'all with no arugemnts should return all children': function() {
+            var node = Y.one('#test-swap'),
+                allNoArgs = node.all(),
+                allChildSelector = node.all('> *');
+
+            Y.Assert.areEqual(allNoArgs.size(), allChildSelector.size());
+            Y.ArrayAssert.itemsAreEqual(allNoArgs._nodes, allChildSelector._nodes);
+        }
+    }));
+
+    suite.add( new Y.Test.Case({
         name: 'Node WrapInner',
         "Node.wrapInner should create a simple wrapper around a Node's contents": function() {
             var node = Y.one('#test-frag'), nl;
@@ -204,8 +223,8 @@ button {
             Y.Assert.isTrue(nl.item(0).test('.outer'));
             nl = nl.item(0).all('> *');
             Y.Assert.areEqual(1, nl.size());
-	    Y.Assert.isTrue(nl.item(0).test('.inner'));
-	    Y.Assert.areEqual('test computed style', nl.item(0).getContent());
+            Y.Assert.isTrue(nl.item(0).test('.inner'));
+            Y.Assert.areEqual('test computed style', nl.item(0).getContent());
         },
         "test NodeList.wrapInner": function() {
             var list = Y.all("#test-nodes li");
