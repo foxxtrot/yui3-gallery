@@ -2,13 +2,13 @@
 <html xmlns:yui="http://yuilibrary.com/rdf/1.0/yui.rdf#">
 <head>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
-	<title>API: gallery-nodelist-extras  NodeList   (YUI Library)</title>
+	<title>API: gallery-node-extras  Node   (YUI Library)</title>
 
-	<link rel="stylesheet" type="text/css" href="assets/reset-fonts-grids-min.css?stamp=1295406575.48" />
-	<link rel="stylesheet" type="text/css" href="assets/api.css?stamp=1295406575.48" />
+	<link rel="stylesheet" type="text/css" href="assets/reset-fonts-grids-min.css?stamp=1295406575.44" />
+	<link rel="stylesheet" type="text/css" href="assets/api.css?stamp=1295406575.44" />
 
-    <script type="text/javascript" src="assets/api-js?stamp=1295406575.48"></script>
-    <script type="text/javascript" src="assets/ac-js?stamp=1295406575.48"></script>
+    <script type="text/javascript" src="assets/api-js?stamp=1295406575.44"></script>
+    <script type="text/javascript" src="assets/ac-js?stamp=1295406575.44"></script>
 </head>
 
 <body id="yahoo-com">
@@ -16,10 +16,10 @@
 <div id="doc3" class="yui-t2">
 	<div id="hd">
         <h1><a href="http://developer.yahoo.com/yui/" title="Yahoo! UI Library">Yahoo! UI Library</a></h1>
-        <h3>gallery-nodelist-extras&nbsp; <span class="subtitle">1.0.0</span></h3>
+        <h3>gallery-node-extras&nbsp; <span class="subtitle">1.0.0</span></h3>
         <a href="./index.html" title="Yahoo! UI Library">Yahoo! UI Library</a> 
-            &gt; <a href="./module_gallery-nodelist-extras.html" title="gallery-nodelist-extras">gallery-nodelist-extras</a>
-                 &gt; NodeList 
+            &gt; <a href="./module_gallery-node-extras.html" title="gallery-node-extras">gallery-node-extras</a>
+                 &gt; Node 
                 
         <form onsubmit="return false">
             <div id="propertysearch">
@@ -48,7 +48,7 @@
 
                         
                         
-                            Class <b property="yui:name">NodeList</b>
+                            Class <b property="yui:name">Node</b>
                         <span class="extends">
                         </span>
 
@@ -59,7 +59,7 @@
   
 
                     <div class="summary description" property="yui:description">
-                        An expanded collection of methods for Y.NodeList
+                        An expanded collection of methods for Y.Node
                     </div>
 
                     
@@ -71,27 +71,29 @@
                         <div class="section method details">
                             <h3 id="methods">Methods</h3>
                             <div class="content">
-                                    <div class="" rel="yui:method" resource="#method_filter">
+                                    <div class="" rel="yui:method" resource="#method_all">
                                     <h4>
-                                        <a name="method_filter">filter</a></h4>
+                                        <a name="method_all">all</a></h4>
                                     <div class="detail" >
                                         <code>
                                         
                                         
                                         
-                                        NodeList
-                                            <strong property="yui:name">filter</strong>
+                                        
+                                            <strong property="yui:name">all</strong>
                                            (
                                                 
                                                         
-                                                         filter
+                                                         Node
                                                     
                                                 
                                             )
                                         </code>
                                         
                                         <div class="description" property="yui:description">
-                                            Filters the NodeList instance to only the matching nodes
+                                            Extends existing Y.Node.all to take no argument and return all the immediate
+children as a NodeList. This essentially makes nodeInstance.all() a synonym
+for nodeInstane.get('children')
                                         </div>
 
                                         <div class="description">
@@ -99,23 +101,14 @@
                                                 <dl rel="yui:parameters">
                                                     <dt>Parameters:</dt>
                                                         <dd rel="yui:parameter">
-                                                        <code><span property="yui:name">filter</span>
-                                                        &lt;<span property="yui:type">string|function</span>&gt;
+                                                        <code><span property="yui:name">Node</span>
+                                                        &lt;<span property="yui:type">string|Y.Node</span>&gt;
                                                         </code>
-                                                        <span property="yui:description"> A CSS selector string to apply to the list,
-or a boolean function to apply to each element in the list. The function
-will be passed three arguments, a Y.Node instance of the current node, the
-current index in the list, and the NodeList instance.</span>
+                                                        <span property="yui:description">  The selector to be passed to the underlying all
+implementation</span>
                                                         </dd>
                                                 </dl>
 
-                                                <dl>
-                                                    <dt>Returns:
-                                                    <code property="yui:return">
-                                                        NodeList
-                                                    </code></dt>
-                                                    <dd property="yui:returnInfo">NodeList containing the updated collection</dd>
-                                                </dl>
 
 
              
@@ -125,48 +118,31 @@ current index in the list, and the NodeList instance.</span>
                                     </div>
                                     <hr />
                                     </div>
-                                    <div class="" rel="yui:method" resource="#method_first">
+                                    <div class="" rel="yui:method" resource="#method_frag">
                                     <h4>
-                                        <a name="method_first">first</a></h4>
+                                        <a name="method_frag">frag</a></h4>
                                     <div class="detail" >
                                         <code>
                                         
+                                         static 
                                         
-                                        
-                                        Node|NodeList
-                                            <strong property="yui:name">first</strong>
+                                        void
+                                            <strong property="yui:name">frag</strong>
                                            (
-                                                
-                                                        
-                                                         first
-                                                    
-                                                
                                             )
                                         </code>
                                         
                                         <div class="description" property="yui:description">
-                                            Returns either the first node in the list, if there is no arugment provided,
-the first n-items in the list, if provided a numeric argument, or the first
-item in the list which tests 'true' to the provide boolean function
+                                            Returns a Document Fragment as a Y.Node
                                         </div>
 
                                         <div class="description">
 
-                                                <dl rel="yui:parameters">
-                                                    <dt>Parameters:</dt>
-                                                        <dd rel="yui:parameter">
-                                                        <code><span property="yui:name">first</span>
-                                                        &lt;<span property="yui:type">Integer|Function</span>&gt;
-                                                        </code>
-                                                        <span property="yui:description"> The number of items to return or the boolean
-function to execute against the list.</span>
-                                                        </dd>
-                                                </dl>
 
                                                 <dl>
                                                     <dt>Returns:
                                                     <code property="yui:return">
-                                                        Node|NodeList
+                                                        void
                                                     </code></dt>
                                                     <dd property="yui:returnInfo"></dd>
                                                 </dl>
@@ -179,29 +155,28 @@ function to execute against the list.</span>
                                     </div>
                                     <hr />
                                     </div>
-                                    <div class="" rel="yui:method" resource="#method_last">
+                                    <div class="" rel="yui:method" resource="#method_one">
                                     <h4>
-                                        <a name="method_last">last</a></h4>
+                                        <a name="method_one">one</a></h4>
                                     <div class="detail" >
                                         <code>
                                         
                                         
                                         
-                                        Node|NodeList
-                                            <strong property="yui:name">last</strong>
+                                        
+                                            <strong property="yui:name">one</strong>
                                            (
                                                 
                                                         
-                                                         last
+                                                         node
                                                     
                                                 
                                             )
                                         </code>
                                         
                                         <div class="description" property="yui:description">
-                                            Returns either the last node in the list, if there is no arugment provided,
-the last n-items in the list, if provided a numeric argument, or the last
-item in the list which tests 'true' to the provide boolean function
+                                            Extends existing Y.Node.one to take no argument and return the immediate
+child of the current node.
                                         </div>
 
                                         <div class="description">
@@ -209,21 +184,13 @@ item in the list which tests 'true' to the provide boolean function
                                                 <dl rel="yui:parameters">
                                                     <dt>Parameters:</dt>
                                                         <dd rel="yui:parameter">
-                                                        <code><span property="yui:name">last</span>
-                                                        &lt;<span property="yui:type">Integer|Function</span>&gt;
+                                                        <code><span property="yui:name">node</span>
+                                                        &lt;<span property="yui:type">string|Y.Node</span>&gt;
                                                         </code>
-                                                        <span property="yui:description"> The number of items to return or the boolean
-function to execute against the list.</span>
+                                                        <span property="yui:description"> The node or selector to search for</span>
                                                         </dd>
                                                 </dl>
 
-                                                <dl>
-                                                    <dt>Returns:
-                                                    <code property="yui:return">
-                                                        Node|NodeList
-                                                    </code></dt>
-                                                    <dd property="yui:returnInfo"></dd>
-                                                </dl>
 
 
              
@@ -233,28 +200,27 @@ function to execute against the list.</span>
                                     </div>
                                     <hr />
                                     </div>
-                                    <div class="" rel="yui:method" resource="#method_reject">
+                                    <div class="" rel="yui:method" resource="#method_wrapInner">
                                     <h4>
-                                        <a name="method_reject">reject</a></h4>
+                                        <a name="method_wrapInner">wrapInner</a></h4>
                                     <div class="detail" >
                                         <code>
                                         
                                         
                                         
-                                        NodeList
-                                            <strong property="yui:name">reject</strong>
+                                        void
+                                            <strong property="yui:name">wrapInner</strong>
                                            (
                                                 
                                                         
-                                                         filter
+                                                         The
                                                     
                                                 
                                             )
                                         </code>
                                         
                                         <div class="description" property="yui:description">
-                                            This inverse of filter. Applies :not to a selector, or builds a NodeList
-consisting of all the nodes for which the argument is false
+                                            Wraps the content of this Node with new HTML
                                         </div>
 
                                         <div class="description">
@@ -262,24 +228,24 @@ consisting of all the nodes for which the argument is false
                                                 <dl rel="yui:parameters">
                                                     <dt>Parameters:</dt>
                                                         <dd rel="yui:parameter">
-                                                        <code><span property="yui:name">filter</span>
-                                                        &lt;<span property="yui:type">string|function</span>&gt;
+                                                        <code><span property="yui:name">The</span>
+                                                        &lt;<span property="yui:type">string | Y.Node | DOMNode</span>&gt;
                                                         </code>
-                                                        <span property="yui:description"> A CSS selector string to apply to the list,
-or a boolean function to apply to each element in the list. The function
-will be passed three arguments, a Y.Node instance of the current node, the
-current index in the list, and the NodeList instance.</span>
+                                                        <span property="yui:description"> HTML Fragment to wrap around the contents of the current node.</span>
                                                         </dd>
                                                 </dl>
 
                                                 <dl>
                                                     <dt>Returns:
                                                     <code property="yui:return">
-                                                        NodeList
+                                                        void
                                                     </code></dt>
-                                                    <dd property="yui:returnInfo">NodeList containing the updated collection</dd>
+                                                    <dd property="yui:returnInfo"></dd>
                                                 </dl>
 
+                                            <div class="chainable">
+                                                <strong>Chainable:</strong> This method is chainable.
+                                            </div>        
 
              
 
@@ -310,22 +276,22 @@ current index in the list, and the NodeList instance.</span>
                     <div id="moduleList" class="module">
                         <h4>Modules</h4>
                         <ul class="content">
-                                <li class=""><a href="module_gallery-node-extras.html" title="gallery-node-extras">gallery-node-extras</a></li>
-                                <li class="selected"><a href="module_gallery-nodelist-extras.html" title="gallery-nodelist-extras">gallery-nodelist-extras</a></li>
+                                <li class="selected"><a href="module_gallery-node-extras.html" title="gallery-node-extras">gallery-node-extras</a></li>
+                                <li class=""><a href="module_gallery-nodelist-extras.html" title="gallery-nodelist-extras">gallery-nodelist-extras</a></li>
                         </ul>
                     </div>
 
                     <div id="classList" class="module">
                         <h4>Classes</h4>
                         <ul class="content">
-                                <li class="selected"><a href="NodeList.html" title="NodeList">NodeList</a></li>
+                                <li class="selected"><a href="Node.html" title="Node">Node</a></li>
                         </ul>
                     </div>
 
                     <div id="fileList" class="module">
                         <h4>Files</h4>
                         <ul class="content">        
-                                <li class=""><a href="nodelist-extras.js.html" title="nodelist-extras.js">nodelist-extras.js</a></li>
+                                <li class=""><a href="node-extras.js.html" title="node-extras.js">node-extras.js</a></li>
                         </ul>
                     </div>
 
@@ -333,10 +299,10 @@ current index in the list, and the NodeList instance.</span>
                     <div id="methodsList" class="module">
                         <h4>Methods</h4>
                         <ul class="content">        
-                                <li class=""><a href="#method_filter" title="filter">filter</a></li>
-                                <li class=""><a href="#method_first" title="first">first</a></li>
-                                <li class=""><a href="#method_last" title="last">last</a></li>
-                                <li class=""><a href="#method_reject" title="reject">reject</a></li>
+                                <li class=""><a href="#method_all" title="all">all</a></li>
+                                <li class=""><a href="#method_frag" title="frag">frag</a></li>
+                                <li class=""><a href="#method_one" title="one">one</a></li>
+                                <li class=""><a href="#method_wrapInner" title="wrapInner">wrapInner</a></li>
                         </ul>
                     </div>
 
@@ -351,7 +317,7 @@ current index in the list, and the NodeList instance.</span>
 	</div>
 </div>
 <script type="text/javascript">
-    ALL_YUI_PROPS = [{"url": "NodeList.html#method_filter", "access": "", "host": "NodeList", "type": "method", "name": "filter"}, {"url": "NodeList.html#method_first", "access": "", "host": "NodeList", "type": "method", "name": "first"}, {"url": "NodeList.html#method_last", "access": "", "host": "NodeList", "type": "method", "name": "last"}, {"url": "NodeList.html#method_reject", "access": "", "host": "NodeList", "type": "method", "name": "reject"}];
+    ALL_YUI_PROPS = [{"url": "Node.html#method_all", "access": "", "host": "Node", "type": "method", "name": "all"}, {"url": "Node.html#method_frag", "access": "", "host": "Node", "type": "method", "name": "frag"}, {"url": "Node.html#method_one", "access": "", "host": "Node", "type": "method", "name": "one"}, {"url": "Node.html#method_wrapInner", "access": "", "host": "Node", "type": "method", "name": "wrapInner"}];
 </script>
 </body>
 </html>
