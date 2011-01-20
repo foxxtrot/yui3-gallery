@@ -1,9 +1,29 @@
+/**
+ * A mechanism to replace multiselect boxes with a more user-friendly list of checkboxes
+ *
+ * @module gallery-multiselect
+ */
+
+
+/**
+ * A Widget which replaces a select box with a list of checkboxes
+ * This version works exclusively in a Progressive Enhancement situation in
+ * which it replaces existing markup, and provides no helper methods to add
+ * or remove options. It also does not yet provide usability improvements like
+ * ARIA and keyboard support, both of which are the primary reason that I suggest
+ * doing this in JavaScript instead of simply marking it up like this in the
+ * first place.
+ *
+ * @class Multiselect
+ * @constructor
+ * @extends Widget
+ */
 var _F = function () {
         this._data = {};
         _F.superclass.constructor.apply(this, arguments);
     },
-    NAME = "CheckboxList",
-    NAME_LC = "checkboxlist",
+    NAME = "Multiselect",
+    NAME_LC = "multiselect",
     getClassName = Y.ClassNameManager.getClassName,
     CLASSNAMES = {
         header: getClassName(NAME_LC, "field_name"),
@@ -15,8 +35,17 @@ var _F = function () {
     ISVALUE = Y.Lang.isValue,
     SUB = Y.Lang.sub;
 
+/**
+ * Class Name
+ *
+ * @property NAME
+ * @type String
+ * @static
+ * @final
+ * @value "Multiselect"
+ */
+
 _F.NAME = NAME;
-_F.NS = NAME;
 
 _F.HTML_PARSER = {
     headerNode: 'label',
@@ -41,14 +70,33 @@ _F.HTML_PARSER = {
 };
 
 _F.ATTRS = {
+    /**
+     * This attribute is the text of the label element associated with the list.
+     *
+     * @attribute label
+     * @type String
+     */
     label: {
         value: "",
         validator: ISSTRING
     },
+    /**
+     * An array of key-value pairs of the values and text associated with each
+     * entry in the select list.
+     *
+     * @attribute data
+     * @type Array
+     */
     data: {
         value: {},
         validator: ISARRAY
     },
+    /**
+     * The HTML Form Name of the select box to be replaced.
+     *
+     * @attribute inputName
+     * #type Strign
+     */
     inputName: {
         validator: ISSTRING
     },
@@ -64,11 +112,23 @@ _F.ATTRS = {
 };
 
 Y.extend(_F, Y.Widget, {
+    /**
+     * @property TEMPLATES
+     * @description The Substitute Templates for creating the header, body, and entries
+     * @type Object
+     *
+     */
     TEMPLATES: {
         header: "<label class='" + CLASSNAMES.header + "'></label>",
         body: "<ul class='" + CLASSNAMES.body + "'></ul>",
         entry: "<li class='" + CLASSNAMES.record + "'><input type='checkbox' name='{inputName}' value='{value}' />{text}</li>"
     },
+    /**
+     * Renders UI
+     *
+     * @method renderUI
+     * @private
+     */
     renderUI: function () {
         var contentBox = this.get('contentBox'), bodyNode = this.get('bodyNode'), headerNode = this.get('headerNode'), label = this.get('label'),
             content = "", data = this.get('data'), inputName = this.get('inputName');
@@ -96,6 +156,13 @@ Y.extend(_F, Y.Widget, {
         }, this);
         bodyNode.setContent(content);
     },
+    /**
+     * Default Handler for click events on the list
+     *
+     * @method _clickHandler
+     * @param event The EventFacade for the click event
+     * @private
+     */
     _clickHandler: function (event) {
         var input = event.currentTarget.one('input'), value;
         if (!event.target.test('input')) {
@@ -103,6 +170,12 @@ Y.extend(_F, Y.Widget, {
             input.set('checked', !value);
         }
     },
+    /**
+     * Binds UI
+     *
+     * @method bindUI
+     * @private
+     */
     bindUI: function () {
         var bodyNode = this.get('bodyNode');
         bodyNode.delegate('click', this._clickHandler, 'li', this);
