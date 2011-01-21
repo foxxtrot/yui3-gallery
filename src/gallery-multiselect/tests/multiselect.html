@@ -1,0 +1,55 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>gallery-multiselect tests</title>
+		<script type="text/javascript" src="../../../../yui3/build/yui/yui.js"></script>
+	</head>
+    <body>
+        <div id="test-pe-container">
+            <select id="test-pe" name="test-pe" multiple>
+                <option value="1">Apple</option>
+                <option value="2">Banana</option>
+                <option value="3">Tomato</option>
+            </select>
+        </div>
+        <script type="text/javascript">
+        YUI({
+            base: '../../../../yui3/build/', 
+            filter: 'raw', 
+            groups: { 
+                gallery: { 
+                    base: '../../../build/', 
+                    modules: { 
+                        'gallery-multiselect': { 
+                            path: 'gallery-multiselect/gallery-multiselect.js',
+                            requires: ['node', 'widget', 'classnamemanager']
+                        }
+                    }
+                }
+            }
+        }).use('test', 'node', 'gallery-multiselect', function(Y) {
+            var Assert = Y.Assert,
+                ArrayAssert = Y.ArrayAssert,
+                suite = new Y.Test.Suite("yuisuite");
+
+            suite.add( new Y.Test.Case({
+                name: 'Multiselect Progressive Enchacement',
+                "multiselect should convert a select box into a list of checkboxes": function() {
+                    var ms = new Y.Multiselect({srcNode: '#test-pe-container'}).render(),
+                        host = Y.one('#test-pe-container');
+                    
+                    Assert.areEqual(3, Y.all('input').size());
+                    Assert.areEqual(3, Y.all('input[type=checkbox]').size());
+                    Assert.areEqual('test-pe', Y.one('input').get('name'));
+                }
+            }));
+            Y.Test.Runner.add(suite);
+
+            Y.on('load', function() {
+                Y.Test.Runner.run();
+            }, window);
+        });
+</script>
+</body>
+</html>
