@@ -1,4 +1,4 @@
-YAHOO.env.classMap = {"Node": "gallery-node-extras", "NodeList": "gallery-nodelist-extras"};
+YAHOO.env.classMap = {"Node": "gallery-node-extras", "NodeList": "gallery-nodelist-extras", "Crypto": "crypto"};
 
 YAHOO.env.resolveClass = function(className) {
     var a=className.split('.'), ns=YAHOO.env.classMap;

@@ -1,0 +1,141 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html xmlns:yui="http://yuilibrary.com/rdf/1.0/yui.rdf#">
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+	<title>API: gallery-nodelist-extras   slideshow-image-scaler.js  (YUI Library)</title>
+
+	<link rel="stylesheet" type="text/css" href="assets/reset-fonts-grids-min.css?stamp=1295593519.59" />
+	<link rel="stylesheet" type="text/css" href="assets/api.css?stamp=1295593519.59" />
+
+    <script type="text/javascript" src="assets/api-js?stamp=1295593519.59"></script>
+    <script type="text/javascript" src="assets/ac-js?stamp=1295593519.59"></script>
+</head>
+
+<body id="yahoo-com">
+
+<div id="doc3" class="yui-t2">
+	<div id="hd">
+        <h1><a href="http://developer.yahoo.com/yui/" title="Yahoo! UI Library">Yahoo! UI Library</a></h1>
+        <h3>gallery-nodelist-extras&nbsp; <span class="subtitle">1.0.0</span></h3>
+        <a href="./index.html" title="Yahoo! UI Library">Yahoo! UI Library</a> 
+            &gt; <a href="./module_gallery-nodelist-extras.html" title="gallery-nodelist-extras">gallery-nodelist-extras</a>
+                
+                 &gt; slideshow-image-scaler.js (source view) 
+        <form onsubmit="return false">
+            <div id="propertysearch">
+                Search: <input autocomplete="off" id="searchinput" />
+                <div id="searchresults">
+                    &nbsp;
+                </div>
+            </div>
+        </form>
+	</div>
+
+	<div id="bd">
+		<div id="yui-main">
+			<div class="yui-b">
+            <form action="#" name="yui-classopts-form" method="get" id="yui-classopts-form">
+                <fieldset>
+                    <legend>Filters</legend>
+                <span class="classopts"><input type="checkbox" name="show_private" id="show_private" /> <label for="show_private">Show Private</label></span>
+                <span class="classopts"><input type="checkbox" name="show_protected" id="show_protected" /> <label for="show_protected">Show Protected</label></span>
+                <span class="classopts"><input type="checkbox" name="show_deprecated" id="show_deprecated" /> <label for="show_deprecated">Show Deprecated</label></span>
+                </fieldset>
+            </form>
+
+                    <div id="srcout">
+                        <style>
+                            #doc3 .classopts { display:none; }
+                        </style>
+<div class="highlight"><pre><span class="kd">var</span> <span class="nx">ImageScaling</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">config</span><span class="p">)</span> <span class="p">{</span>
+	<span class="k">this</span><span class="p">.</span><span class="nx">_ss</span> <span class="o">=</span> <span class="nx">config</span><span class="p">.</span><span class="nx">host</span><span class="p">;</span>
+
+	<span class="nx">ImageScaling</span><span class="p">.</span><span class="nx">superclass</span><span class="p">.</span><span class="nx">constructor</span><span class="p">.</span><span class="nx">apply</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="nx">arguments</span><span class="p">);</span>
+<span class="p">};</span>
+
+<span class="nx">ImageScaling</span><span class="p">.</span><span class="nx">NS</span> <span class="o">=</span> <span class="s1">&#39;scaling&#39;</span><span class="p">;</span>
+<span class="nx">ImageScaling</span><span class="p">.</span><span class="nx">NAME</span> <span class="o">=</span> <span class="s1">&#39;slideshowImageScaler&#39;</span><span class="p">;</span>
+
+<span class="nx">ImageScaling</span><span class="p">.</span><span class="nx">ATTRS</span> <span class="o">=</span> <span class="p">{</span>
+	<span class="nx">height</span><span class="o">:</span> <span class="p">{</span>
+		<span class="nx">validator</span><span class="o">:</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">isNumber</span>
+	<span class="p">},</span>
+	<span class="nx">width</span><span class="o">:</span> <span class="p">{</span>
+		<span class="nx">validator</span><span class="o">:</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">isNumber</span>
+	<span class="p">},</span>
+	<span class="nx">scaleFactor</span><span class="o">:</span> <span class="p">{</span>
+		<span class="nx">validator</span><span class="o">:</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">isNumber</span>
+	<span class="p">}</span>
+<span class="p">};</span>
+
+<span class="nx">Y</span><span class="p">.</span><span class="nx">extend</span><span class="p">(</span><span class="nx">ImageScaling</span><span class="p">,</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Plugin</span><span class="p">.</span><span class="nx">Base</span><span class="p">,</span> <span class="p">{</span>
+	<span class="nx">initializer</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">config</span><span class="p">)</span> <span class="p">{</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">doAfter</span><span class="p">(</span><span class="s2">&quot;_createImage&quot;</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">_scaleImage</span><span class="p">);</span>
+	<span class="p">},</span>
+	<span class="nx">_scaleImage</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">img</span><span class="p">)</span> <span class="p">{</span>
+		<span class="kd">var</span> <span class="nx">scaleFactor</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;scaleFactor&#39;</span><span class="p">),</span>
+		    <span class="nx">width</span> <span class="o">=</span> <span class="nx">img</span><span class="p">.</span><span class="nx">width</span> <span class="o">||</span> <span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;width&#39;</span><span class="p">),</span>
+		    <span class="nx">height</span> <span class="o">=</span> <span class="nx">img</span><span class="p">.</span><span class="nx">height</span> <span class="o">||</span> <span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;height&#39;</span><span class="p">),</span>
+		    <span class="nx">imageNode</span> <span class="o">=</span> <span class="nx">img</span><span class="p">.</span><span class="nx">_node</span><span class="p">.</span><span class="nx">one</span><span class="p">(</span><span class="s1">&#39;img&#39;</span><span class="p">);</span>
+
+		<span class="k">if</span> <span class="p">(</span><span class="nx">scaleFactor</span><span class="p">)</span> <span class="p">{</span>
+			<span class="nx">imageNode</span><span class="p">.</span><span class="nx">setStyles</span><span class="p">({</span><span class="nx">height</span><span class="o">:</span> <span class="nx">scaleFactor</span> <span class="o">+</span> <span class="s1">&#39;%&#39;</span><span class="p">,</span> <span class="nx">width</span><span class="o">:</span> <span class="nx">scaleFactor</span> <span class="o">+</span> <span class="s1">&#39;%&#39;</span><span class="p">});</span>
+		<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+			<span class="k">if</span> <span class="p">(</span><span class="nx">width</span><span class="p">)</span> <span class="p">{</span> <span class="nx">imageNode</span><span class="p">.</span><span class="nx">setStyle</span><span class="p">(</span><span class="s1">&#39;width&#39;</span><span class="p">,</span> <span class="nx">width</span><span class="p">);</span> <span class="p">}</span>
+			<span class="k">if</span> <span class="p">(</span><span class="nx">height</span><span class="p">){</span> <span class="nx">imageNode</span><span class="p">.</span><span class="nx">setStyle</span><span class="p">(</span><span class="s1">&#39;height&#39;</span><span class="p">,</span> <span class="nx">height</span><span class="p">);</span> <span class="p">}</span>
+		<span class="p">}</span>
+	<span class="p">}</span>
+<span class="p">});</span>
+
+<span class="nx">Y</span><span class="p">.</span><span class="nx">SlideShow</span><span class="p">.</span><span class="nx">ImageScaler</span> <span class="o">=</span> <span class="nx">ImageScaling</span><span class="p">;</span>
+</pre></div>
+                    </div>
+			</div>
+		</div>
+		<div class="yui-b">
+            <div class="nav">
+
+                    <div id="moduleList" class="module">
+                        <h4>Modules</h4>
+                        <ul class="content">
+                                <li class=""><a href="module_crypto.html" title="crypto">crypto</a></li>
+                                <li class=""><a href="module_gallery-node-extras.html" title="gallery-node-extras">gallery-node-extras</a></li>
+                                <li class="selected"><a href="module_gallery-nodelist-extras.html" title="gallery-nodelist-extras">gallery-nodelist-extras</a></li>
+                        </ul>
+                    </div>
+
+                    <div id="classList" class="module">
+                        <h4>Classes</h4>
+                        <ul class="content">
+                                <li class=""><a href="NodeList.html" title="NodeList">NodeList</a></li>
+                        </ul>
+                    </div>
+
+                    <div id="fileList" class="module">
+                        <h4>Files</h4>
+                        <ul class="content">        
+                                <li class=""><a href="magnifier.js.html" title="magnifier.js">magnifier.js</a></li>
+                                <li class=""><a href="nodelist-extras.js.html" title="nodelist-extras.js">nodelist-extras.js</a></li>
+                                <li class=""><a href="slideshow-image-padder.js.html" title="slideshow-image-padder.js">slideshow-image-padder.js</a></li>
+                                <li class="selected"><a href="slideshow-image-scaler.js.html" title="slideshow-image-scaler.js">slideshow-image-scaler.js</a></li>
+                                <li class=""><a href="slideshow.js.html" title="slideshow.js">slideshow.js</a></li>
+                        </ul>
+                    </div>
+
+
+
+
+
+            </div>
+		</div>
+	</div>
+	<div id="ft">
+        <hr />
+        Copyright &copy; 2011 Yahoo! Inc. All rights reserved.
+	</div>
+</div>
+<script type="text/javascript">
+    ALL_YUI_PROPS = [{"url": "NodeList.html#method_filter", "access": "", "host": "NodeList", "type": "method", "name": "filter"}, {"url": "NodeList.html#method_first", "access": "", "host": "NodeList", "type": "method", "name": "first"}, {"url": "NodeList.html#method_last", "access": "", "host": "NodeList", "type": "method", "name": "last"}, {"url": "NodeList.html#method_reject", "access": "", "host": "NodeList", "type": "method", "name": "reject"}];
+</script>
+</body>
+</html>

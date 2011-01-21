@@ -1,0 +1,367 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html xmlns:yui="http://yuilibrary.com/rdf/1.0/yui.rdf#">
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+	<title>API: gallery-nodelist-extras   slideshow.js  (YUI Library)</title>
+
+	<link rel="stylesheet" type="text/css" href="assets/reset-fonts-grids-min.css?stamp=1295593519.59" />
+	<link rel="stylesheet" type="text/css" href="assets/api.css?stamp=1295593519.59" />
+
+    <script type="text/javascript" src="assets/api-js?stamp=1295593519.59"></script>
+    <script type="text/javascript" src="assets/ac-js?stamp=1295593519.59"></script>
+</head>
+
+<body id="yahoo-com">
+
+<div id="doc3" class="yui-t2">
+	<div id="hd">
+        <h1><a href="http://developer.yahoo.com/yui/" title="Yahoo! UI Library">Yahoo! UI Library</a></h1>
+        <h3>gallery-nodelist-extras&nbsp; <span class="subtitle">1.0.0</span></h3>
+        <a href="./index.html" title="Yahoo! UI Library">Yahoo! UI Library</a> 
+            &gt; <a href="./module_gallery-nodelist-extras.html" title="gallery-nodelist-extras">gallery-nodelist-extras</a>
+                
+                 &gt; slideshow.js (source view) 
+        <form onsubmit="return false">
+            <div id="propertysearch">
+                Search: <input autocomplete="off" id="searchinput" />
+                <div id="searchresults">
+                    &nbsp;
+                </div>
+            </div>
+        </form>
+	</div>
+
+	<div id="bd">
+		<div id="yui-main">
+			<div class="yui-b">
+            <form action="#" name="yui-classopts-form" method="get" id="yui-classopts-form">
+                <fieldset>
+                    <legend>Filters</legend>
+                <span class="classopts"><input type="checkbox" name="show_private" id="show_private" /> <label for="show_private">Show Private</label></span>
+                <span class="classopts"><input type="checkbox" name="show_protected" id="show_protected" /> <label for="show_protected">Show Protected</label></span>
+                <span class="classopts"><input type="checkbox" name="show_deprecated" id="show_deprecated" /> <label for="show_deprecated">Show Deprecated</label></span>
+                </fieldset>
+            </form>
+
+                    <div id="srcout">
+                        <style>
+                            #doc3 .classopts { display:none; }
+                        </style>
+<div class="highlight"><pre><span class="kd">var</span> <span class="nx">_S</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">_imageList</span> <span class="o">=</span> <span class="p">[];</span>
+		<span class="nx">_S</span><span class="p">.</span><span class="nx">superclass</span><span class="p">.</span><span class="nx">constructor</span><span class="p">.</span><span class="nx">apply</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="nx">arguments</span><span class="p">);</span>
+	<span class="p">},</span>
+	<span class="nx">ZINDEX</span> <span class="o">=</span> <span class="s1">&#39;zIndex&#39;</span><span class="p">,</span>
+	<span class="nx">SLIDESHOW</span> <span class="o">=</span> <span class="s2">&quot;SlideShow&quot;</span><span class="p">,</span>
+	<span class="nx">SLIDESHOW_LC</span> <span class="o">=</span> <span class="s2">&quot;slideshow&quot;</span><span class="p">,</span>
+	<span class="nx">ISNUMBER</span> <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">isNumber</span><span class="p">,</span>
+	<span class="nx">getClassName</span> <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">ClassNameManager</span><span class="p">.</span><span class="nx">getClassName</span><span class="p">,</span>
+	<span class="nx">CLASSNAMES</span> <span class="o">=</span> <span class="p">{</span>
+		<span class="nx">header</span><span class="o">:</span> <span class="nx">getClassName</span><span class="p">(</span><span class="nx">SLIDESHOW_LC</span><span class="p">,</span> <span class="s2">&quot;header&quot;</span><span class="p">),</span>
+		<span class="nx">body</span><span class="o">:</span> <span class="nx">getClassName</span><span class="p">(</span><span class="nx">SLIDESHOW_LC</span><span class="p">,</span> <span class="s2">&quot;body&quot;</span><span class="p">),</span>
+		<span class="nx">footer</span><span class="o">:</span> <span class="nx">getClassName</span><span class="p">(</span><span class="nx">SLIDESHOW_LC</span><span class="p">,</span> <span class="s2">&quot;footer&quot;</span><span class="p">)</span>
+	<span class="p">};</span>
+					
+<span class="nx">_S</span><span class="p">.</span><span class="nx">NAME</span> <span class="o">=</span> <span class="nx">SLIDESHOW</span><span class="p">;</span>
+<span class="nx">_S</span><span class="p">.</span><span class="nx">NS</span> <span class="o">=</span> <span class="nx">SLIDESHOW</span><span class="p">;</span>
+
+<span class="nx">_S</span><span class="p">.</span><span class="nx">HTML_PARSER</span> <span class="o">=</span> 
+	<span class="p">{</span>
+		<span class="nx">title</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">contentBox</span><span class="p">)</span> <span class="p">{</span>
+<span class="o">&lt;&lt;&lt;&lt;&lt;&lt;&lt;</span> <span class="nx">HEAD</span>
+			<span class="kd">var</span> <span class="nx">node</span> <span class="o">=</span> <span class="nx">contentBox</span><span class="p">.</span><span class="nx">one</span><span class="p">(</span><span class="s1">&#39;.&#39;</span> <span class="o">+</span> <span class="nx">CLASSNAMES</span><span class="p">.</span><span class="nx">header</span><span class="p">);</span>
+			<span class="k">return</span> <span class="nx">node</span> <span class="o">?</span> <span class="nx">node</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;innerHTML&#39;</span><span class="p">)</span> <span class="o">:</span> <span class="s2">&quot;&quot;</span><span class="p">;</span>
+		<span class="p">},</span>
+		<span class="nx">image_height</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">contentBox</span><span class="p">)</span> <span class="p">{</span>
+			<span class="kd">var</span> <span class="nx">node</span> <span class="o">=</span> <span class="nx">contentBox</span><span class="p">.</span><span class="nx">one</span><span class="p">(</span><span class="s1">&#39;.&#39;</span> <span class="o">+</span> <span class="nx">CLASSNAMES</span><span class="p">.</span><span class="nx">body</span><span class="p">);</span>
+			<span class="k">return</span> <span class="nx">node</span> <span class="o">?</span> <span class="nb">parseInt</span><span class="p">(</span><span class="nx">node</span><span class="p">.</span><span class="nx">getStyle</span><span class="p">(</span><span class="s1">&#39;height&#39;</span><span class="p">),</span> <span class="mi">10</span><span class="p">)</span> <span class="o">:</span> <span class="kc">null</span><span class="p">;</span>
+		<span class="p">},</span>
+		<span class="nx">image_width</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">contentBox</span><span class="p">)</span> <span class="p">{</span>
+			<span class="kd">var</span> <span class="nx">node</span> <span class="o">=</span> <span class="nx">contentBox</span><span class="p">.</span><span class="nx">one</span><span class="p">(</span><span class="s1">&#39;.&#39;</span> <span class="o">+</span> <span class="nx">CLASSNAMES</span><span class="p">.</span><span class="nx">body</span><span class="p">);</span>
+			<span class="k">return</span> <span class="nx">node</span> <span class="o">?</span> <span class="nb">parseInt</span><span class="p">(</span><span class="nx">node</span><span class="p">.</span><span class="nx">getStyle</span><span class="p">(</span><span class="s1">&#39;width&#39;</span><span class="p">),</span> <span class="mi">10</span><span class="p">)</span> <span class="o">:</span> <span class="kc">null</span><span class="p">;</span>
+		<span class="p">},</span>
+		<span class="nx">bodyNode</span><span class="o">:</span> <span class="s1">&#39;ul.&#39;</span> <span class="o">+</span> <span class="nx">CLASSNAMES</span><span class="p">.</span><span class="nx">body</span><span class="p">,</span>
+		<span class="nx">headerNode</span><span class="o">:</span> <span class="s1">&#39;div.&#39;</span> <span class="o">+</span> <span class="nx">CLASSNAMES</span><span class="p">.</span><span class="nx">header</span><span class="p">,</span>
+		<span class="nx">footerNode</span><span class="o">:</span> <span class="s1">&#39;div.&#39;</span> <span class="o">+</span> <span class="nx">CLASSNAMES</span><span class="p">.</span><span class="nx">footer</span><span class="p">,</span>
+		<span class="nx">images</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">contentBox</span><span class="p">)</span> <span class="p">{</span>
+			<span class="nx">contentBox</span><span class="p">.</span><span class="nx">all</span><span class="p">(</span><span class="s1">&#39;.&#39;</span> <span class="o">+</span> <span class="nx">CLASSNAMES</span><span class="p">.</span><span class="nx">body</span> <span class="o">+</span> <span class="s1">&#39; li&#39;</span><span class="p">).</span><span class="nx">each</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">node</span><span class="p">,</span> <span class="nx">index</span><span class="p">)</span> <span class="p">{</span>
+<span class="o">=======</span>
+			<span class="kd">var</span> <span class="nx">node</span> <span class="o">=</span> <span class="nx">contentBox</span><span class="p">.</span><span class="nx">one</span><span class="p">(</span><span class="nx">CLASSNAMES</span><span class="p">.</span><span class="nx">header</span><span class="p">);</span>
+			<span class="k">return</span> <span class="nx">node</span> <span class="o">?</span> <span class="nx">node</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;innerHTML&#39;</span><span class="p">)</span> <span class="o">:</span> <span class="s2">&quot;&quot;</span><span class="p">;</span>
+		<span class="p">},</span>
+		<span class="nx">image_height</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">contentBox</span><span class="p">)</span> <span class="p">{</span>
+			<span class="kd">var</span> <span class="nx">node</span> <span class="o">=</span> <span class="nx">contentBox</span><span class="p">.</span><span class="nx">one</span><span class="p">(</span><span class="nx">CLASSNAMES</span><span class="p">.</span><span class="nx">body</span><span class="p">);</span>
+			<span class="k">return</span> <span class="nx">node</span> <span class="o">?</span> <span class="nb">parseInt</span><span class="p">(</span><span class="nx">node</span><span class="p">.</span><span class="nx">getStyle</span><span class="p">(</span><span class="s1">&#39;height&#39;</span><span class="p">),</span> <span class="mi">10</span><span class="p">)</span> <span class="o">:</span> <span class="kc">null</span><span class="p">;</span>
+		<span class="p">},</span>
+		<span class="nx">image_width</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">contentBox</span><span class="p">)</span> <span class="p">{</span>
+			<span class="kd">var</span> <span class="nx">node</span> <span class="o">=</span> <span class="nx">contentBox</span><span class="p">.</span><span class="nx">one</span><span class="p">(</span><span class="nx">CLASSNAMES</span><span class="p">.</span><span class="nx">body</span><span class="p">);</span>
+			<span class="k">return</span> <span class="nx">node</span> <span class="o">?</span> <span class="nb">parseInt</span><span class="p">(</span><span class="nx">node</span><span class="p">.</span><span class="nx">getStyle</span><span class="p">(</span><span class="s1">&#39;width&#39;</span><span class="p">),</span> <span class="mi">10</span><span class="p">)</span> <span class="o">:</span> <span class="kc">null</span><span class="p">;</span>
+		<span class="p">},</span>
+		<span class="nx">bodyNode</span><span class="o">:</span> <span class="nx">CLASSNAMES</span><span class="p">.</span><span class="nx">body</span><span class="p">,</span>
+		<span class="nx">headerNode</span><span class="o">:</span> <span class="nx">CLASSNAMES</span><span class="p">.</span><span class="nx">header</span><span class="p">,</span>
+		<span class="nx">footerNode</span><span class="o">:</span> <span class="nx">CLASSNAMES</span><span class="p">.</span><span class="nx">footer</span><span class="p">,</span>
+		<span class="nx">images</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">contentBox</span><span class="p">)</span> <span class="p">{</span>
+			<span class="nx">contentBox</span><span class="p">.</span><span class="nx">all</span><span class="p">(</span><span class="nx">CLASSNAMES</span><span class="p">.</span><span class="nx">body</span> <span class="o">+</span> <span class="s1">&#39; li&#39;</span><span class="p">).</span><span class="nx">each</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">node</span><span class="p">,</span> <span class="nx">index</span><span class="p">)</span> <span class="p">{</span>
+<span class="o">&gt;&gt;&gt;&gt;&gt;&gt;&gt;</span> <span class="mi">94439</span><span class="nx">ec26f261e2b796f74cb22f5a85434b025c4</span>
+				<span class="kd">var</span> <span class="nx">img</span> <span class="o">=</span> <span class="p">{};</span>
+				<span class="k">this</span><span class="p">.</span><span class="nx">_parseImage</span><span class="p">(</span><span class="nx">node</span><span class="p">,</span> <span class="nx">img</span><span class="p">);</span>
+				<span class="nx">img</span><span class="p">.</span><span class="nx">_node</span><span class="p">.</span><span class="nx">setStyle</span><span class="p">(</span><span class="nx">ZINDEX</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="o">*</span><span class="nx">index</span><span class="p">);</span>
+				<span class="c1">// imageList is empty at this point</span>
+				<span class="k">this</span><span class="p">.</span><span class="nx">_imageList</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">img</span><span class="p">);</span>
+			<span class="p">},</span> <span class="k">this</span><span class="p">);</span>
+		<span class="p">}</span>
+	<span class="p">};</span>
+<span class="nx">_S</span><span class="p">.</span><span class="nx">ATTRS</span> <span class="o">=</span> 
+	<span class="p">{</span>
+		<span class="nx">delay</span><span class="o">:</span> <span class="p">{</span> 
+				<span class="nx">value</span><span class="o">:</span> <span class="mi">5000</span><span class="p">,</span>
+				<span class="nx">validator</span><span class="o">:</span> <span class="nx">ISNUMBER</span>
+			<span class="p">},</span>
+		<span class="nx">animation</span><span class="o">:</span> <span class="p">{</span>
+				<span class="nx">validator</span><span class="o">:</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">isObject</span><span class="p">,</span>
+				<span class="nx">setter</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">v</span><span class="p">)</span> <span class="p">{</span>
+					<span class="k">if</span> <span class="p">(</span><span class="o">!</span> <span class="p">(</span><span class="nx">v</span> <span class="k">instanceof</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Anim</span><span class="p">)</span> <span class="p">)</span> <span class="p">{</span>
+						<span class="nx">v</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Anim</span><span class="p">(</span><span class="nx">v</span><span class="p">);</span>
+					<span class="p">}</span>
+					<span class="nx">v</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;end&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+						<span class="k">this</span><span class="p">.</span><span class="nx">endTransition</span><span class="p">();</span>
+					<span class="p">},</span> <span class="k">this</span><span class="p">);</span>
+					<span class="k">return</span> <span class="nx">v</span><span class="p">;</span>
+				<span class="p">}</span>
+			<span class="p">},</span>
+		<span class="nx">image_height</span><span class="o">:</span> <span class="p">{</span>
+			<span class="nx">validator</span><span class="o">:</span> <span class="nx">ISNUMBER</span><span class="p">,</span>
+			<span class="nx">setter</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">value</span><span class="p">)</span> <span class="p">{</span>
+				<span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;rendered&#39;</span><span class="p">))</span> <span class="p">{</span>
+					<span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;bodyNode&#39;</span><span class="p">).</span><span class="nx">setStyle</span><span class="p">(</span><span class="s1">&#39;height&#39;</span><span class="p">,</span> <span class="nx">value</span><span class="p">);</span>
+				<span class="p">}</span>
+				<span class="k">return</span> <span class="nx">value</span><span class="p">;</span>
+			<span class="p">}</span>
+		<span class="p">},</span>
+		<span class="nx">image_width</span><span class="o">:</span> <span class="p">{</span>
+			<span class="nx">validator</span><span class="o">:</span> <span class="nx">ISNUMBER</span><span class="p">,</span>
+			<span class="nx">setter</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">value</span><span class="p">)</span> <span class="p">{</span>
+				<span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;rendered&#39;</span><span class="p">))</span> <span class="p">{</span>
+					<span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;bodyNode&#39;</span><span class="p">).</span><span class="nx">setStyle</span><span class="p">(</span><span class="s1">&#39;width&#39;</span><span class="p">,</span> <span class="nx">value</span><span class="p">);</span>
+				<span class="p">}</span>
+				<span class="k">return</span> <span class="nx">value</span><span class="p">;</span>
+			<span class="p">}</span>
+		<span class="p">},</span>
+		<span class="nx">title</span><span class="o">:</span> <span class="p">{</span>
+			<span class="nx">value</span><span class="o">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+			<span class="nx">validator</span><span class="o">:</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">isString</span><span class="p">,</span>
+			<span class="nx">setter</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">value</span><span class="p">)</span> <span class="p">{</span>
+				<span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;rendered&#39;</span><span class="p">))</span> <span class="p">{</span>
+					<span class="k">this</span><span class="p">.</span><span class="nx">_setHeaderContents</span><span class="p">(</span><span class="nx">value</span><span class="p">);</span>
+				<span class="p">}</span>
+				<span class="k">return</span> <span class="nx">value</span><span class="p">;</span>
+			<span class="p">}</span>
+		<span class="p">},</span>
+		<span class="nx">images</span><span class="o">:</span> <span class="p">{</span>
+			<span class="nx">lazyAdd</span><span class="o">:</span> <span class="kc">false</span><span class="p">,</span>
+			<span class="nx">validator</span><span class="o">:</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">isArray</span><span class="p">,</span>
+			<span class="nx">getter</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+				<span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">_imageList</span><span class="p">;</span>
+			<span class="p">},</span>
+			<span class="nx">setter</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">value</span><span class="p">)</span> <span class="p">{</span>
+				<span class="k">this</span><span class="p">.</span><span class="nx">clearImages</span><span class="p">();</span>
+				<span class="k">this</span><span class="p">.</span><span class="nx">addImages</span><span class="p">(</span><span class="nx">value</span><span class="p">);</span>
+			<span class="p">}</span>
+		<span class="p">},</span>
+		<span class="nx">bodyNode</span><span class="o">:</span> <span class="p">{</span>
+			<span class="nx">writeOnce</span><span class="o">:</span> <span class="kc">true</span>
+		<span class="p">},</span>
+		<span class="nx">headerNode</span><span class="o">:</span> <span class="p">{</span>
+			<span class="nx">writeOnce</span><span class="o">:</span> <span class="kc">true</span>
+		<span class="p">},</span>
+		<span class="nx">footerNode</span><span class="o">:</span> <span class="p">{</span>
+			<span class="nx">writeOnce</span><span class="o">:</span> <span class="kc">true</span>
+		<span class="p">}</span>
+	<span class="p">};</span>
+
+<span class="nx">Y</span><span class="p">.</span><span class="nx">extend</span><span class="p">(</span><span class="nx">_S</span><span class="p">,</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Widget</span><span class="p">,</span> 
+	<span class="p">{</span>
+		<span class="nx">TEMPLATES</span><span class="o">:</span> <span class="p">{</span>
+			<span class="nx">header</span><span class="o">:</span> <span class="s2">&quot;&lt;div class=&#39;&quot;</span> <span class="o">+</span> <span class="nx">CLASSNAMES</span><span class="p">.</span><span class="nx">header</span> <span class="o">+</span> <span class="s2">&quot;&#39;&gt;&lt;/div&gt;&quot;</span><span class="p">,</span>
+			<span class="nx">body</span><span class="o">:</span>   <span class="s2">&quot;&lt;ul class=&#39;&quot;</span> <span class="o">+</span> <span class="nx">CLASSNAMES</span><span class="p">.</span><span class="nx">body</span> <span class="o">+</span> <span class="s2">&quot;&#39;&gt;&lt;/ul&gt;&quot;</span><span class="p">,</span>
+			<span class="nx">footer</span><span class="o">:</span> <span class="s2">&quot;&lt;div class=&#39;&quot;</span> <span class="o">+</span> <span class="nx">CLASSNAMES</span><span class="p">.</span><span class="nx">footer</span> <span class="o">+</span> <span class="s2">&quot;&#39;&gt;&lt;/div&gt;&quot;</span>
+		<span class="p">},</span>
+		<span class="nx">_renderImages</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+			<span class="kd">var</span> <span class="nx">zIndex</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="nx">bodyNode</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;bodyNode&#39;</span><span class="p">);</span>
+			<span class="nx">bodyNode</span><span class="p">.</span><span class="nx">all</span><span class="p">(</span><span class="s1">&#39;li&#39;</span><span class="p">).</span><span class="nx">each</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">node</span><span class="p">)</span> <span class="p">{</span> 
+				<span class="kd">var</span> <span class="nx">z</span> <span class="o">=</span> <span class="o">+</span><span class="nx">node</span><span class="p">.</span><span class="nx">getStyle</span><span class="p">(</span><span class="nx">ZINDEX</span><span class="p">)</span> <span class="o">||</span> <span class="mi">2</span><span class="p">;</span> 
+				<span class="nx">zIndex</span> <span class="o">=</span> <span class="nx">zIndex</span> <span class="o">&gt;</span> <span class="nx">z</span> <span class="o">?</span> <span class="nx">z</span> <span class="o">:</span> <span class="nx">zIndex</span><span class="p">;</span> 
+			<span class="p">});</span>
+			<span class="nx">Y</span><span class="p">.</span><span class="nb">Array</span><span class="p">.</span><span class="nx">each</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">_imageList</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">value</span><span class="p">,</span> <span class="nx">index</span><span class="p">)</span> <span class="p">{</span>
+<span class="o">&lt;&lt;&lt;&lt;&lt;&lt;&lt;</span> <span class="nx">HEAD</span>
+				<span class="nx">zIndex</span> <span class="o">-=</span> <span class="mi">1</span><span class="p">;</span>
+				<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">isValue</span><span class="p">(</span><span class="nx">value</span><span class="p">.</span><span class="nx">_node</span><span class="p">))</span> <span class="p">{</span>
+					<span class="k">this</span><span class="p">.</span><span class="nx">_createImage</span><span class="p">(</span><span class="nx">value</span><span class="p">,</span> <span class="nx">zIndex</span><span class="p">);</span>
+				<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+					<span class="nx">value</span><span class="p">.</span><span class="nx">_node</span><span class="p">.</span><span class="nx">setStyle</span><span class="p">(</span><span class="nx">ZINDEX</span><span class="p">,</span> <span class="nx">zIndex</span><span class="p">);</span>
+				<span class="p">}</span>
+				<span class="k">if</span> <span class="p">(</span><span class="nx">index</span> <span class="o">===</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span> <span class="k">this</span><span class="p">.</span><span class="nx">currentImage</span> <span class="o">=</span> <span class="nx">value</span><span class="p">.</span><span class="nx">_node</span><span class="p">;</span> <span class="p">}</span>
+<span class="o">=======</span>
+				<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">isValue</span><span class="p">(</span><span class="nx">value</span><span class="p">.</span><span class="nx">_node</span><span class="p">))</span> <span class="p">{</span>
+					<span class="nx">zIndex</span> <span class="o">-=</span> <span class="mi">1</span><span class="p">;</span>
+					<span class="kd">var</span> <span class="nx">x</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">_createImage</span><span class="p">(</span><span class="nx">value</span><span class="p">,</span> <span class="nx">zIndex</span><span class="p">);</span>
+					<span class="k">if</span> <span class="p">(</span><span class="nx">index</span> <span class="o">===</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span> <span class="k">this</span><span class="p">.</span><span class="nx">currentImage</span> <span class="o">=</span> <span class="nx">x</span><span class="p">;</span> <span class="p">}</span>
+				<span class="p">}</span>
+<span class="o">&gt;&gt;&gt;&gt;&gt;&gt;&gt;</span> <span class="mi">94439</span><span class="nx">ec26f261e2b796f74cb22f5a85434b025c4</span>
+			<span class="p">},</span> <span class="k">this</span><span class="p">);</span>
+		<span class="p">},</span>
+		<span class="nx">_createImage</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">img</span><span class="p">,</span> <span class="nx">z</span><span class="p">)</span> <span class="p">{</span>
+			<span class="kd">var</span> <span class="nx">cb</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;bodyNode&#39;</span><span class="p">),</span>
+			    <span class="nx">div</span> <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Node</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="s2">&quot;&lt;li&gt;&lt;img /&gt;&lt;/li&gt;&quot;</span><span class="p">),</span> 
+			    <span class="nx">div_img</span> <span class="o">=</span> <span class="nx">div</span><span class="p">.</span><span class="nx">one</span><span class="p">(</span><span class="s1">&#39;img&#39;</span><span class="p">);</span>
+			<span class="nx">div_img</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="s1">&#39;src&#39;</span><span class="p">,</span> <span class="nx">img</span><span class="p">.</span><span class="nx">src</span><span class="p">);</span>
+			<span class="nx">div</span><span class="p">.</span><span class="nx">setStyle</span><span class="p">(</span><span class="nx">ZINDEX</span><span class="p">,</span> <span class="nx">z</span><span class="p">);</span>
+			<span class="nx">img</span><span class="p">.</span><span class="nx">_node</span> <span class="o">=</span> <span class="nx">div</span><span class="p">;</span>
+			<span class="nx">cb</span><span class="p">.</span><span class="nx">insert</span><span class="p">(</span><span class="nx">div</span><span class="p">);</span>
+			<span class="nx">Y</span><span class="p">.</span><span class="nx">later</span><span class="p">(</span><span class="mi">1000</span><span class="p">,</span> <span class="k">this</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">di</span><span class="p">,</span> <span class="nx">cb</span><span class="p">)</span> <span class="p">{</span>
+				<span class="nx">di</span><span class="p">.</span><span class="nx">setXY</span><span class="p">(</span><span class="nx">cb</span><span class="p">.</span><span class="nx">getXY</span><span class="p">());</span>
+			<span class="p">},</span> <span class="p">[</span><span class="nx">div</span><span class="p">,</span> <span class="nx">cb</span><span class="p">]);</span>
+			<span class="k">return</span> <span class="nx">div</span><span class="p">;</span>
+		<span class="p">},</span>
+		<span class="nx">_setHeaderContents</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">title</span><span class="p">)</span> <span class="p">{</span>
+			<span class="kd">var</span> <span class="nx">headerNode</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;headerNode&#39;</span><span class="p">);</span>
+			<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">isValue</span><span class="p">(</span><span class="nx">headerNode</span><span class="p">))</span> <span class="p">{</span>
+				<span class="nx">headerNode</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">_addTemplate</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">TEMPLATES</span><span class="p">.</span><span class="nx">header</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+				<span class="k">this</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="s1">&#39;headerNode&#39;</span><span class="p">,</span> <span class="nx">headerNode</span><span class="p">);</span>
+			<span class="p">}</span>
+			<span class="nx">headerNode</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="s1">&#39;innerHTML&#39;</span><span class="p">,</span> <span class="nx">title</span><span class="p">);</span>
+		<span class="p">},</span>
+		<span class="nx">_addTemplate</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">template</span><span class="p">,</span> <span class="nx">where</span><span class="p">)</span> <span class="p">{</span>
+			<span class="kd">var</span> <span class="nx">node</span> <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Node</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="nx">template</span><span class="p">);</span>
+			<span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;contentBox&#39;</span><span class="p">).</span><span class="nx">insert</span><span class="p">(</span><span class="nx">node</span><span class="p">,</span> <span class="nx">where</span><span class="p">);</span>
+			<span class="k">return</span> <span class="nx">node</span><span class="p">;</span>
+		<span class="p">},</span>
+		<span class="nx">_parseImage</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">imgNode</span><span class="p">,</span> <span class="nx">imgObj</span><span class="p">)</span> <span class="p">{</span>
+			<span class="nx">imgObj</span><span class="p">.</span><span class="nx">_node</span> <span class="o">=</span> <span class="nx">imgNode</span><span class="p">;</span>
+			<span class="nx">imgObj</span><span class="p">.</span><span class="nx">src</span> <span class="o">=</span> <span class="nx">imgNode</span><span class="p">.</span><span class="nx">one</span><span class="p">(</span><span class="s1">&#39;img&#39;</span><span class="p">).</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;src&#39;</span><span class="p">);</span>
+		<span class="p">},</span>
+		<span class="nx">clearImages</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+			<span class="k">if</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;rendered&#39;</span><span class="p">))</span> <span class="p">{</span>
+				<span class="k">this</span><span class="p">.</span><span class="nx">_destroyImagesUI</span><span class="p">();</span>
+			<span class="p">}</span>
+			<span class="k">this</span><span class="p">.</span><span class="nx">_imageList</span> <span class="o">=</span> <span class="p">[];</span>
+		<span class="p">},</span>
+		<span class="nx">addImages</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">value</span><span class="p">)</span> <span class="p">{</span>
+			<span class="k">if</span> <span class="p">(</span><span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">isArray</span><span class="p">(</span><span class="nx">value</span><span class="p">))</span> <span class="p">{</span>
+				<span class="nx">Y</span><span class="p">.</span><span class="nb">Array</span><span class="p">.</span><span class="nx">each</span><span class="p">(</span><span class="nx">value</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">val</span><span class="p">)</span> <span class="p">{</span>
+					<span class="k">this</span><span class="p">.</span><span class="nx">_imageList</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">val</span><span class="p">);</span>
+				<span class="p">},</span> <span class="k">this</span><span class="p">);</span>
+			<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+				<span class="k">this</span><span class="p">.</span><span class="nx">_imageList</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">value</span><span class="p">);</span>
+			<span class="p">}</span>
+			<span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;rendered&#39;</span><span class="p">))</span> <span class="p">{</span>
+				<span class="k">this</span><span class="p">.</span><span class="nx">_renderImages</span><span class="p">();</span>
+			<span class="p">}</span>
+		<span class="p">},</span>
+		<span class="nx">_destroyImagesUI</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+			<span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;bodyNode&#39;</span><span class="p">).</span><span class="nx">all</span><span class="p">(</span><span class="s1">&#39;li&#39;</span><span class="p">).</span><span class="nx">remove</span><span class="p">();</span>
+			<span class="nx">Y</span><span class="p">.</span><span class="nb">Array</span><span class="p">.</span><span class="nx">each</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">_imageList</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">item</span><span class="p">)</span> <span class="p">{</span>
+				<span class="k">delete</span> <span class="nx">item</span><span class="p">.</span><span class="nx">_node</span><span class="p">;</span>
+			<span class="p">});</span>
+		<span class="p">},</span>
+		<span class="nx">renderUI</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+			<span class="kd">var</span> <span class="nx">bodyNode</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;bodyNode&#39;</span><span class="p">),</span> <span class="nx">title</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;title&#39;</span><span class="p">),</span> <span class="nx">image_height</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;image_height&#39;</span><span class="p">),</span> <span class="nx">image_width</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;image_width&#39;</span><span class="p">);</span>
+
+<span class="o">&lt;&lt;&lt;&lt;&lt;&lt;&lt;</span> <span class="nx">HEAD</span>
+			<span class="k">if</span> <span class="p">(</span><span class="nx">title</span><span class="p">.</span><span class="nx">length</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span> <span class="k">this</span><span class="p">.</span><span class="nx">_setHeaderContents</span><span class="p">(</span><span class="nx">title</span><span class="p">);</span> <span class="p">}</span>
+			<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">isValue</span><span class="p">(</span><span class="nx">bodyNode</span><span class="p">))</span> <span class="p">{</span> 
+				<span class="nx">bodyNode</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">_addTemplate</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">TEMPLATES</span><span class="p">.</span><span class="nx">body</span><span class="p">);</span>
+				<span class="k">this</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="s1">&#39;bodyNode&#39;</span><span class="p">,</span> <span class="nx">bodyNode</span><span class="p">);</span>
+			<span class="p">}</span>
+<span class="o">=======</span>
+			<span class="k">if</span> <span class="p">(</span><span class="nx">title</span><span class="p">.</span><span class="nx">length</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span> <span class="k">this</span><span class="p">.</span><span class="nx">_setHeaderContents</span><span class="p">(</span><span class="nx">title</span><span class="p">);</span>
+			<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">isValue</span><span class="p">(</span><span class="nx">bodyNode</span><span class="p">))</span> <span class="p">{</span> 
+				<span class="nx">bodyNode</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">_addTemplate</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">TEMPLATES</span><span class="p">.</span><span class="nx">body</span><span class="p">);</span>
+				<span class="k">this</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="s1">&#39;bodyNode&#39;</span><span class="p">,</span> <span class="nx">bodyNode</span><span class="p">);</span>
+			<span class="p">}}</span>
+<span class="o">&gt;&gt;&gt;&gt;&gt;&gt;&gt;</span> <span class="mi">94439</span><span class="nx">ec26f261e2b796f74cb22f5a85434b025c4</span>
+			<span class="k">if</span> <span class="p">(</span><span class="nx">image_width</span><span class="p">)</span> <span class="p">{</span> <span class="nx">bodyNode</span><span class="p">.</span><span class="nx">setStyle</span><span class="p">(</span><span class="s1">&#39;width&#39;</span><span class="p">,</span> <span class="nx">image_width</span><span class="p">);</span> <span class="p">}</span>
+			<span class="k">if</span> <span class="p">(</span><span class="nx">image_height</span><span class="p">)</span> <span class="p">{</span> <span class="nx">bodyNode</span><span class="p">.</span><span class="nx">setStyle</span><span class="p">(</span><span class="s1">&#39;height&#39;</span><span class="p">,</span> <span class="nx">image_height</span><span class="p">);</span> <span class="p">}</span>
+			<span class="k">this</span><span class="p">.</span><span class="nx">_renderImages</span><span class="p">();</span>
+		<span class="p">},</span>
+		<span class="nx">bindUI</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+			<span class="nx">Y</span><span class="p">.</span><span class="nx">later</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;delay&#39;</span><span class="p">),</span> <span class="k">this</span><span class="p">,</span> <span class="s2">&quot;beginTransition&quot;</span><span class="p">);</span>
+		<span class="p">},</span>
+		<span class="nx">beginTransition</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+			<span class="kd">var</span> <span class="nx">anim</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;animation&#39;</span><span class="p">);</span>
+			
+			<span class="k">if</span> <span class="p">(</span><span class="nx">anim</span><span class="p">)</span> <span class="p">{</span>
+				<span class="nx">anim</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="s1">&#39;node&#39;</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">currentImage</span><span class="p">);</span>
+				<span class="nx">anim</span><span class="p">.</span><span class="nx">run</span><span class="p">();</span>
+			<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+				<span class="k">this</span><span class="p">.</span><span class="nx">endTransition</span><span class="p">();</span>
+			<span class="p">}</span>
+		<span class="p">},</span>
+		<span class="nx">endTransition</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+			<span class="kd">var</span> <span class="nx">images</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;bodyNode&#39;</span><span class="p">).</span><span class="nx">all</span><span class="p">(</span><span class="s1">&#39;li&#39;</span><span class="p">),</span>
+					<span class="nx">anim</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;animation&#39;</span><span class="p">);</span>
+			
+			<span class="nx">images</span><span class="p">.</span><span class="nx">each</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">img</span><span class="p">,</span> <span class="nx">index</span><span class="p">,</span> <span class="nx">array</span><span class="p">)</span> <span class="p">{</span>
+				<span class="kd">var</span> <span class="nx">z</span> <span class="o">=</span> <span class="o">+</span><span class="nx">img</span><span class="p">.</span><span class="nx">getStyle</span><span class="p">(</span><span class="nx">ZINDEX</span><span class="p">),</span> 
+				    <span class="nx">l</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span> <span class="o">*</span> <span class="nx">array</span><span class="p">.</span><span class="nx">size</span><span class="p">();</span>
+				<span class="k">if</span> <span class="p">(</span><span class="nx">z</span> <span class="o">===</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span> <span class="k">this</span><span class="p">.</span><span class="nx">currentImage</span> <span class="o">=</span> <span class="nx">img</span><span class="p">;</span> <span class="p">}</span>
+				<span class="nx">img</span><span class="p">.</span><span class="nx">setStyle</span><span class="p">(</span><span class="nx">ZINDEX</span><span class="p">,</span> <span class="nx">z</span> <span class="o">===</span> <span class="mi">0</span> <span class="o">?</span> <span class="nx">l</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">:</span> <span class="nx">z</span> <span class="o">+</span> <span class="mi">1</span><span class="p">);</span>
+			<span class="p">},</span> <span class="k">this</span><span class="p">);</span>
+			<span class="nx">images</span><span class="p">.</span><span class="nx">setStyles</span><span class="p">(</span><span class="nx">anim</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;from&#39;</span><span class="p">));</span>
+			
+			<span class="nx">Y</span><span class="p">.</span><span class="nx">later</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;delay&#39;</span><span class="p">),</span> <span class="k">this</span><span class="p">,</span> <span class="s2">&quot;beginTransition&quot;</span><span class="p">);</span>
+		<span class="p">}</span>
+	<span class="p">});</span>
+
+<span class="nx">Y</span><span class="p">.</span><span class="nx">SlideShow</span> <span class="o">=</span> <span class="nx">_S</span><span class="p">;</span>
+</pre></div>
+                    </div>
+			</div>
+		</div>
+		<div class="yui-b">
+            <div class="nav">
+
+                    <div id="moduleList" class="module">
+                        <h4>Modules</h4>
+                        <ul class="content">
+                                <li class=""><a href="module_crypto.html" title="crypto">crypto</a></li>
+                                <li class=""><a href="module_gallery-node-extras.html" title="gallery-node-extras">gallery-node-extras</a></li>
+                                <li class="selected"><a href="module_gallery-nodelist-extras.html" title="gallery-nodelist-extras">gallery-nodelist-extras</a></li>
+                        </ul>
+                    </div>
+
+                    <div id="classList" class="module">
+                        <h4>Classes</h4>
+                        <ul class="content">
+                                <li class=""><a href="NodeList.html" title="NodeList">NodeList</a></li>
+                        </ul>
+                    </div>
+
+                    <div id="fileList" class="module">
+                        <h4>Files</h4>
+                        <ul class="content">        
+                                <li class=""><a href="magnifier.js.html" title="magnifier.js">magnifier.js</a></li>
+                                <li class=""><a href="nodelist-extras.js.html" title="nodelist-extras.js">nodelist-extras.js</a></li>
+                                <li class=""><a href="slideshow-image-padder.js.html" title="slideshow-image-padder.js">slideshow-image-padder.js</a></li>
+                                <li class=""><a href="slideshow-image-scaler.js.html" title="slideshow-image-scaler.js">slideshow-image-scaler.js</a></li>
+                                <li class="selected"><a href="slideshow.js.html" title="slideshow.js">slideshow.js</a></li>
+                        </ul>
+                    </div>
+
+
+
+
+
+            </div>
+		</div>
+	</div>
+	<div id="ft">
+        <hr />
+        Copyright &copy; 2011 Yahoo! Inc. All rights reserved.
+	</div>
+</div>
+<script type="text/javascript">
+    ALL_YUI_PROPS = [{"url": "NodeList.html#method_filter", "access": "", "host": "NodeList", "type": "method", "name": "filter"}, {"url": "NodeList.html#method_first", "access": "", "host": "NodeList", "type": "method", "name": "first"}, {"url": "NodeList.html#method_last", "access": "", "host": "NodeList", "type": "method", "name": "last"}, {"url": "NodeList.html#method_reject", "access": "", "host": "NodeList", "type": "method", "name": "reject"}];
+</script>
+</body>
+</html>

@@ -2,13 +2,13 @@
 <html xmlns:yui="http://yuilibrary.com/rdf/1.0/yui.rdf#">
 <head>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
-	<title>API: gallery-nodelist-extras  NodeList   (YUI Library)</title>
+	<title>API: crypto  Crypto   (YUI Library)</title>
 
-	<link rel="stylesheet" type="text/css" href="assets/reset-fonts-grids-min.css?stamp=1295593519.59" />
-	<link rel="stylesheet" type="text/css" href="assets/api.css?stamp=1295593519.59" />
+	<link rel="stylesheet" type="text/css" href="assets/reset-fonts-grids-min.css?stamp=1295593519.61" />
+	<link rel="stylesheet" type="text/css" href="assets/api.css?stamp=1295593519.61" />
 
-    <script type="text/javascript" src="assets/api-js?stamp=1295593519.59"></script>
-    <script type="text/javascript" src="assets/ac-js?stamp=1295593519.59"></script>
+    <script type="text/javascript" src="assets/api-js?stamp=1295593519.61"></script>
+    <script type="text/javascript" src="assets/ac-js?stamp=1295593519.61"></script>
 </head>
 
 <body id="yahoo-com">
@@ -16,10 +16,10 @@
 <div id="doc3" class="yui-t2">
 	<div id="hd">
         <h1><a href="http://developer.yahoo.com/yui/" title="Yahoo! UI Library">Yahoo! UI Library</a></h1>
-        <h3>gallery-nodelist-extras&nbsp; <span class="subtitle">1.0.0</span></h3>
+        <h3>crypto&nbsp; <span class="subtitle">1.0.0</span></h3>
         <a href="./index.html" title="Yahoo! UI Library">Yahoo! UI Library</a> 
-            &gt; <a href="./module_gallery-nodelist-extras.html" title="gallery-nodelist-extras">gallery-nodelist-extras</a>
-                 &gt; NodeList 
+            &gt; <a href="./module_crypto.html" title="crypto">crypto</a>
+                 &gt; Crypto 
                 
         <form onsubmit="return false">
             <div id="propertysearch">
@@ -48,7 +48,7 @@
 
                         
                         
-                            Class <b property="yui:name">NodeList</b>
+                            Class <b property="yui:name">Crypto</b>
                         <span class="extends">
                         </span>
 
@@ -59,7 +59,7 @@
   
 
                     <div class="summary description" property="yui:description">
-                        An expanded collection of methods for Y.NodeList
+                        
                     </div>
 
                     
@@ -71,83 +71,31 @@
                         <div class="section method details">
                             <h3 id="methods">Methods</h3>
                             <div class="content">
-                                    <div class="" rel="yui:method" resource="#method_filter">
+                                    <div class="" rel="yui:method" resource="#method_add32Bit">
                                     <h4>
-                                        <a name="method_filter">filter</a></h4>
+                                        <a name="method_add32Bit">add32Bit</a></h4>
                                     <div class="detail" >
                                         <code>
                                         
+                                         static 
                                         
-                                        
-                                        NodeList
-                                            <strong property="yui:name">filter</strong>
-                                           (
-                                                
-                                                        
-                                                         filter
-                                                    
-                                                
-                                            )
-                                        </code>
-                                        
-                                        <div class="description" property="yui:description">
-                                            Filters the NodeList instance to only the matching nodes
-                                        </div>
-
-                                        <div class="description">
-
-                                                <dl rel="yui:parameters">
-                                                    <dt>Parameters:</dt>
-                                                        <dd rel="yui:parameter">
-                                                        <code><span property="yui:name">filter</span>
-                                                        &lt;<span property="yui:type">string|function</span>&gt;
-                                                        </code>
-                                                        <span property="yui:description"> A CSS selector string to apply to the list,
-or a boolean function to apply to each element in the list. The function
-will be passed three arguments, a Y.Node instance of the current node, the
-current index in the list, and the NodeList instance.</span>
-                                                        </dd>
-                                                </dl>
-
-                                                <dl>
-                                                    <dt>Returns:
-                                                    <code property="yui:return">
-                                                        NodeList
-                                                    </code></dt>
-                                                    <dd property="yui:returnInfo">NodeList containing the updated collection</dd>
-                                                </dl>
-
-
-             
-
-                                        </div>
-
-                                    </div>
-                                    <hr />
-                                    </div>
-                                    <div class="" rel="yui:method" resource="#method_first">
-                                    <h4>
-                                        <a name="method_first">first</a></h4>
-                                    <div class="detail" >
-                                        <code>
-                                        
-                                        
-                                        
-                                        Node|NodeList
-                                            <strong property="yui:name">first</strong>
+                                        void
+                                            <strong property="yui:name">add32Bit</strong>
                                            (
                                                 
                                                         
                                                          first
                                                     
                                                 
+                                                        , 
+                                                         second
+                                                    
+                                                
                                             )
                                         </code>
                                         
                                         <div class="description" property="yui:description">
-                                            Returns either the first node in the list, if there is no arugment provided,
-the first n-items in the list, if provided a numeric argument, or the first
-item in the list which tests 'true' to the provide boolean function
+                                            Adds two numerics as if they were 32-bit integers.
                                         </div>
 
                                         <div class="description">
@@ -156,17 +104,22 @@ item in the list which tests 'true' to the provide boolean function
                                                     <dt>Parameters:</dt>
                                                         <dd rel="yui:parameter">
                                                         <code><span property="yui:name">first</span>
-                                                        &lt;<span property="yui:type">Integer|Function</span>&gt;
+                                                        &lt;<span property="yui:type">int</span>&gt;
                                                         </code>
-                                                        <span property="yui:description"> The number of items to return or the boolean
-function to execute against the list.</span>
+                                                        <span property="yui:description"> operand</span>
+                                                        </dd>
+                                                        <dd rel="yui:parameter">
+                                                        <code><span property="yui:name">second</span>
+                                                        &lt;<span property="yui:type">int</span>&gt;
+                                                        </code>
+                                                        <span property="yui:description"> operand</span>
                                                         </dd>
                                                 </dl>
 
                                                 <dl>
                                                     <dt>Returns:
                                                     <code property="yui:return">
-                                                        Node|NodeList
+                                                        void
                                                     </code></dt>
                                                     <dd property="yui:returnInfo"></dd>
                                                 </dl>
@@ -179,29 +132,27 @@ function to execute against the list.</span>
                                     </div>
                                     <hr />
                                     </div>
-                                    <div class="" rel="yui:method" resource="#method_last">
+                                    <div class="" rel="yui:method" resource="#method_MD5">
                                     <h4>
-                                        <a name="method_last">last</a></h4>
+                                        <a name="method_MD5">MD5</a></h4>
                                     <div class="detail" >
                                         <code>
                                         
+                                         static 
                                         
-                                        
-                                        Node|NodeList
-                                            <strong property="yui:name">last</strong>
+                                        void
+                                            <strong property="yui:name">MD5</strong>
                                            (
                                                 
                                                         
-                                                         last
+                                                         msg
                                                     
                                                 
                                             )
                                         </code>
                                         
                                         <div class="description" property="yui:description">
-                                            Returns either the last node in the list, if there is no arugment provided,
-the last n-items in the list, if provided a numeric argument, or the last
-item in the list which tests 'true' to the provide boolean function
+                                            Calculates the MD5 hash for the given message
                                         </div>
 
                                         <div class="description">
@@ -209,18 +160,17 @@ item in the list which tests 'true' to the provide boolean function
                                                 <dl rel="yui:parameters">
                                                     <dt>Parameters:</dt>
                                                         <dd rel="yui:parameter">
-                                                        <code><span property="yui:name">last</span>
-                                                        &lt;<span property="yui:type">Integer|Function</span>&gt;
+                                                        <code><span property="yui:name">msg</span>
+                                                        &lt;<span property="yui:type">string</span>&gt;
                                                         </code>
-                                                        <span property="yui:description"> The number of items to return or the boolean
-function to execute against the list.</span>
+                                                        <span property="yui:description"> The message to calculate the hash of, typically a UTF-8 string</span>
                                                         </dd>
                                                 </dl>
 
                                                 <dl>
                                                     <dt>Returns:
                                                     <code property="yui:return">
-                                                        Node|NodeList
+                                                        void
                                                     </code></dt>
                                                     <dd property="yui:returnInfo"></dd>
                                                 </dl>
@@ -233,28 +183,27 @@ function to execute against the list.</span>
                                     </div>
                                     <hr />
                                     </div>
-                                    <div class="" rel="yui:method" resource="#method_reject">
+                                    <div class="" rel="yui:method" resource="#method_stringToByteArray">
                                     <h4>
-                                        <a name="method_reject">reject</a></h4>
+                                        <a name="method_stringToByteArray">stringToByteArray</a></h4>
                                     <div class="detail" >
                                         <code>
                                         
+                                         static 
                                         
-                                        
-                                        NodeList
-                                            <strong property="yui:name">reject</strong>
+                                        void
+                                            <strong property="yui:name">stringToByteArray</strong>
                                            (
                                                 
                                                         
-                                                         filter
+                                                         The
                                                     
                                                 
                                             )
                                         </code>
                                         
                                         <div class="description" property="yui:description">
-                                            This inverse of filter. Applies :not to a selector, or builds a NodeList
-consisting of all the nodes for which the argument is false
+                                            Converts a standard JavaScript string (utf16) to a Byte Array
                                         </div>
 
                                         <div class="description">
@@ -262,22 +211,123 @@ consisting of all the nodes for which the argument is false
                                                 <dl rel="yui:parameters">
                                                     <dt>Parameters:</dt>
                                                         <dd rel="yui:parameter">
-                                                        <code><span property="yui:name">filter</span>
-                                                        &lt;<span property="yui:type">string|function</span>&gt;
+                                                        <code><span property="yui:name">The</span>
+                                                        &lt;<span property="yui:type">string</span>&gt;
                                                         </code>
-                                                        <span property="yui:description"> A CSS selector string to apply to the list,
-or a boolean function to apply to each element in the list. The function
-will be passed three arguments, a Y.Node instance of the current node, the
-current index in the list, and the NodeList instance.</span>
+                                                        <span property="yui:description"> utf16 encoded string to convert to a byte array</span>
                                                         </dd>
                                                 </dl>
 
                                                 <dl>
                                                     <dt>Returns:
                                                     <code property="yui:return">
-                                                        NodeList
+                                                        void
                                                     </code></dt>
-                                                    <dd property="yui:returnInfo">NodeList containing the updated collection</dd>
+                                                    <dd property="yui:returnInfo"></dd>
+                                                </dl>
+
+
+             
+
+                                        </div>
+
+                                    </div>
+                                    <hr />
+                                    </div>
+                                    <div class="" rel="yui:method" resource="#method_utf16ToUtf8">
+                                    <h4>
+                                        <a name="method_utf16ToUtf8">utf16ToUtf8</a></h4>
+                                    <div class="detail" >
+                                        <code>
+                                        
+                                         static 
+                                        
+                                        void
+                                            <strong property="yui:name">utf16ToUtf8</strong>
+                                           (
+                                                
+                                                        
+                                                         The
+                                                    
+                                                
+                                            )
+                                        </code>
+                                        
+                                        <div class="description" property="yui:description">
+                                            Converts a standard JavaScript string (utf16) to a UTF8 string
+                                        </div>
+
+                                        <div class="description">
+
+                                                <dl rel="yui:parameters">
+                                                    <dt>Parameters:</dt>
+                                                        <dd rel="yui:parameter">
+                                                        <code><span property="yui:name">The</span>
+                                                        &lt;<span property="yui:type">string</span>&gt;
+                                                        </code>
+                                                        <span property="yui:description"> utf16 encoded string to convert to a utf8 array</span>
+                                                        </dd>
+                                                </dl>
+
+                                                <dl>
+                                                    <dt>Returns:
+                                                    <code property="yui:return">
+                                                        void
+                                                    </code></dt>
+                                                    <dd property="yui:returnInfo"></dd>
+                                                </dl>
+
+
+             
+
+                                        </div>
+
+                                    </div>
+                                    <hr />
+                                    </div>
+                                    <div class="" rel="yui:method" resource="#method_utf8ToByteArray">
+                                    <h4>
+                                        <a name="method_utf8ToByteArray">utf8ToByteArray</a></h4>
+                                    <div class="detail" >
+                                        <code>
+                                        
+                                         static 
+                                        
+                                        void
+                                            <strong property="yui:name">utf8ToByteArray</strong>
+                                           (
+                                                
+                                                        
+                                                         The
+                                                    
+                                                
+                                            )
+                                        </code>
+                                        
+                                        <div class="description" property="yui:description">
+                                            Converts a utf8 encoded string to a byte array. It's important to use a
+utf8 encoded string, because otherwise characters with individual bytes
+greater than 255 will be silently dropped.
+                                        </div>
+
+                                        <div class="description">
+
+                                                <dl rel="yui:parameters">
+                                                    <dt>Parameters:</dt>
+                                                        <dd rel="yui:parameter">
+                                                        <code><span property="yui:name">The</span>
+                                                        &lt;<span property="yui:type">string</span>&gt;
+                                                        </code>
+                                                        <span property="yui:description"> utf8 encoded string to convert to a byte array</span>
+                                                        </dd>
+                                                </dl>
+
+                                                <dl>
+                                                    <dt>Returns:
+                                                    <code property="yui:return">
+                                                        void
+                                                    </code></dt>
+                                                    <dd property="yui:returnInfo"></dd>
                                                 </dl>
 
 
@@ -310,27 +360,26 @@ current index in the list, and the NodeList instance.</span>
                     <div id="moduleList" class="module">
                         <h4>Modules</h4>
                         <ul class="content">
-                                <li class=""><a href="module_crypto.html" title="crypto">crypto</a></li>
+                                <li class="selected"><a href="module_crypto.html" title="crypto">crypto</a></li>
                                 <li class=""><a href="module_gallery-node-extras.html" title="gallery-node-extras">gallery-node-extras</a></li>
-                                <li class="selected"><a href="module_gallery-nodelist-extras.html" title="gallery-nodelist-extras">gallery-nodelist-extras</a></li>
+                                <li class=""><a href="module_gallery-nodelist-extras.html" title="gallery-nodelist-extras">gallery-nodelist-extras</a></li>
                         </ul>
                     </div>
 
                     <div id="classList" class="module">
                         <h4>Classes</h4>
                         <ul class="content">
-                                <li class="selected"><a href="NodeList.html" title="NodeList">NodeList</a></li>
+                                <li class="selected"><a href="Crypto.html" title="Crypto">Crypto</a></li>
+                                <li class="selected"><a href="Crypto.html" title="Crypto">Crypto</a></li>
                         </ul>
                     </div>
 
                     <div id="fileList" class="module">
                         <h4>Files</h4>
                         <ul class="content">        
-                                <li class=""><a href="magnifier.js.html" title="magnifier.js">magnifier.js</a></li>
-                                <li class=""><a href="nodelist-extras.js.html" title="nodelist-extras.js">nodelist-extras.js</a></li>
-                                <li class=""><a href="slideshow-image-padder.js.html" title="slideshow-image-padder.js">slideshow-image-padder.js</a></li>
-                                <li class=""><a href="slideshow-image-scaler.js.html" title="slideshow-image-scaler.js">slideshow-image-scaler.js</a></li>
-                                <li class=""><a href="slideshow.js.html" title="slideshow.js">slideshow.js</a></li>
+                                <li class=""><a href="chromahash.js.html" title="chromahash.js">chromahash.js</a></li>
+                                <li class=""><a href="crypto.js.html" title="crypto.js">crypto.js</a></li>
+                                <li class=""><a href="md5.js.html" title="md5.js">md5.js</a></li>
                         </ul>
                     </div>
 
@@ -338,10 +387,11 @@ current index in the list, and the NodeList instance.</span>
                     <div id="methodsList" class="module">
                         <h4>Methods</h4>
                         <ul class="content">        
-                                <li class=""><a href="#method_filter" title="filter">filter</a></li>
-                                <li class=""><a href="#method_first" title="first">first</a></li>
-                                <li class=""><a href="#method_last" title="last">last</a></li>
-                                <li class=""><a href="#method_reject" title="reject">reject</a></li>
+                                <li class=""><a href="#method_add32Bit" title="add32Bit">add32Bit</a></li>
+                                <li class=""><a href="#method_MD5" title="MD5">MD5</a></li>
+                                <li class=""><a href="#method_stringToByteArray" title="stringToByteArray">stringToByteArray</a></li>
+                                <li class=""><a href="#method_utf16ToUtf8" title="utf16ToUtf8">utf16ToUtf8</a></li>
+                                <li class=""><a href="#method_utf8ToByteArray" title="utf8ToByteArray">utf8ToByteArray</a></li>
                         </ul>
                     </div>
 
@@ -356,7 +406,7 @@ current index in the list, and the NodeList instance.</span>
 	</div>
 </div>
 <script type="text/javascript">
-    ALL_YUI_PROPS = [{"url": "NodeList.html#method_filter", "access": "", "host": "NodeList", "type": "method", "name": "filter"}, {"url": "NodeList.html#method_first", "access": "", "host": "NodeList", "type": "method", "name": "first"}, {"url": "NodeList.html#method_last", "access": "", "host": "NodeList", "type": "method", "name": "last"}, {"url": "NodeList.html#method_reject", "access": "", "host": "NodeList", "type": "method", "name": "reject"}];
+    ALL_YUI_PROPS = [{"url": "Crypto.html#method_add32Bit", "access": "", "host": "Crypto", "type": "method", "name": "add32Bit"}, {"url": "Crypto.html#method_add32Bit", "access": "", "host": "Crypto", "type": "method", "name": "add32Bit"}, {"url": "Crypto.html#method_MD5", "access": "", "host": "Crypto", "type": "method", "name": "MD5"}, {"url": "Crypto.html#method_MD5", "access": "", "host": "Crypto", "type": "method", "name": "MD5"}, {"url": "Crypto.html#method_stringToByteArray", "access": "", "host": "Crypto", "type": "method", "name": "stringToByteArray"}, {"url": "Crypto.html#method_stringToByteArray", "access": "", "host": "Crypto", "type": "method", "name": "stringToByteArray"}, {"url": "Crypto.html#method_utf16ToUtf8", "access": "", "host": "Crypto", "type": "method", "name": "utf16ToUtf8"}, {"url": "Crypto.html#method_utf16ToUtf8", "access": "", "host": "Crypto", "type": "method", "name": "utf16ToUtf8"}, {"url": "Crypto.html#method_utf8ToByteArray", "access": "", "host": "Crypto", "type": "method", "name": "utf8ToByteArray"}, {"url": "Crypto.html#method_utf8ToByteArray", "access": "", "host": "Crypto", "type": "method", "name": "utf8ToByteArray"}];
 </script>
 </body>
 </html>

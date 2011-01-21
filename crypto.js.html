@@ -1,0 +1,213 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html xmlns:yui="http://yuilibrary.com/rdf/1.0/yui.rdf#">
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+	<title>API: crypto   crypto.js  (YUI Library)</title>
+
+	<link rel="stylesheet" type="text/css" href="assets/reset-fonts-grids-min.css?stamp=1295593519.61" />
+	<link rel="stylesheet" type="text/css" href="assets/api.css?stamp=1295593519.61" />
+
+    <script type="text/javascript" src="assets/api-js?stamp=1295593519.61"></script>
+    <script type="text/javascript" src="assets/ac-js?stamp=1295593519.61"></script>
+</head>
+
+<body id="yahoo-com">
+
+<div id="doc3" class="yui-t2">
+	<div id="hd">
+        <h1><a href="http://developer.yahoo.com/yui/" title="Yahoo! UI Library">Yahoo! UI Library</a></h1>
+        <h3>crypto&nbsp; <span class="subtitle">1.0.0</span></h3>
+        <a href="./index.html" title="Yahoo! UI Library">Yahoo! UI Library</a> 
+            &gt; <a href="./module_crypto.html" title="crypto">crypto</a>
+                
+                 &gt; crypto.js (source view) 
+        <form onsubmit="return false">
+            <div id="propertysearch">
+                Search: <input autocomplete="off" id="searchinput" />
+                <div id="searchresults">
+                    &nbsp;
+                </div>
+            </div>
+        </form>
+	</div>
+
+	<div id="bd">
+		<div id="yui-main">
+			<div class="yui-b">
+            <form action="#" name="yui-classopts-form" method="get" id="yui-classopts-form">
+                <fieldset>
+                    <legend>Filters</legend>
+                <span class="classopts"><input type="checkbox" name="show_private" id="show_private" /> <label for="show_private">Show Private</label></span>
+                <span class="classopts"><input type="checkbox" name="show_protected" id="show_protected" /> <label for="show_protected">Show Protected</label></span>
+                <span class="classopts"><input type="checkbox" name="show_deprecated" id="show_deprecated" /> <label for="show_deprecated">Show Deprecated</label></span>
+                </fieldset>
+            </form>
+
+                    <div id="srcout">
+                        <style>
+                            #doc3 .classopts { display:none; }
+                        </style>
+<div class="highlight"><pre><span class="cm">/**</span>
+<span class="cm"> * Contains helper methods for Cryptographic functions</span>
+<span class="cm"> * @module crypto</span>
+<span class="cm"> */</span>
+
+<span class="cm">/**</span>
+<span class="cm"> * @class Crypto</span>
+<span class="cm"> */</span>
+<span class="kd">var</span> <span class="nx">_C</span> <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Crypto</span> <span class="o">||</span> <span class="p">{</span> <span class="p">};</span>
+
+<span class="nx">Y</span><span class="p">.</span><span class="nx">mix</span><span class="p">(</span><span class="nx">_C</span><span class="p">,</span> <span class="p">{</span>
+    <span class="cm">/**</span>
+<span class="cm">     * Adds two numerics as if they were 32-bit integers.</span>
+<span class="cm">     *</span>
+<span class="cm">     * @method add32Bit</span>
+<span class="cm">     *</span>
+<span class="cm">     * @param {int} first operand</span>
+<span class="cm">     * @param {int} second operand</span>
+<span class="cm">     *</span>
+<span class="cm">     * @static</span>
+<span class="cm">     */</span>
+    <span class="nx">add32Bit</span><span class="o">:</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">x</span><span class="p">,</span><span class="nx">y</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="p">(</span><span class="nx">x</span>  <span class="o">+</span> <span class="nx">y</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mh">0xffffffff</span><span class="p">;</span>
+    <span class="p">},</span>
+  <span class="cm">/**</span>
+<span class="cm">     * Converts a standard JavaScript string (utf16) to a UTF8 string</span>
+<span class="cm">     *</span>
+<span class="cm">     * @method utf16ToUtf8</span>
+<span class="cm">     *</span>
+<span class="cm">     * @param {string} The utf16 encoded string to convert to a utf8 array</span>
+<span class="cm">     *</span>
+<span class="cm">     * @static</span>
+<span class="cm">     */</span>
+    <span class="nx">utf16ToUtf8</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">string</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">output</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="nx">cd</span><span class="p">,</span> <span class="nx">pr</span><span class="p">,</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+
+        <span class="k">while</span> <span class="p">(</span><span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">string</span><span class="p">.</span><span class="nx">length</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nx">cd</span> <span class="o">=</span> <span class="nx">string</span><span class="p">.</span><span class="nx">charCodeAt</span><span class="p">(</span><span class="nx">i</span><span class="p">);</span>
+            <span class="nx">pr</span> <span class="o">=</span> <span class="nx">i</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">&lt;</span> <span class="nx">string</span><span class="p">.</span><span class="nx">length</span> <span class="o">?</span> <span class="nx">string</span><span class="p">.</span><span class="nx">charCodeAt</span><span class="p">(</span><span class="nx">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">:</span> <span class="mi">0</span><span class="p">;</span>
+
+            <span class="k">if</span> <span class="p">(</span><span class="mh">0xd800</span> <span class="o">&lt;=</span> <span class="nx">cd</span> <span class="o">&amp;&amp;</span> <span class="nx">cd</span> <span class="o">&lt;=</span> <span class="mh">0xdbff</span> <span class="o">&amp;&amp;</span> <span class="mh">0xdc00</span> <span class="o">&lt;=</span> <span class="nx">pr</span> <span class="o">&amp;&amp;</span> <span class="nx">pr</span> <span class="o">&lt;=</span> <span class="mh">0xdfff</span><span class="p">)</span> <span class="p">{</span>
+                <span class="c1">// Surrogate Pair</span>
+                <span class="nx">cd</span> <span class="o">=</span> <span class="mh">0x10000</span> <span class="o">+</span> <span class="p">((</span><span class="nx">cd</span> <span class="o">&amp;</span> <span class="mh">0x3ff</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="nx">pr</span> <span class="o">&amp;</span> <span class="mh">0x03ff</span><span class="p">));</span>
+                <span class="nx">i</span> <span class="o">+=</span> <span class="mi">1</span><span class="p">;</span>
+            <span class="p">}</span>
+
+            <span class="k">if</span> <span class="p">(</span><span class="nx">cd</span> <span class="o">&lt;=</span> <span class="mh">0x007f</span><span class="p">)</span> <span class="p">{</span>
+                <span class="nx">output</span> <span class="o">+=</span> <span class="nb">String</span><span class="p">.</span><span class="nx">fromCharCode</span><span class="p">(</span><span class="nx">cd</span><span class="p">);</span>
+            <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">cd</span> <span class="o">&lt;=</span> <span class="mh">0x07ff</span><span class="p">)</span> <span class="p">{</span>
+                <span class="nx">output</span> <span class="o">+=</span> <span class="nb">String</span><span class="p">.</span><span class="nx">fromCharCode</span><span class="p">(</span><span class="mh">0xc0</span> <span class="o">|</span> <span class="p">((</span><span class="nx">cd</span> <span class="o">&gt;&gt;&gt;</span> <span class="mi">6</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mi">15</span><span class="p">),</span>
+                                                                            <span class="mh">0x80</span> <span class="o">|</span>  <span class="p">(</span><span class="nx">cd</span> <span class="o">&amp;</span> <span class="mi">63</span><span class="p">));</span>
+            <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">cd</span> <span class="o">&lt;=</span> <span class="mh">0xffff</span><span class="p">)</span> <span class="p">{</span>
+                <span class="nx">output</span> <span class="o">+=</span> <span class="nb">String</span><span class="p">.</span><span class="nx">fromCharCode</span><span class="p">(</span><span class="mh">0xe0</span> <span class="o">|</span> <span class="p">((</span><span class="nx">cd</span> <span class="o">&gt;&gt;&gt;</span> <span class="mi">12</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mi">15</span> <span class="p">),</span>
+                                                                            <span class="mh">0x80</span> <span class="o">|</span> <span class="p">((</span><span class="nx">cd</span> <span class="o">&gt;&gt;&gt;</span>  <span class="mi">6</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mi">63</span><span class="p">),</span>
+                                                                            <span class="mh">0x80</span> <span class="o">|</span>  <span class="p">(</span><span class="nx">cd</span> <span class="o">&amp;</span> <span class="mi">63</span><span class="p">));</span>
+            <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">cd</span> <span class="o">&lt;=</span> <span class="mh">0x1fffff</span><span class="p">)</span> <span class="p">{</span>
+                <span class="nx">output</span> <span class="o">+=</span> <span class="nb">String</span><span class="p">.</span><span class="nx">fromCharCode</span><span class="p">(</span><span class="mh">0xf0</span> <span class="o">|</span> <span class="p">((</span><span class="nx">cd</span> <span class="o">&gt;&gt;&gt;</span> <span class="mi">18</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mi">15</span><span class="p">),</span>
+                                                                            <span class="mh">0x80</span> <span class="o">|</span> <span class="p">((</span><span class="nx">cd</span> <span class="o">&gt;&gt;&gt;</span> <span class="mi">12</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mi">63</span><span class="p">),</span>
+                                                                            <span class="mh">0x80</span> <span class="o">|</span> <span class="p">((</span><span class="nx">cd</span> <span class="o">&gt;&gt;&gt;</span>  <span class="mi">6</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mi">63</span><span class="p">),</span>
+                                                                            <span class="mh">0x80</span> <span class="o">|</span>  <span class="p">(</span><span class="nx">cd</span> <span class="o">&amp;</span> <span class="mi">63</span><span class="p">));</span>
+            <span class="p">}</span>
+            <span class="nx">i</span> <span class="o">+=</span> <span class="mi">1</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="nx">output</span><span class="p">;</span>
+    <span class="p">},</span>
+    <span class="cm">/**</span>
+<span class="cm">     * Converts a utf8 encoded string to a byte array. It&#39;s important to use a</span>
+<span class="cm">     * utf8 encoded string, because otherwise characters with individual bytes</span>
+<span class="cm">     * greater than 255 will be silently dropped.</span>
+<span class="cm">     *</span>
+<span class="cm">     * @method utf8ToByteArray</span>
+<span class="cm">     *</span>
+<span class="cm">     * @param {string} The utf8 encoded string to convert to a byte array</span>
+<span class="cm">     *</span>
+<span class="cm">     * @static</span>
+<span class="cm">     */</span>
+    <span class="nx">utf8ToByteArray</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">string</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">output</span> <span class="o">=</span> <span class="nb">Array</span><span class="p">(</span><span class="nx">string</span><span class="p">.</span><span class="nx">length</span> <span class="o">&gt;&gt;</span> <span class="mi">2</span><span class="p">),</span> <span class="nx">i</span><span class="p">,</span> <span class="nx">j</span><span class="p">;</span>
+        <span class="k">for</span> <span class="p">(</span><span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span> <span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">output</span><span class="p">.</span><span class="nx">length</span> <span class="p">;</span> <span class="nx">i</span> <span class="o">+=</span> <span class="mi">1</span><span class="p">)</span> <span class="p">{</span> <span class="nx">output</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="p">}</span>
+        <span class="k">for</span> <span class="p">(</span><span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span> <span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">string</span><span class="p">.</span><span class="nx">length</span> <span class="p">;</span> <span class="nx">i</span> <span class="o">+=</span> <span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nx">j</span> <span class="o">=</span> <span class="nx">i</span> <span class="o">*</span> <span class="mi">8</span><span class="p">;</span>
+            <span class="nx">output</span><span class="p">[</span><span class="nx">j</span> <span class="o">&gt;&gt;</span> <span class="mi">5</span><span class="p">]</span> <span class="o">|=</span> <span class="p">(</span><span class="nx">string</span><span class="p">.</span><span class="nx">charCodeAt</span><span class="p">(</span><span class="nx">i</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mh">0xff</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="p">(</span><span class="nx">j</span> <span class="o">%</span> <span class="mi">32</span><span class="p">);</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="nx">output</span><span class="p">;</span>
+    <span class="p">},</span>
+    <span class="nx">byteArrayToString</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">array</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">output</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="nx">i</span><span class="p">,</span> <span class="nx">code</span><span class="p">;</span>
+        <span class="k">for</span> <span class="p">(</span><span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span> <span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">array</span><span class="p">.</span><span class="nx">length</span> <span class="o">*</span> <span class="mi">32</span> <span class="p">;</span> <span class="nx">i</span> <span class="o">+=</span> <span class="mi">8</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nx">code</span> <span class="o">=</span> <span class="p">(</span><span class="nx">array</span><span class="p">[</span><span class="nx">i</span> <span class="o">&gt;&gt;</span> <span class="mi">5</span><span class="p">]</span> <span class="o">&gt;&gt;&gt;</span> <span class="p">(</span><span class="nx">i</span> <span class="o">%</span> <span class="mi">32</span><span class="p">));</span>
+            <span class="nx">output</span> <span class="o">+=</span> <span class="nb">String</span><span class="p">.</span><span class="nx">fromCharCode</span><span class="p">(</span><span class="nx">code</span> <span class="o">&amp;</span> <span class="mh">0xff</span><span class="p">);</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="nx">output</span><span class="p">;</span>
+    <span class="p">},</span>
+    <span class="nx">utf8ToHex</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">string</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">output</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="nx">i</span><span class="p">,</span> <span class="nx">cd</span><span class="p">,</span> <span class="nx">chars</span> <span class="o">=</span> <span class="s2">&quot;0123456789abcdef&quot;</span><span class="p">;</span>
+        <span class="k">for</span> <span class="p">(</span><span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span> <span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">string</span><span class="p">.</span><span class="nx">length</span> <span class="p">;</span> <span class="nx">i</span> <span class="o">+=</span> <span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nx">cd</span> <span class="o">=</span> <span class="nx">string</span><span class="p">.</span><span class="nx">charCodeAt</span><span class="p">(</span><span class="nx">i</span><span class="p">);</span>
+            <span class="nx">output</span> <span class="o">+=</span> <span class="nx">chars</span><span class="p">.</span><span class="nx">charAt</span><span class="p">((</span> <span class="nx">cd</span> <span class="o">&gt;&gt;&gt;</span> <span class="mi">4</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mh">0x0f</span><span class="p">)</span> <span class="o">+</span>
+                              <span class="nx">chars</span><span class="p">.</span><span class="nx">charAt</span><span class="p">(</span> <span class="nx">cd</span> <span class="o">&amp;</span> <span class="mh">0x0f</span><span class="p">);</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="nx">output</span><span class="p">;</span>
+    <span class="p">},</span>
+    <span class="cm">/**</span>
+<span class="cm">     * Converts a standard JavaScript string (utf16) to a Byte Array</span>
+<span class="cm">     * @method stringToByteArray</span>
+<span class="cm">     * @param {string} The utf16 encoded string to convert to a byte array</span>
+<span class="cm">     * @static</span>
+<span class="cm">     */</span>
+    <span class="nx">stringToByteArray</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">string</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="nx">_C</span><span class="p">.</span><span class="nx">utf8ToByteArray</span><span class="p">(</span><span class="nx">_C</span><span class="p">.</span><span class="nx">utf16ToUtf8</span><span class="p">(</span><span class="nx">string</span><span class="p">));</span>
+    <span class="p">}</span>
+<span class="p">});</span>
+
+<span class="nx">Y</span><span class="p">.</span><span class="nx">Crypto</span> <span class="o">=</span> <span class="nx">_C</span><span class="p">;</span>
+</pre></div>
+                    </div>
+			</div>
+		</div>
+		<div class="yui-b">
+            <div class="nav">
+
+                    <div id="moduleList" class="module">
+                        <h4>Modules</h4>
+                        <ul class="content">
+                                <li class="selected"><a href="module_crypto.html" title="crypto">crypto</a></li>
+                                <li class=""><a href="module_gallery-node-extras.html" title="gallery-node-extras">gallery-node-extras</a></li>
+                                <li class=""><a href="module_gallery-nodelist-extras.html" title="gallery-nodelist-extras">gallery-nodelist-extras</a></li>
+                        </ul>
+                    </div>
+
+                    <div id="classList" class="module">
+                        <h4>Classes</h4>
+                        <ul class="content">
+                                <li class=""><a href="Crypto.html" title="Crypto">Crypto</a></li>
+                                <li class=""><a href="Crypto.html" title="Crypto">Crypto</a></li>
+                        </ul>
+                    </div>
+
+                    <div id="fileList" class="module">
+                        <h4>Files</h4>
+                        <ul class="content">        
+                                <li class=""><a href="chromahash.js.html" title="chromahash.js">chromahash.js</a></li>
+                                <li class="selected"><a href="crypto.js.html" title="crypto.js">crypto.js</a></li>
+                                <li class=""><a href="md5.js.html" title="md5.js">md5.js</a></li>
+                        </ul>
+                    </div>
+
+
+
+
+
+            </div>
+		</div>
+	</div>
+	<div id="ft">
+        <hr />
+        Copyright &copy; 2011 Yahoo! Inc. All rights reserved.
+	</div>
+</div>
+<script type="text/javascript">
+    ALL_YUI_PROPS = [{"url": "Crypto.html#method_add32Bit", "access": "", "host": "Crypto", "type": "method", "name": "add32Bit"}, {"url": "Crypto.html#method_add32Bit", "access": "", "host": "Crypto", "type": "method", "name": "add32Bit"}, {"url": "Crypto.html#method_MD5", "access": "", "host": "Crypto", "type": "method", "name": "MD5"}, {"url": "Crypto.html#method_MD5", "access": "", "host": "Crypto", "type": "method", "name": "MD5"}, {"url": "Crypto.html#method_stringToByteArray", "access": "", "host": "Crypto", "type": "method", "name": "stringToByteArray"}, {"url": "Crypto.html#method_stringToByteArray", "access": "", "host": "Crypto", "type": "method", "name": "stringToByteArray"}, {"url": "Crypto.html#method_utf16ToUtf8", "access": "", "host": "Crypto", "type": "method", "name": "utf16ToUtf8"}, {"url": "Crypto.html#method_utf16ToUtf8", "access": "", "host": "Crypto", "type": "method", "name": "utf16ToUtf8"}, {"url": "Crypto.html#method_utf8ToByteArray", "access": "", "host": "Crypto", "type": "method", "name": "utf8ToByteArray"}, {"url": "Crypto.html#method_utf8ToByteArray", "access": "", "host": "Crypto", "type": "method", "name": "utf8ToByteArray"}];
+</script>
+</body>
+</html>
