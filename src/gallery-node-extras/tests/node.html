@@ -69,7 +69,7 @@
             var node = Y.one("#test-outerHTML li"),
                 node2 = Y.one("#test-outerHTML option");
             Y.Assert.areEqual("<li>item 1</li>", node.get('outerHTML'), "Failed to process LI");
-            Y.Assert.areEqual("<option>option 1</option>", node.get('outerHTML'), "Failed to process OPTION");
+            Y.Assert.areEqual('<option value="1">option 1</option>', node2.get('outerHTML'), "Failed to process OPTION");
         }
     }));
 
