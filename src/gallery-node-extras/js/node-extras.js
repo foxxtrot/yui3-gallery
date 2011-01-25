@@ -6,7 +6,21 @@
  */
 var NodePrototype = Y.Node.prototype,
     originalOne = NodePrototype.one,
-    originalAll = NodePrototype.all;
+    originalAll = NodePrototype.all,
+    domNode = Y.config.doc.createElement('div');
+
+/**
+ * Get the text representation of the current Node, including all of it's children
+ * @readOnly
+ * @config outerHTML
+ * @type string
+ */
+Y.Node.ATTRS.outerHTML = {
+    readOnly: true,
+    getter: domNode.outerHTML ?
+        function() { return this.outerHTML; } :
+        function() { return Y.Node.create('<div />').append(this.cloneNode(true)).get('innerHTML'); }
+};
 
 /**
  * Wraps the content of this Node with new HTML
@@ -75,3 +89,5 @@ NodePrototype.all = function(node) {
         return this.get('children');
     }
 }
+
+delete domNode;
