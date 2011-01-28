@@ -1,3 +1,5 @@
+YUI.add('gallery-charts-legend', function(Y) {
+
 Y.Chart.Legend = Y.Base.create("Legend", Y.Plugin.Base, [], {
         initializer: function (config) {
             this.afterHostEvent('render', this.renderLegend);
@@ -24,3 +26,6 @@ Y.Chart.Legend = Y.Base.create("Legend", Y.Plugin.Base, [], {
     }
     }
     });
+
+
+}, '@VERSION@' ,{requires:['node', 'charts', 'plugin']});

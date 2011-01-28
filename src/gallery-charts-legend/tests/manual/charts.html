@@ -1,0 +1,34 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+    <head>
+        <meta http-equiv="content-type" content="text/html; charset=utf-8">
+        <style>
+            /*Supplemental: CSS for the YUI distribution*/
+            #mychart {
+                padding:10px 10px 10px 10px;
+            }
+        </style>
+        <link rel="stylesheet" type="text/css" href="../../../../../yui3/build/cssfonts/fonts-min.css">
+    </head>		
+<body class="yui3-skin-sam">
+<h3>Unit Tests</h3>
+<div id="mychart"></div>
+<div id="mylegend"></div>
+<script type="text/javascript" src="../../../../../yui3/build/yui/yui-min.js"></script>
+<script>
+YUI({ groups: { gallery: { base: "../../../../build/", modules: { 'gallery-charts-legend': { path: 'gallery-charts-legend/gallery-charts-legend.js', requires: ['charts', 'node', 'plugin']}} }}}).use('charts', 'gallery-charts-legend', function (Y) 
+{ 
+    var myDataValues = [ 
+        {category:"5/1/2010", values:2000, expenses:3700, revenue:2200}, 
+        {category:"5/2/2010", values:50, expenses:9100, revenue:100}, 
+        {category:"5/3/2010", values:400, expenses:1100, revenue:1500}, 
+        {category:"5/4/2010", values:200, expenses:1900, revenue:2800}, 
+        {category:"5/5/2010", values:5000, expenses:5000, revenue:2650}
+    ];
+    var mychart = new Y.Chart({width:400, height:300, dataProvider:myDataValues});
+    mychart.plug(Y.Chart.Legend, {container: '#mylegend'});
+    mychart.render("#mychart");
+});
+</script>
+</body>
+</html>
