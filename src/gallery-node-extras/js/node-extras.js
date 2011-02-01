@@ -69,7 +69,7 @@ Y.Node.frag = function() {
 NodePrototype.one = function(node) {
     node = node || "> *";
     return originalOne.call(this, node);
-}
+};
 
 /**
  * Extends existing Y.Node.all to take no argument and return all the immediate
@@ -88,6 +88,28 @@ NodePrototype.all = function(node) {
     } else {
         return this.get('children');
     }
-}
+};
 
-delete domNode;
+/**
+ * Returns a NodeList off all the siblings after this node which match the given selector
+ * @method nextAll
+ * @param {string} The CSS Selector to filter the siblings against
+ */
+NodePrototype.nextAll = function(selector) {
+    var siblings = this.ancestor().get('children');
+    siblings = siblings.slice(siblings.indexOf(this)+1);
+    return siblings.filter(selector);
+};
+
+/**
+ * Returns a NodeList off all the siblings before this node which match the given selector
+ * @method prevAll
+ * @param {string} The CSS Selector to filter the siblings against
+ */
+NodePrototype.prevAll = function(selector) {
+    var siblings = this.ancestor.get('children');
+    siblings = siblings.slice(0, siblings.indexOf(this));
+    return siblings.filter(selector);
+};
+
+domNode = undefined;

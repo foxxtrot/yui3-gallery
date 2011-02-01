@@ -8,7 +8,21 @@ YUI.add('gallery-node-extras', function(Y) {
  */
 var NodePrototype = Y.Node.prototype,
     originalOne = NodePrototype.one,
-    originalAll = NodePrototype.all;
+    originalAll = NodePrototype.all,
+    domNode = Y.config.doc.createElement('div');
+
+/**
+ * Get the text representation of the current Node, including all of it's children
+ * @readOnly
+ * @config outerHTML
+ * @type string
+ */
+Y.Node.ATTRS.outerHTML = {
+    readOnly: true,
+    getter: domNode.outerHTML ?
+        function() { return this.outerHTML; } :
+        function() { return Y.Node.create('<div />').append(this.cloneNode(true)).get('innerHTML'); }
+};
 
 /**
  * Wraps the content of this Node with new HTML
@@ -45,18 +59,62 @@ Y.Node.frag = function() {
     return new Y.Node(document.createDocumentFragment());
 };
 
+/**
+ * Extends existing Y.Node.one to take no argument and return the immediate
+ * child of the current node.
+ * @method one
+ * @for Node
+ * @param {string|Y.Node} node The node or selector to search for
+ * @return A child node matching the node argument, if defined, or the first
+ * child
+ */
 NodePrototype.one = function(node) {
     node = node || "> *";
     return originalOne.call(this, node);
-}
+};
 
+/**
+ * Extends existing Y.Node.all to take no argument and return all the immediate
+ * children as a NodeList. This essentially makes nodeInstance.all() a synonym
+ * for nodeInstane.get('children')
+ * @method all
+ * @for Node
+ * @param Node {string|Y.Node} The selector to be passed to the underlying all
+ * implementation
+ * @return A NodeList containing all the immediate children, or the children
+ * that match the argument selector
+ */
 NodePrototype.all = function(node) {
     if (node) {
         return originalAll.call(this, node);
     } else {
         return this.get('children');
     }
-}
+};
+
+/**
+ * Returns a NodeList off all the siblings after this node which match the given selector
+ * @method nextAll
+ * @param {string} The CSS Selector to filter the siblings against
+ */
+NodePrototype.nextAll = function(selector) {
+    var siblings = this.ancestor().get('children');
+    siblings = siblings.slice(siblings.indexOf(this)+1);
+    return siblings.filter(selector);
+};
+
+/**
+ * Returns a NodeList off all the siblings before this node which match the given selector
+ * @method prevAll
+ * @param {string} The CSS Selector to filter the siblings against
+ */
+NodePrototype.prevAll = function(selector) {
+    var siblings = this.ancestor.get('children');
+    siblings = siblings.slice(0, siblings.indexOf(this));
+    return siblings.filter(selector);
+};
+
+domNode = undefined;
 
 
 }, '@VERSION@' ,{requires:['node']});
