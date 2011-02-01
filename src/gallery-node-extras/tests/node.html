@@ -65,11 +65,19 @@
         "outerHTML of a fragment should return the fragment": function() {
             Y.Assert.areEqual("<p>oops</p>", Y.Node.create("<p>oops</p>").get('outerHTML'));
         },
+        // In the following test, I allow the result to be one of several options because of how IE will
+        // tend to return outerHTML. Since either output can be sent to Y.Node.create to create a new DOM
+        // fragment which is functionally identical to the earlier fragment, I find this behaviour acceptable
         "outerHTML of a node not a valid child of a div should return the appropriate string": function() {
             var node = Y.one("#test-outerHTML li"),
-                node2 = Y.one("#test-outerHTML option");
-            Y.Assert.areEqual("<li>item 1</li>", node.get('outerHTML'), "Failed to process LI");
-            Y.Assert.areEqual('<option value="1">option 1</option>', node2.get('outerHTML'), "Failed to process OPTION");
+                node2 = Y.one("#test-outerHTML option"),
+                liExpected = [ "<li>item 1</li>", // Firefox, Chrome, etc
+                               "<li>item 1"], // IE
+                optionExpected = ['<option value="1">option 1</option>', // Firefox, Chrome, etc
+                                  '<option value=1>option 1</option>']; // IE
+                
+            ArrayAssert.contains(node.get('outerHTML'), liExpected, "Failed to process LI");
+            ArrayAssert.contains(node2.get('outerHTML'), optionExpected, "Failed to process OPTION");
         }
     }));
 
