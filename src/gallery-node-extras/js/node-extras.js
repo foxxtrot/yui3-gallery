@@ -108,7 +108,8 @@ NodePrototype.nextAll = function(selector) {
  */
 NodePrototype.prevAll = function(selector) {
     var siblings = this.ancestor().get('children');
-    siblings = siblings.slice(0, siblings.indexOf(this));
+    // There is a bug in the nodelist-arrays submodule, so I need to call the method directly
+    siblings = new Y.NodeList(siblings._nodes.slice(0, siblings.indexOf(this)));
     return siblings.filter(selector);
 };
 

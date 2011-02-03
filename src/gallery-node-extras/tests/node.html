@@ -74,7 +74,7 @@ suite.add( new Y.Test.Case({
 suite.add( new Y.Test.Case({
     name: 'Node outerHTML',
     "outerHTML of a fragment should return the fragment": function() {
-        Y.Assert.areEqual("<p>oops</p>", Y.Node.create("<p>oops</p>").get('outerHTML'));
+            Y.Assert.areEqual("<p>oops</p>", Y.Node.create("<p>oops</p>").get('outerHTML'));
         },
         // In the following test, I allow the result to be one of several options because of how IE will
         // tend to return outerHTML. Since either output can be sent to Y.Node.create to create a new DOM
@@ -139,15 +139,29 @@ suite.add( new Y.Test.Case({
             });
         }
     }));
-suite.add( new Y.Test.Case({
-    name: 'Node nextAll/prevAll',
-    "nextAll/prevAll  should return a NodeList": function() {
-        var start = Y.one("#test-nextAll .start");
-        
-        Assert.isInstanceOf(Y.NodeList, start.nextAll('p'), "nextAll");
-        Assert.isInstanceOf(Y.NodeList, start.prevAll('p'), "prevAll");
-    }
-}));
+
+    suite.add( new Y.Test.Case({
+        name: 'Node nextAll/prevAll',
+        "nextAll/prevAll  should return a NodeList": function() {
+            var start = Y.one("#test-nextAll .start");
+            
+            Assert.isInstanceOf(Y.NodeList, start.nextAll('p'), "nextAll");
+            Assert.isInstanceOf(Y.NodeList, start.prevAll('p'), "prevAll");
+        },
+        "the length of the NodeList returned by nextAll should be correct": function() {
+            var start = Y.one("#test-nextAll .start");
+
+            Assert.areEqual(1, start.nextAll('p').size());
+            Assert.areEqual(2, start.nextAll('div').size());
+        },
+        "the length of the NodeList returned by prevAll should be correct": function() {
+            var start = Y.one("#test-nextAll .start");
+
+            Assert.areEqual(2, start.prevAll('p').size(), "p check");
+            Assert.areEqual(1, start.prevAll('div').size(), "div check");
+        }
+    }));
+
     Y.Test.Runner.add(suite);
 
     Y.on('load', function() {
