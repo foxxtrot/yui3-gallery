@@ -39,31 +39,42 @@
         <li>item 2</li>
         <li><select><option value="1">option 1</option><option value="2">option 2</option></select></li>
     </ul>
+
+    <div id="test-nextAll">
+        <p>p</p>
+        <div>div</div>
+        <p>p</p>
+        <p class="start">p</p>
+        <div>div</div>
+        <p>p</p>
+        <div>div</div>
+    </div>
+    
 <div id="yui-log"></div>
 <script type="text/javascript">
-        YUI({base: '../../../../yui3/build/', filter: 'raw', groups: { gallery: { base: '../../../build/', modules: { 'gallery-node-extras': { path: 'gallery-node-extras/gallery-node-extras.js' }}}}}).use('node', 'gallery-node-extras', 'test', function(Y) {
-    var Assert = Y.Assert,
-        ArrayAssert = Y.ArrayAssert,
-        suite = new Y.Test.Suite("yuisuite");
+    YUI({base: '../../../../yui3/build/', filter: 'raw', groups: { gallery: { base: '../../../build/', modules: { 'gallery-node-extras': { path: 'gallery-node-extras/gallery-node-extras.js' }}}}}).use('node', 'gallery-node-extras', 'test', function(Y) {
+var Assert = Y.Assert,
+    ArrayAssert = Y.ArrayAssert,
+    suite = new Y.Test.Suite("yuisuite");
 
-    var byId = function(id) {
-        return document.getElementById(id);
-    };
+var byId = function(id) {
+    return document.getElementById(id);
+};
 
-    var $ = Y.Selector.query;
+var $ = Y.Selector.query;
 
-    suite.add( new Y.Test.Case({
-        name: 'Node frag',
-        "frag should return a Document Fragment Node": function() {
-            var node = Y.Node.frag();
-            Y.Assert.areEqual(11, node.get('nodeType'));
-        }
-    }));
+suite.add( new Y.Test.Case({
+    name: 'Node frag',
+    "frag should return a Document Fragment Node": function() {
+        var node = Y.Node.frag();
+        Y.Assert.areEqual(11, node.get('nodeType'));
+    }
+}));
 
-    suite.add( new Y.Test.Case({
-        name: 'Node outerHTML',
-        "outerHTML of a fragment should return the fragment": function() {
-            Y.Assert.areEqual("<p>oops</p>", Y.Node.create("<p>oops</p>").get('outerHTML'));
+suite.add( new Y.Test.Case({
+    name: 'Node outerHTML',
+    "outerHTML of a fragment should return the fragment": function() {
+        Y.Assert.areEqual("<p>oops</p>", Y.Node.create("<p>oops</p>").get('outerHTML'));
         },
         // In the following test, I allow the result to be one of several options because of how IE will
         // tend to return outerHTML. Since either output can be sent to Y.Node.create to create a new DOM
@@ -127,7 +138,16 @@
                 Y.Assert.isTrue(n.one('> *').test('span.test'));
             });
         }
-    })); 
+    }));
+suite.add( new Y.Test.Case({
+    name: 'Node nextAll/prevAll',
+    "nextAll/prevAll  should return a NodeList": function() {
+        var start = Y.one("#test-nextAll .start");
+        
+        Assert.isInstanceOf(Y.NodeList, start.nextAll('p'), "nextAll");
+        Assert.isInstanceOf(Y.NodeList, start.prevAll('p'), "prevAll");
+    }
+}));
     Y.Test.Runner.add(suite);
 
     Y.on('load', function() {

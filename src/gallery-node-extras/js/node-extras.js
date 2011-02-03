@@ -7,7 +7,7 @@
 var NodePrototype = Y.Node.prototype,
     originalOne = NodePrototype.one,
     originalAll = NodePrototype.all,
-    domNode = Y.config.doc.createElement('div');
+    domNode = Y.Node.getDOMNode(Y.config.doc.createElement('div'));
 
 /**
  * Get the text representation of the current Node, including all of it's children
@@ -18,7 +18,7 @@ var NodePrototype = Y.Node.prototype,
 Y.Node.ATTRS.outerHTML = {
     readOnly: true,
     getter: domNode.outerHTML ?
-        function() { return this.outerHTML; } :
+        function() { return this._node.outerHTML; } :
         function() { return Y.Node.create('<div />').append(this.cloneNode(true)).get('innerHTML'); }
 };
 
@@ -107,7 +107,7 @@ NodePrototype.nextAll = function(selector) {
  * @param {string} The CSS Selector to filter the siblings against
  */
 NodePrototype.prevAll = function(selector) {
-    var siblings = this.ancestor.get('children');
+    var siblings = this.ancestor().get('children');
     siblings = siblings.slice(0, siblings.indexOf(this));
     return siblings.filter(selector);
 };
