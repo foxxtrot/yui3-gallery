@@ -234,4 +234,4 @@ Y.extend(_S, Y.Widget,
 Y.SlideShow = _S;
 
 
-}, '@VERSION@' ,{optional:['anim'], requires:['widget', 'substitute']});
+}, '@VERSION@' ,{requires:['widget', 'substitute'], optional:['anim']});

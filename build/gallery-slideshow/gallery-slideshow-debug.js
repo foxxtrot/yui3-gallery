@@ -21,7 +21,6 @@ _S.NS = SLIDESHOW;
 _S.HTML_PARSER = 
 	{
 		title: function(contentBox) {
-<<<<<<< HEAD
 			var node = contentBox.one('.' + CLASSNAMES.header);
 			return node ? node.get('innerHTML') : "";
 		},
@@ -38,24 +37,6 @@ _S.HTML_PARSER =
 		footerNode: 'div.' + CLASSNAMES.footer,
 		images: function(contentBox) {
 			contentBox.all('.' + CLASSNAMES.body + ' li').each(function(node, index) {
-=======
-			var node = contentBox.one(CLASSNAMES.header);
-			return node ? node.get('innerHTML') : "";
-		},
-		image_height: function(contentBox) {
-			var node = contentBox.one(CLASSNAMES.body);
-			return node ? parseInt(node.getStyle('height'), 10) : null;
-		},
-		image_width: function(contentBox) {
-			var node = contentBox.one(CLASSNAMES.body);
-			return node ? parseInt(node.getStyle('width'), 10) : null;
-		},
-		bodyNode: CLASSNAMES.body,
-		headerNode: CLASSNAMES.header,
-		footerNode: CLASSNAMES.footer,
-		images: function(contentBox) {
-			contentBox.all(CLASSNAMES.body + ' li').each(function(node, index) {
->>>>>>> 94439ec26f261e2b796f74cb22f5a85434b025c4
 				var img = {};
 				this._parseImage(node, img);
 				img._node.setStyle(ZINDEX, -1*index);
@@ -146,7 +127,6 @@ Y.extend(_S, Y.Widget,
 				zIndex = zIndex > z ? z : zIndex; 
 			});
 			Y.Array.each(this._imageList, function(value, index) {
-<<<<<<< HEAD
 				zIndex -= 1;
 				if (!Y.Lang.isValue(value._node)) {
 					this._createImage(value, zIndex);
@@ -154,13 +134,6 @@ Y.extend(_S, Y.Widget,
 					value._node.setStyle(ZINDEX, zIndex);
 				}
 				if (index === 0) { this.currentImage = value._node; }
-=======
-				if (!Y.Lang.isValue(value._node)) {
-					zIndex -= 1;
-					var x = this._createImage(value, zIndex);
-					if (index === 0) { this.currentImage = x; }
-				}
->>>>>>> 94439ec26f261e2b796f74cb22f5a85434b025c4
 			}, this);
 		},
 		_createImage: function(img, z) {
@@ -220,19 +193,11 @@ Y.extend(_S, Y.Widget,
 		renderUI: function() {
 			var bodyNode = this.get('bodyNode'), title = this.get('title'), image_height = this.get('image_height'), image_width = this.get('image_width');
 
-<<<<<<< HEAD
 			if (title.length > 0) { this._setHeaderContents(title); }
 			if (!Y.Lang.isValue(bodyNode)) { 
 				bodyNode = this._addTemplate(this.TEMPLATES.body);
 				this.set('bodyNode', bodyNode);
 			}
-=======
-			if (title.length > 0) { this._setHeaderContents(title);
-			if (!Y.Lang.isValue(bodyNode)) { 
-				bodyNode = this._addTemplate(this.TEMPLATES.body);
-				this.set('bodyNode', bodyNode);
-			}}
->>>>>>> 94439ec26f261e2b796f74cb22f5a85434b025c4
 			if (image_width) { bodyNode.setStyle('width', image_width); }
 			if (image_height) { bodyNode.setStyle('height', image_height); }
 			this._renderImages();
@@ -267,80 +232,6 @@ Y.extend(_S, Y.Widget,
 	});
 
 Y.SlideShow = _S;
-<<<<<<< HEAD
-var ImagePadding = function(config) {
-	this._ss = config.host;
-
-	ImagePadding.superclass.constructor.apply(this, arguments);
-};
-
-ImagePadding.NS = 'padder';
-ImagePadding.NAME = 'slideshowImagePadder';
-
-Y.extend(ImagePadding, Y.Plugin.Base, {
-	initializer: function(config) {
-		this.doAfter("_createImage", this._padImage);
-	},
-	_padImage: function(img) {
-		Y.later(500, this, function(imageNode, contentBox) {
-			var height = parseInt(contentBox.getStyle('height'), 10),
-			    width  = parseInt(contentBox.getStyle('width'), 10),
-			    img_height = parseInt(imageNode.one('img').getStyle('height'), 10),
-			    img_width = parseInt(imageNode.one('img').getStyle('width'), 10),
-			    padding_width = (width - img_width)/2,
-			    padding_height = (height - img_height)/2;
-			imageNode.setStyle('padding', padding_height + ' ' + padding_width); 
-		}, [img._node, this._ss.get('bodyNode')]);
-	}
-});
-
-Y.SlideShow.ImagePadder = ImagePadding;
-var ImageScaling = function(config) {
-	this._ss = config.host;
-
-	ImageScaling.superclass.constructor.apply(this, arguments);
-};
-
-ImageScaling.NS = 'scaling';
-ImageScaling.NAME = 'slideshowImageScaler';
-
-ImageScaling.ATTRS = {
-	height: {
-		validator: Y.Lang.isNumber
-	},
-	width: {
-		validator: Y.Lang.isNumber
-	},
-	scaleFactor: {
-		validator: Y.Lang.isNumber
-	}
-};
-
-Y.extend(ImageScaling, Y.Plugin.Base, {
-	initializer: function(config) {
-		this.doAfter("_createImage", this._scaleImage);
-	},
-	_scaleImage: function(img) {
-		var scaleFactor = this.get('scaleFactor'),
-		    width = img.width || this.get('width'),
-		    height = img.height || this.get('height'),
-		    imageNode = img._node.one('img');
-
-		if (scaleFactor) {
-			imageNode.setStyles({height: scaleFactor + '%', width: scaleFactor + '%'});
-		} else {
-			if (width) { imageNode.setStyle('width', width); }
-			if (height){ imageNode.setStyle('height', height); }
-		}
-	}
-});
-
-Y.SlideShow.ImageScaler = ImageScaling;
 
 
-}, '@VERSION@' ,{requires:['widget', 'substitute', 'plugin'], optional:['anim']});
-=======
-
-
-}, 'gallery-2010.03.23-17-54' ,{requires:['widget', 'substitute'], optional:['anim']});
->>>>>>> 94439ec26f261e2b796f74cb22f5a85434b025c4
+}, '@VERSION@' ,{requires:['widget', 'substitute'], optional:['anim']});
