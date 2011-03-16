@@ -15,7 +15,7 @@ _C.ATTRS =
 		host: {
 			validator:function(node) {
 				if(!node.test('img')) {
-					Y.fail(MAGNIFIER + " can't be attached to this node.");
+					Y.error(MAGNIFIER + " can't be attached to this node.");
 					return false;
 				}
 				return true;
